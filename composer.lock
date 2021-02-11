@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2b5ca28a73618498d552c56979d8235",
+    "content-hash": "cc226a150a443cf1970d9bc4982e7ad4",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc6",
+            "version": "v1.0-rc6+2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "e7d64dfb20d2dc630b7c5cbc4f2ef32bfffb9f55"
+                "reference": "ea67f6f23ab8814aba2bfeb35ebe20b238f09d72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/e7d64dfb20d2dc630b7c5cbc4f2ef32bfffb9f55",
-                "reference": "e7d64dfb20d2dc630b7c5cbc4f2ef32bfffb9f55",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/ea67f6f23ab8814aba2bfeb35ebe20b238f09d72",
+                "reference": "ea67f6f23ab8814aba2bfeb35ebe20b238f09d72",
                 "shasum": ""
             },
             "require": {
@@ -60,9 +60,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc6"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc6+2"
             },
-            "time": "2021-02-10T20:18:57+00:00"
+            "time": "2021-02-11T12:02:41+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
