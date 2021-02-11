@@ -73,7 +73,7 @@ final class FloatConstraintDirective extends LeafConstraintDirective
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || self::validateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
             throw new \Exception();
         }
     }

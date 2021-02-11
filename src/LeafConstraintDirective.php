@@ -31,7 +31,7 @@ abstract class LeafConstraintDirective extends FieldConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void;
 
-    protected static function validateOneOf(array $greater, array $smaller) : bool
+    protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
     {
         foreach ($smaller as $value) {
             if (!\in_array($value, $greater, true)) {

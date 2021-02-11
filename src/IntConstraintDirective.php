@@ -39,18 +39,6 @@ final class IntConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            return;
-        }
-
-        if ($value instanceof \Graphpinator\Value\ListValue) {
-            foreach ($value as $item) {
-                $this->validateValue($item, $arguments);
-            }
-
-            return;
-        }
-
         $rawValue = $value->getRawValue();
         $min = $arguments->offsetGet('min')->getValue()->getRawValue();
         $max = $arguments->offsetGet('max')->getValue()->getRawValue();
@@ -85,7 +73,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || self::validateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
             throw new \Exception();
         }
     }
