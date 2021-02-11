@@ -1,6 +1,6 @@
 {
   "name": "infinityloop-dev/graphpinator-constraint-directives",
-  "description": "Typesystem directives to declare additional validation on top of GraphQL type system..",
+  "description": "Typesystem directives to declare additional validation on top of GraphQL type system.",
   "homepage": "https://www.infinityloop.dev/",
   "type": "library",
   "license": ["MIT"],
