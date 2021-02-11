@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Constraint;
+namespace Graphpinator\ConstraintDirectives;
 
 final class IntConstraintDirective extends LeafConstraintDirective
 {
@@ -57,15 +57,15 @@ final class IntConstraintDirective extends LeafConstraintDirective
         $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
 
         if (\is_int($min) && $rawValue < $min) {
-            throw new \Graphpinator\Exception\Constraint\MinConstraintNotSatisfied();
+            throw new Exception\MinConstraintNotSatisfied();
         }
 
         if (\is_int($max) && $rawValue > $max) {
-            throw new \Graphpinator\Exception\Constraint\MaxConstraintNotSatisfied();
+            throw new Exception\MaxConstraintNotSatisfied();
         }
 
         if (\is_array($oneOf) && !\in_array($rawValue, $oneOf, true)) {
-            throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
+            throw new Exception\OneOfConstraintNotSatisfied();
         }
     }
 

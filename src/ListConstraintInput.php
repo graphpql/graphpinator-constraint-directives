@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Constraint;
+namespace Graphpinator\ConstraintDirectives;
 
 final class ListConstraintInput extends \Graphpinator\Type\InputType
 {
     protected const NAME = 'ListConstraintInput';
 
     public function __construct(
-        private \Graphpinator\Directive\Constraint\ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+        private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
     )
     {
         parent::__construct();

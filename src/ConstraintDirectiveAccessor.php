@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Constraint;
+namespace Graphpinator\ConstraintDirectives;
 
 interface ConstraintDirectiveAccessor
 {

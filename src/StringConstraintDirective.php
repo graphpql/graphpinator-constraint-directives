@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Constraint;
+namespace Graphpinator\ConstraintDirectives;
 
 final class StringConstraintDirective extends LeafConstraintDirective
 {
@@ -58,19 +58,19 @@ final class StringConstraintDirective extends LeafConstraintDirective
         $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
 
         if (\is_int($minLength) && \mb_strlen($rawValue) < $minLength) {
-            throw new \Graphpinator\Exception\Constraint\MinLengthConstraintNotSatisfied();
+            throw new Exception\MinLengthConstraintNotSatisfied();
         }
 
         if (\is_int($maxLength) && \mb_strlen($rawValue) > $maxLength) {
-            throw new \Graphpinator\Exception\Constraint\MaxLengthConstraintNotSatisfied();
+            throw new Exception\MaxLengthConstraintNotSatisfied();
         }
 
         if (\is_string($regex) && \preg_match($regex, $rawValue) !== 1) {
-            throw new \Graphpinator\Exception\Constraint\RegexConstraintNotSatisfied();
+            throw new Exception\RegexConstraintNotSatisfied();
         }
 
         if (\is_array($oneOf) && !\in_array($rawValue, $oneOf, true)) {
-            throw new \Graphpinator\Exception\Constraint\OneOfConstraintNotSatisfied();
+            throw new Exception\OneOfConstraintNotSatisfied();
         }
     }
 

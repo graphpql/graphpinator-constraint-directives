@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Graphpinator\Directive\Constraint;
+namespace Graphpinator\ConstraintDirectives;
 
 final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     implements \Graphpinator\Directive\Contract\ObjectLocation, \Graphpinator\Directive\Contract\InputObjectLocation
@@ -113,7 +113,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
             }
 
             if (!$valid) {
-                throw new \Graphpinator\Exception\Constraint\AtLeastOneConstraintNotSatisfied();
+                throw new Exception\AtLeastOneConstraintNotSatisfied();
             }
         }
 
@@ -140,7 +140,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         }
 
         if ($count > 1 || ($count === 0 && $notRequested === 0)) {
-            throw new \Graphpinator\Exception\Constraint\ExactlyOneConstraintNotSatisfied();
+            throw new Exception\ExactlyOneConstraintNotSatisfied();
         }
     }
 }
