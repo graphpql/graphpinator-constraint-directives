@@ -11,8 +11,8 @@
         "perMutator": "build/per-mutator.md"
     },
     "tmpDir": "/tmp/infection",
-    "minMsi": 95,
-    "minCoveredMsi": 98,
+    "minMsi": 82,
+    "minCoveredMsi": 83,
     "mutators": {
         "@default": true,
         "global-ignoreSourceCodeByRegex": [
