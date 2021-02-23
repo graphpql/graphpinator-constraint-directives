@@ -9,20 +9,11 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
+    protected const REPEATABLE = true;
 
     public function __construct(
         private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    )
-    {
-        parent::__construct(
-            [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::OBJECT,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INTERFACE,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_OBJECT,
-            ],
-            true,
-        );
-    }
+    ) {}
 
     public function validateType(
         \Graphpinator\Type\Contract\Definition $definition,

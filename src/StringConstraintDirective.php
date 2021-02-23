@@ -30,7 +30,7 @@ final class StringConstraintDirective extends LeafConstraintDirective
         ]);
     }
 
-    protected function appendDirectives(): void
+    protected function afterGetFieldDefinition() : void
     {
         $this->arguments['minLength']->addDirective(
             $this->constraintDirectiveAccessor->getInt(),

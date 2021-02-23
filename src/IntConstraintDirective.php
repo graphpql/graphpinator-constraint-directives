@@ -26,7 +26,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         ]);
     }
 
-    protected function appendDirectives(): void
+    protected function afterGetFieldDefinition() : void
     {
         $this->arguments['oneOf']->addDirective(
             $this->constraintDirectiveAccessor->getList(),
