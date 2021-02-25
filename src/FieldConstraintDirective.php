@@ -28,32 +28,34 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
     }
 
     public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ResolvedValue $parentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\ResolvedValue $resolvedValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $resolvedValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionValue(
-        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\FieldValue $fieldValue,
     ) : void
     {
         $this->validateValue($fieldValue->getValue(), $arguments);
     }
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);

@@ -15,19 +15,59 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
     ) {}
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateObjectUsage(
+        \Graphpinator\Type\Type|\Graphpinator\Type\InterfaceType $type,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        if ($definition instanceof \Graphpinator\Type\InputType) {
-            $fields = $definition->getArguments();
-        } elseif ($definition instanceof \Graphpinator\Type\Type || $definition instanceof \Graphpinator\Type\InterfaceType) {
-            $fields = $definition->getFields();
-        } else {
-            return false;
-        }
+        return $this->validateUsage($type->getFields(), $arguments);
+    }
 
+    public function validateInputUsage(
+        \Graphpinator\Type\InputType $inputType,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        return $this->validateUsage($inputType->getArguments(), $arguments);
+    }
+
+    public function resolveObject(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\TypeValue $typeValue,
+    ) : void
+    {
+        $this->validate($typeValue, $arguments);
+    }
+
+    public function resolveInputObject(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\InputValue $inputValue,
+    ) : void
+    {
+        $this->validate($inputValue, $arguments);
+    }
+
+    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    {
+        return new \Graphpinator\Argument\ArgumentSet([
+            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    $this->constraintDirectiveAccessor->getList(),
+                    ['minItems' => 1],
+                ),
+            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
+                ->addDirective(
+                    $this->constraintDirectiveAccessor->getList(),
+                    ['minItems' => 1],
+                ),
+        ]);
+    }
+
+    private function validateUsage(
+        \Graphpinator\Field\FieldSet|\Graphpinator\Argument\ArgumentSet $fields,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
         $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
         $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue();
 
@@ -48,38 +88,6 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
         }
 
         return true;
-    }
-
-    public function resolveObject(
-        \Graphpinator\Value\TypeValue $typeValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        $this->validate($typeValue, $arguments);
-    }
-
-    public function resolveInputObject(
-        \Graphpinator\Value\InputValue $inputValue,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        $this->validate($inputValue, $arguments);
-    }
-
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
-    {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
-                ->addDirective(
-                    $this->constraintDirectiveAccessor->getList(),
-                    ['minItems' => 1],
-                ),
-            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
-                ->addDirective(
-                    $this->constraintDirectiveAccessor->getList(),
-                    ['minItems' => 1],
-                ),
-        ]);
     }
 
     private function validate(

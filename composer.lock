@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc226a150a443cf1970d9bc4982e7ad4",
+    "content-hash": "11aef577ab366435d6c3dfe40058e89b",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc9",
+            "version": "v1.0-rc10+3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb"
+                "reference": "e76c27120f9b506052d1a56218867593b9893439"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb",
-                "reference": "2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/e76c27120f9b506052d1a56218867593b9893439",
+                "reference": "e76c27120f9b506052d1a56218867593b9893439",
                 "shasum": ""
             },
             "require": {
@@ -64,9 +64,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc9"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc10+3"
             },
-            "time": "2021-02-23T18:56:19+00:00"
+            "time": "2021-02-25T19:21:09+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -1630,16 +1630,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.78",
+            "version": "0.12.79",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "eecce8d2ee3cac6769f37b4cb1998b2715f82984"
+                "reference": "dd7769915648b704b9bd12925994457f1c2c8442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/eecce8d2ee3cac6769f37b4cb1998b2715f82984",
-                "reference": "eecce8d2ee3cac6769f37b4cb1998b2715f82984",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dd7769915648b704b9bd12925994457f1c2c8442",
+                "reference": "dd7769915648b704b9bd12925994457f1c2c8442",
                 "shasum": ""
             },
             "require": {
@@ -1670,7 +1670,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.78"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.79"
             },
             "funding": [
                 {
@@ -1686,7 +1686,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-20T13:24:36+00:00"
+            "time": "2021-02-25T16:44:57+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

@@ -9,12 +9,20 @@ final class FloatConstraintDirective extends LeafConstraintDirective
     protected const NAME = 'floatConstraint';
     protected const DESCRIPTION = 'Graphpinator floatConstraint directive.';
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $definition->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+    }
+
+    public function validateArgumentUsage(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
