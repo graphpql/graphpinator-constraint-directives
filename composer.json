@@ -12,6 +12,7 @@
     }
   ],
   "require": {
+    "ext-fileinfo": "*",
     "infinityloop-dev/graphpinator": "^1.0-rc6+2",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2"

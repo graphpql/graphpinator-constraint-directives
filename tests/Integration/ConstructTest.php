@@ -13,6 +13,7 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
     private static ?\Graphpinator\ConstraintDirectives\ListConstraintDirective $listDirective = null;
     private static ?\Graphpinator\ConstraintDirectives\ListConstraintInput $listInput = null;
     private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintDirective $objectDirective = null;
+    private static ?\Graphpinator\ConstraintDirectives\UploadConstraintDirective $uploadDirective = null;
 
     public function testConstruct() : void
     {
@@ -21,11 +22,13 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         self::getFloat();
         self::getList();
         self::getObject();
+        self::getUpload();
         self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, self::$stringDirective);
         self::assertInstanceOf(\Graphpinator\ConstraintDirectives\IntConstraintDirective::class, self::$intDirective);
         self::assertInstanceOf(\Graphpinator\ConstraintDirectives\FloatConstraintDirective::class, self::$floatDirective);
         self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ListConstraintDirective::class, self::$listDirective);
         self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ObjectConstraintDirective::class, self::$objectDirective);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, self::$uploadDirective);
 
         self::assertSame(
             [
@@ -140,6 +143,17 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$listInput;
     }
 
+    public static function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+    {
+        if (!self::$uploadDirective instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective) {
+            self::$uploadDirective = new \Graphpinator\ConstraintDirectives\UploadConstraintDirective(
+                self::getAccessor(),
+            );
+        }
+
+        return self::$uploadDirective;
+    }
+
     public static function getAccessor() : \Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor
     {
         if (self::$accessor === null) {
@@ -173,6 +187,11 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
                 public function getObject(): \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
                 {
                     return ConstructTest::getObject();
+                }
+
+                public function getUpload(): \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+                {
+                    return ConstructTest::getUpload();
                 }
             };
         }

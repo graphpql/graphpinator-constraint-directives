@@ -59,6 +59,9 @@ final class TestSchema
             'objectConstraint' => new \Graphpinator\ConstraintDirectives\ObjectConstraintDirective(
                 self::getAccessor(),
             ),
+            'uploadConstraint' => new \Graphpinator\ConstraintDirectives\UploadConstraintDirective(
+                self::getAccessor(),
+            )
         };
 
         return self::$types[$name];
@@ -98,6 +101,11 @@ final class TestSchema
                 {
                     return TestSchema::getType('objectConstraint');
                 }
+
+                public function getUpload(): \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+                {
+                    return TestSchema::getType('uploadConstraint');
+                }
             };
         }
 
@@ -122,6 +130,7 @@ final class TestSchema
             'floatConstraint' => self::getType('floatConstraint'),
             'listConstraint' => self::getType('listConstraint'),
             'objectConstraint' => self::getType('objectConstraint'),
+            'uploadConstraint' => self::getType('uploadConstraint'),
         ]);
 
         return self::$container;
