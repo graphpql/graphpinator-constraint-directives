@@ -64,7 +64,31 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                 ]),
                 '{}',
                 ['maxSize' => 10000],
-            ]
+            ],
+        ];
+    }
+
+    public function requestInvalidDataProvider() : array
+    {
+        return [
+            [
+                \Infinityloop\Utils\Json::fromNative((object) [
+                    'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
+                    'variables' => (object) ['var1' => null],
+                ]),
+                '{ "0": ["variables.var1.0", "variables.var1.1"] }',
+                ['maxSize' => 4999],
+                \Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied::class,
+            ],
+            [
+                \Infinityloop\Utils\Json::fromNative((object) [
+                    'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
+                    'variables' => (object) ['var1' => null],
+                ]),
+                '{ "0": ["variables.var1.0", "variables.var1.1"] }',
+                ['mimeType' => ['application/x-httpd-php', 'application/pdf']],
+                \Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied::class,
+            ],
         ];
     }
 
@@ -144,6 +168,31 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
             ->run(new \Graphpinator\Request\JsonRequestFactory($request));
 
         self::assertTrue(true);
+    }
+
+    /**
+     * @dataProvider requestInvalidDataProvider
+     * @param \Infinityloop\Utils\Json $request
+     * @param string $map
+     * @param array $constraint
+     */
+    public function testUploadRequestInvalid(\Infinityloop\Utils\Json $request, string $map, array $constraint, string $exception) : void
+    {
+        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream->method('getContents')->willReturn('test file');
+        $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
+        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file->method('getStream')->willReturn($stream);
+        $file->method('getSize')->willReturn(5000);
+        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString($map));
+        $fileProvider->method('getFile')->willReturn($file);
+
+        self::expectException($exception);
+        self::expectExceptionMessage(\constant($exception . '::MESSAGE'));
+
+        self::getGraphpinator($fileProvider, $constraint)
+            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
     }
 
     protected static function getGraphpinator(
