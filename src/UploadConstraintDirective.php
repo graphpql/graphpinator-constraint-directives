@@ -12,16 +12,7 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
 
     public function __construct(
         protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    )
-    {
-        parent::__construct(
-            [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-            ],
-            false,
-        );
-    }
+    ) {}
 
     public function validateType(
         \Graphpinator\Type\Contract\Definition $definition,
@@ -48,8 +39,8 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
     }
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);
@@ -79,6 +70,14 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
         }
 
         $this->specificValidateValue($value, $arguments);
+    }
+
+    public function validateArgumentUsage(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Module\Upload\UploadType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

@@ -40,7 +40,7 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
 
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 
-        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive);
+        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive->getArguments());
 
         $directive->validateVariance(null, $values);
     }
@@ -52,7 +52,7 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $directive = TestSchema::getType('uploadConstraint');
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 
-        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive);
+        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive->getArguments());
 
         $directive->validateVariance($values, null);
     }
