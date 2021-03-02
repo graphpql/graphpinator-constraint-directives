@@ -64,7 +64,13 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
             return;
         }
 
-        if ($value instanceof \Graphpinator\Value\ListValue) {
+        if ($value instanceof \Graphpinator\Value\VariableValue) {
+            $this->validateValue($value->getConcreteValue(), $arguments);
+
+            return;
+        }
+
+        if ($value instanceof \Graphpinator\Value\ListInputedValue) {
             foreach ($value as $item) {
                 $this->validateValue($item, $arguments);
             }
