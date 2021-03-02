@@ -9,12 +9,23 @@ final class StringConstraintDirective extends LeafConstraintDirective
     protected const NAME = 'stringConstraint';
     protected const DESCRIPTION = 'Graphpinator stringConstraint directive.';
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        $namedType = $definition->getNamedType();
+        $namedType = $field->getType()->getNamedType();
+
+        return $namedType instanceof \Graphpinator\Type\Scalar\StringType
+            || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
+    }
+
+    public function validateArgumentUsage(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        $namedType = $argument->getType()->getNamedType();
 
         return $namedType instanceof \Graphpinator\Type\Scalar\StringType
             || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
@@ -30,7 +41,7 @@ final class StringConstraintDirective extends LeafConstraintDirective
         ]);
     }
 
-    protected function appendDirectives(): void
+    protected function afterGetFieldDefinition() : void
     {
         $this->arguments['minLength']->addDirective(
             $this->constraintDirectiveAccessor->getInt(),

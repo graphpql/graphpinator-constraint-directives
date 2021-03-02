@@ -9,12 +9,20 @@ final class IntConstraintDirective extends LeafConstraintDirective
     protected const NAME = 'intConstraint';
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $definition->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+    }
+
+    public function validateArgumentUsage(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -26,7 +34,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         ]);
     }
 
-    protected function appendDirectives(): void
+    protected function afterGetFieldDefinition() : void
     {
         $this->arguments['oneOf']->addDirective(
             $this->constraintDirectiveAccessor->getList(),

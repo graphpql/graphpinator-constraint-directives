@@ -9,12 +9,20 @@ final class ListConstraintDirective extends FieldConstraintDirective
     protected const NAME = 'listConstraint';
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
 
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
+    public function validateFieldUsage(
+        \Graphpinator\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return self::recursiveValidateType($definition, (object) $arguments->getValuesForResolver());
+        return self::recursiveValidateType($field->getType(), (object) $arguments->getValuesForResolver());
+    }
+
+    public function validateArgumentUsage(
+        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        return self::recursiveValidateType($argument->getType(), (object) $arguments->getValuesForResolver());
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

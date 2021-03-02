@@ -25,7 +25,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidConstraintTypeInt() : void
@@ -47,7 +47,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidConstraintTypeFloat() : void
@@ -69,7 +69,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidConstraintTypeList() : void
@@ -91,7 +91,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testNegativeMinLength() : void
@@ -113,7 +113,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testNegativeMaxLength() : void
@@ -135,7 +135,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testNegativeMinItems() : void
@@ -157,7 +157,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testNegativeMaxItems() : void
@@ -179,7 +179,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInnerNegativeMinItems() : void
@@ -202,7 +202,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInnerNegativeMaxItems() : void
@@ -225,7 +225,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInnerInvalidType() : void
@@ -248,7 +248,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testEmptyOneOfInt() : void
@@ -270,7 +270,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidOneOfInt() : void
@@ -291,7 +291,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testEmptyOneOfFloat() : void
@@ -313,7 +313,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidOneOfFloat() : void
@@ -334,7 +334,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testEmptyOneOfString() : void
@@ -356,7 +356,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidOneOfString() : void
@@ -377,7 +377,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testUniqueConstraintList() : void
@@ -399,7 +399,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $type->printSchema();
+        $type->getArguments();
     }
 
     public function testInvalidAtLeastOneParameter() : void

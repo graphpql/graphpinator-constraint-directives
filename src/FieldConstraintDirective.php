@@ -9,17 +9,7 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
 {
     public function __construct(
         protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    )
-    {
-        parent::__construct(
-            [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-            ],
-            false,
-        );
-    }
+    ) {}
 
     final public function validateVariance(
         ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
@@ -39,22 +29,33 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
 
     public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\FieldValue $fieldValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $resolvedValue,
+        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
+    ) : void
+    {
+        // nothing here
+    }
+
+    public function resolveFieldDefinitionValue(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\FieldValue $fieldValue,
     ) : void
     {
         $this->validateValue($fieldValue->getValue(), $arguments);
     }
 
     public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValue $argumentValue,
         \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);
