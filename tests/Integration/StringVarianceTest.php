@@ -93,7 +93,7 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet

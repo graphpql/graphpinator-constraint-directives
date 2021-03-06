@@ -16,8 +16,8 @@ final class StringConstraintDirective extends LeafConstraintDirective
     {
         $namedType = $field->getType()->getNamedType();
 
-        return $namedType instanceof \Graphpinator\Type\Scalar\StringType
-            || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
+        return $namedType instanceof \Graphpinator\Type\Spec\StringType
+            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
     }
 
     public function validateArgumentUsage(
@@ -27,8 +27,8 @@ final class StringConstraintDirective extends LeafConstraintDirective
     {
         $namedType = $argument->getType()->getNamedType();
 
-        return $namedType instanceof \Graphpinator\Type\Scalar\StringType
-            || $namedType instanceof \Graphpinator\Type\Scalar\IdType;
+        return $namedType instanceof \Graphpinator\Type\Spec\StringType
+            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

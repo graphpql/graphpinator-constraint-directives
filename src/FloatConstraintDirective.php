@@ -14,7 +14,7 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
     }
 
     public function validateArgumentUsage(
@@ -22,7 +22,7 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ): bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet

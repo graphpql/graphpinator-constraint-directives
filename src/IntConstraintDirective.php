@@ -14,7 +14,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
 
     public function validateArgumentUsage(
@@ -22,7 +22,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ): bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
