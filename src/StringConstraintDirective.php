@@ -90,22 +90,22 @@ final class StringConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void
     {
-        $lhs = $biggerSet->getRawValues();
-        $rhs = $smallerSet->getRawValues();
+        $lhs = $biggerSet->getValuesForResolver();
+        $rhs = $smallerSet->getValuesForResolver();
 
-        if (\is_int($lhs->minLength) && ($rhs->minLength === null || $rhs->minLength < $lhs->minLength)) {
+        if (\is_int($lhs['minLength']) && ($rhs['minLength'] === null || $rhs['minLength'] < $lhs['minLength'])) {
             throw new \Exception();
         }
 
-        if (\is_int($lhs->maxLength) && ($rhs->maxLength === null || $rhs->maxLength > $lhs->maxLength)) {
+        if (\is_int($lhs['maxLength']) && ($rhs['maxLength'] === null || $rhs['maxLength'] > $lhs['maxLength'])) {
             throw new \Exception();
         }
 
-        if (\is_string($lhs->regex) && ($rhs->regex === null || $rhs->regex !== $lhs->regex)) {
+        if (\is_string($lhs['regex']) && ($rhs['regex'] === null || $rhs['regex'] !== $lhs['regex'])) {
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs['oneOf']) && ($rhs['oneOf'] === null || !self::varianceValidateOneOf($lhs['oneOf'], $rhs['oneOf']))) {
             throw new \Exception();
         }
     }

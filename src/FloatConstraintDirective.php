@@ -70,18 +70,18 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void
     {
-        $lhs = $biggerSet->getRawValues();
-        $rhs = $smallerSet->getRawValues();
+        $lhs = $biggerSet->getValuesForResolver();
+        $rhs = $smallerSet->getValuesForResolver();
 
-        if (\is_float($lhs->min) && ($rhs->min === null || $rhs->min < $lhs->min)) {
+        if (\is_float($lhs['min']) && ($rhs['min'] === null || $rhs['min'] < $lhs['min'])) {
             throw new \Exception();
         }
 
-        if (\is_float($lhs->max) && ($rhs->max === null || $rhs->max > $lhs->max)) {
+        if (\is_float($lhs['max']) && ($rhs['max'] === null || $rhs['max'] > $lhs['max'])) {
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs['oneOf']) && ($rhs['oneOf'] === null || !self::varianceValidateOneOf($lhs['oneOf'], $rhs['oneOf']))) {
             throw new \Exception();
         }
     }

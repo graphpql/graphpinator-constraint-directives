@@ -15,7 +15,13 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
 
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 
-        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive->getArguments());
+        $values = new \Graphpinator\Value\ArgumentValueSet(
+            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+                $directive->getArguments(),
+                new \stdClass(),
+                new \Graphpinator\Common\Path(),
+            ),
+        );
 
         $directive->validateVariance(null, $values);
     }
@@ -27,7 +33,13 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $directive = TestSchema::getType('stringConstraint');
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 
-        $values = \Graphpinator\Value\ArgumentValueSet::fromRaw([], $directive->getArguments());
+        $values = new \Graphpinator\Value\ArgumentValueSet(
+            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+                $directive->getArguments(),
+                new \stdClass(),
+                new \Graphpinator\Common\Path(),
+            ),
+        );
 
         $directive->validateVariance($values, null);
     }

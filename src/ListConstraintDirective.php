@@ -50,8 +50,8 @@ final class ListConstraintDirective extends FieldConstraintDirective
     ) : void
     {
         self::recursiveSpecificValidateVariance(
-            $biggerSet->getRawValues(),
-            $smallerSet->getRawValues(),
+            (object) $biggerSet->getValuesForResolver(),
+            (object) $smallerSet->getValuesForResolver(),
         );
     }
 
