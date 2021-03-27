@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc5e5a5ff7032fdfca0ce2b69083e946",
+    "content-hash": "f208d46aadef45ea47d6ef6bb76fb8f9",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc13",
+            "version": "v1.0-rc15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "f32f14dd5d6923e76d1b2488c7dc1552f53679f6"
+                "reference": "ceae9eb9b254fcfde387d55731bdc89664272373"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/f32f14dd5d6923e76d1b2488c7dc1552f53679f6",
-                "reference": "f32f14dd5d6923e76d1b2488c7dc1552f53679f6",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/ceae9eb9b254fcfde387d55731bdc89664272373",
+                "reference": "ceae9eb9b254fcfde387d55731bdc89664272373",
                 "shasum": ""
             },
             "require": {
@@ -64,22 +64,22 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc13"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc15"
             },
-            "time": "2021-03-12T18:46:09+00:00"
+            "time": "2021-03-27T14:56:52+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator-common.git",
-                "reference": "b47578296b2dbb00aded25977f1101f1f4d57d07"
+                "reference": "74f82575cc86a2028810df6e6ead5b0281c3e49d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-common/zipball/b47578296b2dbb00aded25977f1101f1f4d57d07",
-                "reference": "b47578296b2dbb00aded25977f1101f1f4d57d07",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-common/zipball/74f82575cc86a2028810df6e6ead5b0281c3e49d",
+                "reference": "74f82575cc86a2028810df6e6ead5b0281c3e49d",
                 "shasum": ""
             },
             "require": {
@@ -114,22 +114,22 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-common/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-common/tree/v1.1"
+                "source": "https://github.com/infinityloop-dev/graphpinator-common/tree/v1.2"
             },
-            "time": "2021-03-02T15:42:12+00:00"
+            "time": "2021-03-22T10:41:35+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator-parser.git",
-                "reference": "54a8d13fa038065aa2dd65a96aabc89cbc5bb802"
+                "reference": "6fba7355e2eda1e386cc229b2659592cbf2bc736"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/54a8d13fa038065aa2dd65a96aabc89cbc5bb802",
-                "reference": "54a8d13fa038065aa2dd65a96aabc89cbc5bb802",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/6fba7355e2eda1e386cc229b2659592cbf2bc736",
+                "reference": "6fba7355e2eda1e386cc229b2659592cbf2bc736",
                 "shasum": ""
             },
             "require": {
@@ -166,22 +166,22 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-parser/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.0"
+                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.0.1"
             },
-            "time": "2021-03-03T23:23:21+00:00"
+            "time": "2021-03-22T10:31:09+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-tokenizer",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator-tokenizer.git",
-                "reference": "5aa9a728a2b571666560eeaec0b8de0847b533c2"
+                "reference": "e68b8103499ac314305b097488541d6f9f92b506"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-tokenizer/zipball/5aa9a728a2b571666560eeaec0b8de0847b533c2",
-                "reference": "5aa9a728a2b571666560eeaec0b8de0847b533c2",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-tokenizer/zipball/e68b8103499ac314305b097488541d6f9f92b506",
+                "reference": "e68b8103499ac314305b097488541d6f9f92b506",
                 "shasum": ""
             },
             "require": {
@@ -217,9 +217,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-tokenizer/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-tokenizer/tree/v1.0.1"
+                "source": "https://github.com/infinityloop-dev/graphpinator-tokenizer/tree/v1.0.2"
             },
-            "time": "2021-03-02T15:39:43+00:00"
+            "time": "2021-03-22T10:27:09+00:00"
         },
         {
             "name": "infinityloop-dev/utils",
@@ -462,16 +462,16 @@
     "packages-dev": [
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4"
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f28d44c286812c714741478d968104c5e604a1d4",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
                 "shasum": ""
             },
             "require": {
@@ -479,7 +479,8 @@
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -505,7 +506,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
+                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
             },
             "funding": [
                 {
@@ -521,7 +522,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T08:04:11+00:00"
+            "time": "2021-03-25T17:01:18+00:00"
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
@@ -1562,16 +1563,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.12.2",
+            "version": "1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "245710e971a030f42e08f4912863805570f23d39"
+                "reference": "be1996ed8adc35c3fd795488a653f4b518be70ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/245710e971a030f42e08f4912863805570f23d39",
-                "reference": "245710e971a030f42e08f4912863805570f23d39",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/be1996ed8adc35c3fd795488a653f4b518be70ea",
+                "reference": "be1996ed8adc35c3fd795488a653f4b518be70ea",
                 "shasum": ""
             },
             "require": {
@@ -1623,9 +1624,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpspec/prophecy/issues",
-                "source": "https://github.com/phpspec/prophecy/tree/1.12.2"
+                "source": "https://github.com/phpspec/prophecy/tree/1.13.0"
             },
-            "time": "2020-12-19T10:15:11+00:00"
+            "time": "2021-03-17T13:42:18+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -1682,16 +1683,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.81",
+            "version": "0.12.82",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0dd5b0ebeff568f7000022ea5f04aa86ad3124b8"
+                "reference": "3920f0fb0aff39263d3a4cb0bca120a67a1a6a11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0dd5b0ebeff568f7000022ea5f04aa86ad3124b8",
-                "reference": "0dd5b0ebeff568f7000022ea5f04aa86ad3124b8",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3920f0fb0aff39263d3a4cb0bca120a67a1a6a11",
+                "reference": "3920f0fb0aff39263d3a4cb0bca120a67a1a6a11",
                 "shasum": ""
             },
             "require": {
@@ -1722,7 +1723,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.81"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.82"
             },
             "funding": [
                 {
@@ -1738,7 +1739,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-08T22:03:02+00:00"
+            "time": "2021-03-19T06:08:17+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2060,16 +2061,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.2",
+            "version": "9.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "f661659747f2f87f9e72095bb207bceb0f151cb4"
+                "reference": "c73c6737305e779771147af66c96ca6a7ed8a741"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f661659747f2f87f9e72095bb207bceb0f151cb4",
-                "reference": "f661659747f2f87f9e72095bb207bceb0f151cb4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c73c6737305e779771147af66c96ca6a7ed8a741",
+                "reference": "c73c6737305e779771147af66c96ca6a7ed8a741",
                 "shasum": ""
             },
             "require": {
@@ -2147,7 +2148,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.2"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.4"
             },
             "funding": [
                 {
@@ -2159,7 +2160,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-02T14:45:58+00:00"
+            "time": "2021-03-23T07:16:29+00:00"
         },
         {
             "name": "psr/container",
