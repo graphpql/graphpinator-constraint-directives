@@ -69,6 +69,11 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
         $this->validateValue($argumentValue->getValue(), $arguments);
     }
 
+    public static function isPure(): bool
+    {
+        return true;
+    }
+
     abstract protected function validateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,

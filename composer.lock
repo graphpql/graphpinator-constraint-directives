@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f208d46aadef45ea47d6ef6bb76fb8f9",
+    "content-hash": "dea1132567bf189df24c9db71a06d153",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc15",
+            "version": "v1.0-rc16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "ceae9eb9b254fcfde387d55731bdc89664272373"
+                "reference": "5a246213afe1e7d0c550e329fa369e5f63d80b28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/ceae9eb9b254fcfde387d55731bdc89664272373",
-                "reference": "ceae9eb9b254fcfde387d55731bdc89664272373",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/5a246213afe1e7d0c550e329fa369e5f63d80b28",
+                "reference": "5a246213afe1e7d0c550e329fa369e5f63d80b28",
                 "shasum": ""
             },
             "require": {
@@ -64,9 +64,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc15"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc16"
             },
-            "time": "2021-03-27T14:56:52+00:00"
+            "time": "2021-03-28T17:45:41+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -1743,16 +1743,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.5",
+            "version": "9.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "f3e026641cc91909d421802dd3ac7827ebfd97e1"
+                "reference": "f6293e1b30a2354e8428e004689671b83871edde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f3e026641cc91909d421802dd3ac7827ebfd97e1",
-                "reference": "f3e026641cc91909d421802dd3ac7827ebfd97e1",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f6293e1b30a2354e8428e004689671b83871edde",
+                "reference": "f6293e1b30a2354e8428e004689671b83871edde",
                 "shasum": ""
             },
             "require": {
@@ -1808,7 +1808,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.5"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.6"
             },
             "funding": [
                 {
@@ -1816,7 +1816,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-28T06:44:49+00:00"
+            "time": "2021-03-28T07:26:59+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
