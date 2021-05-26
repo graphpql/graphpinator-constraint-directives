@@ -28,7 +28,7 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
 
     public function testMissingSmallerSet() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('stringConstraint');
         \assert($directive instanceof \Graphpinator\Directive\Directive);

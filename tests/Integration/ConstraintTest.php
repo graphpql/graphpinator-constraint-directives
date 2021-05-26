@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-use Infinityloop\Utils\Json;
+use \Infinityloop\Utils\Json;
 
 final class ConstraintTest extends \PHPUnit\Framework\TestCase
 {
@@ -118,8 +118,8 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param Json $request
-     * @param Json $expected
+     * @param \Infinityloop\Utils\Json $request
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testSimple(Json $request, Json $expected) : void
     {
@@ -286,7 +286,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidDataProvider
-     * @param Json $request
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
     public function testInvalid(Json $request, string $exception) : void
@@ -451,7 +451,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fieldConstraintsDataProvider
      * @param array $settings
-     * @param Json $expected
+     * @param \Infinityloop\Utils\Json $expected
      */
     public function testFieldConstraints(array $settings, Json $expected) : void
     {
@@ -554,10 +554,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'type' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'value' => [[1]],
                     'directive' => TestSchema::getType('listConstraint'),
-                    'constraint' => ['innerList' => (object) [
-                        'minItems' => 2,
-                        'maxItems' => 3,
-                    ]],
+                    'constraint' => [
+                        'innerList' => (object) [
+                            'minItems' => 2,
+                            'maxItems' => 3,
+                        ],
+                    ],
                 ],
                 \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
             ],
@@ -566,10 +568,12 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
                     'type' => \Graphpinator\Container\Container::Int()->list()->list(),
                     'value' => [[1, 2, 3, 4]],
                     'directive' => TestSchema::getType('listConstraint'),
-                    'constraint' => ['innerList' => (object) [
-                        'minItems' => 2,
-                        'maxItems' => 3,
-                    ]],
+                    'constraint' => [
+                        'innerList' => (object) [
+                            'minItems' => 2,
+                            'maxItems' => 3,
+                        ],
+                    ],
                 ],
                 \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
             ],
@@ -663,7 +667,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected const NAME = 'Query';
 
             public function __construct(
-                private array $settings
+                private array $settings,
             )
             {
                 parent::__construct();
@@ -677,7 +681,7 @@ final class ConstraintTest extends \PHPUnit\Framework\TestCase
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
-                     \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Field\ResolvableField::create(
                         'field1',
                         $this->settings['type'],
                         function() : mixed {

@@ -20,7 +20,7 @@ final class ListConstraintDirective extends FieldConstraintDirective
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return self::recursiveValidateType($argument->getType(), (object) $arguments->getValuesForResolver());
     }
@@ -133,12 +133,14 @@ final class ListConstraintDirective extends FieldConstraintDirective
             throw new \Exception();
         }
 
-        if ($greater->innerList instanceof \stdClass) {
-            if ($smaller->innerList === null) {
-                throw new \Exception();
-            }
-
-            self::recursiveSpecificValidateVariance($greater->innerList, $smaller->innerList);
+        if (!($greater->innerList instanceof \stdClass)) {
+            return;
         }
+
+        if ($smaller->innerList === null) {
+            throw new \Exception();
+        }
+
+        self::recursiveSpecificValidateVariance($greater->innerList, $smaller->innerList);
     }
 }

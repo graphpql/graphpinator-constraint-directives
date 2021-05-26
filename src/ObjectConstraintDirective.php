@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\ObjectLocation, \Graphpinator\Directive\Contract\InputObjectLocation
+final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\ObjectLocation,
+    \Graphpinator\Directive\Contract\InputObjectLocation
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
@@ -13,7 +14,9 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
 
     public function __construct(
         private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    ) {}
+    )
+    {
+    }
 
     public function validateObjectUsage(
         \Graphpinator\Type\Type|\Graphpinator\Type\InterfaceType $type,
@@ -26,7 +29,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive
     public function validateInputUsage(
         \Graphpinator\Type\InputType $inputType,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return $this->validateUsage($inputType->getArguments(), $arguments);
     }

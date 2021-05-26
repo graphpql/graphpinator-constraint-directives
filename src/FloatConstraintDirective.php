@@ -20,7 +20,7 @@ final class FloatConstraintDirective extends LeafConstraintDirective
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
     }

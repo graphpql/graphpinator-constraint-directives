@@ -20,7 +20,7 @@
     "phpunit/phpunit": "^9.5",
     "infection/infection": "^0.21",
     "phpstan/phpstan": "^0.12",
-    "infinityloop-dev/coding-standard": "^0.1"
+    "infinityloop-dev/coding-standard": "^0.2"
   },
   "scripts": {
     "phpunit": "phpunit tests",
