@@ -20,7 +20,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
@@ -30,7 +30,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         return new \Graphpinator\Argument\ArgumentSet([
             \Graphpinator\Argument\Argument::create('min', \Graphpinator\Container\Container::Int()),
             \Graphpinator\Argument\Argument::create('max', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list())
+            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list()),
         ]);
     }
 

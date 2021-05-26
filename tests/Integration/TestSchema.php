@@ -36,7 +36,7 @@ final class TestSchema
             return self::$types[$name];
         }
 
-        self::$types[$name] = match($name) {
+        self::$types[$name] = match ($name) {
             'Query' => self::getQuery(),
             'ConstraintInput' => self::getConstraintInput(),
             'ExactlyOneInput' => self::getExactlyOneInput(),
@@ -69,32 +69,32 @@ final class TestSchema
         if (self::$accessor === null) {
             self::$accessor = new class implements \Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor
             {
-                public function getString(): \Graphpinator\ConstraintDirectives\StringConstraintDirective
+                public function getString() : \Graphpinator\ConstraintDirectives\StringConstraintDirective
                 {
                     return TestSchema::getType('stringConstraint');
                 }
 
-                public function getInt(): \Graphpinator\ConstraintDirectives\IntConstraintDirective
+                public function getInt() : \Graphpinator\ConstraintDirectives\IntConstraintDirective
                 {
                     return TestSchema::getType('intConstraint');
                 }
 
-                public function getFloat(): \Graphpinator\ConstraintDirectives\FloatConstraintDirective
+                public function getFloat() : \Graphpinator\ConstraintDirectives\FloatConstraintDirective
                 {
                     return TestSchema::getType('floatConstraint');
                 }
 
-                public function getList(): \Graphpinator\ConstraintDirectives\ListConstraintDirective
+                public function getList() : \Graphpinator\ConstraintDirectives\ListConstraintDirective
                 {
                     return TestSchema::getType('listConstraint');
                 }
 
-                public function getListInput(): \Graphpinator\ConstraintDirectives\ListConstraintInput
+                public function getListInput() : \Graphpinator\ConstraintDirectives\ListConstraintInput
                 {
                     return TestSchema::getType('ListConstraintInput');
                 }
 
-                public function getObject(): \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
+                public function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
                 {
                     return TestSchema::getType('objectConstraint');
                 }
@@ -132,6 +132,11 @@ final class TestSchema
         return new class extends \Graphpinator\Type\Type
         {
             protected const NAME = 'Query';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
@@ -181,14 +186,8 @@ final class TestSchema
                             'arg',
                             \Graphpinator\Container\Container::Int()->list(),
                         ),
-                    ]),
-                    ),
+                    ])),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -205,18 +204,20 @@ final class TestSchema
 
                 $this->addDirective(
                     TestSchema::getType('objectConstraint'),
-                    ['atLeastOne' => [
-                        'intMinField',
-                        'intMaxField',
-                        'intOneOfField',
-                        'floatMinField',
-                        'floatMaxField',
-                        'floatOneOfField',
-                        'stringMinField',
-                        'stringMaxField',
-                        'listMinField',
-                        'listMaxField',
-                    ]],
+                    [
+                        'atLeastOne' => [
+                            'intMinField',
+                            'intMaxField',
+                            'intOneOfField',
+                            'floatMinField',
+                            'floatMaxField',
+                            'floatOneOfField',
+                            'stringMinField',
+                            'stringMaxField',
+                            'listMinField',
+                            'listMaxField',
+                        ],
+                    ],
                 );
             }
 
@@ -248,7 +249,7 @@ final class TestSchema
                         static function () : int {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2 , 3]]),
+                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
                     (new \Graphpinator\Field\ResolvableField(
                         'floatMinField',
                         \Graphpinator\Container\Container::Float(),
@@ -315,23 +316,25 @@ final class TestSchema
 
                 $this->addDirective(
                     TestSchema::getType('objectConstraint'),
-                    ['atLeastOne' => [
-                        'intMinArg',
-                        'intMaxArg',
-                        'intOneOfArg',
-                        'floatMinArg',
-                        'floatMaxArg',
-                        'floatOneOfArg',
-                        'stringMinArg',
-                        'stringMaxArg',
-                        'stringRegexArg',
-                        'stringOneOfArg',
-                        'listMinArg',
-                        'listMaxArg',
-                        'listUniqueArg',
-                        'listInnerListArg',
-                        'listMinIntMinArg',
-                    ]],
+                    [
+                        'atLeastOne' => [
+                            'intMinArg',
+                            'intMaxArg',
+                            'intOneOfArg',
+                            'floatMinArg',
+                            'floatMaxArg',
+                            'floatOneOfArg',
+                            'stringMinArg',
+                            'stringMaxArg',
+                            'stringRegexArg',
+                            'stringOneOfArg',
+                            'listMinArg',
+                            'listMaxArg',
+                            'listUniqueArg',
+                            'listInnerListArg',
+                            'listMinIntMinArg',
+                        ],
+                    ],
                 );
             }
 
@@ -393,10 +396,12 @@ final class TestSchema
                     (new \Graphpinator\Argument\Argument(
                         'listInnerListArg',
                         \Graphpinator\Container\Container::Int()->list()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['innerList' => (object) [
-                        'minItems' => 1,
-                        'maxItems' => 3,
-                    ]]),
+                    ))->addDirective(TestSchema::getType('listConstraint'), [
+                        'innerList' => (object) [
+                            'minItems' => 1,
+                            'maxItems' => 3,
+                        ],
+                    ]),
                     \Graphpinator\Argument\Argument::create('listMinIntMinArg', \Graphpinator\Container\Container::Int()->list())
                         ->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 3])
                         ->addDirective(TestSchema::getType('intConstraint'), ['min' => 3]),

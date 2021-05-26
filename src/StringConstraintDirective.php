@@ -23,7 +23,7 @@ final class StringConstraintDirective extends LeafConstraintDirective
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         $namedType = $argument->getType()->getNamedType();
 

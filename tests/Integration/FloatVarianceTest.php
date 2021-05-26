@@ -13,12 +13,12 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                 [
                     'min' => 2.0,
                     'max' => 3.0,
-                    'oneOf' => [1.1, 1.2]
+                    'oneOf' => [1.1, 1.2],
                 ],
                 [
                     'min' => 2.0,
                     'max' => 3.0,
-                    'oneOf' => [1.1, 1.2]
+                    'oneOf' => [1.1, 1.2],
                 ],
                 null,
             ],
@@ -58,12 +58,16 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
             {
                 parent::__construct();
+            }
+
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -75,12 +79,8 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
             }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
         };
-        $type = new class($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 \Graphpinator\Type\InterfaceType $interface,
                 private array $directiveArgs,
@@ -89,6 +89,10 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
             }
 
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
@@ -97,10 +101,6 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
-            }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
             }
         };
 

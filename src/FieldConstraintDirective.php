@@ -4,12 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\FieldDefinitionLocation, \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
+abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
 {
     public function __construct(
         protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    ) {}
+    )
+    {
+    }
+
+    public static function isPure() : bool
+    {
+        return true;
+    }
 
     final public function validateVariance(
         ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
@@ -67,11 +75,6 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);
-    }
-
-    public static function isPure(): bool
-    {
-        return true;
     }
 
     abstract protected function validateValue(
