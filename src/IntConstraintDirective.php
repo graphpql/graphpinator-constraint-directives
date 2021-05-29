@@ -25,6 +25,14 @@ final class IntConstraintDirective extends LeafConstraintDirective
         return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
 
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        return $variable->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([

@@ -31,6 +31,17 @@ final class StringConstraintDirective extends LeafConstraintDirective
             || $namedType instanceof \Graphpinator\Type\Spec\IdType;
     }
 
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ): bool
+    {
+        $namedType = $variable->getType()->getNamedType();
+
+        return $namedType instanceof \Graphpinator\Type\Spec\StringType
+            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
+    }
+
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([

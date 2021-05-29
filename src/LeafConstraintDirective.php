@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class LeafConstraintDirective extends FieldConstraintDirective
+abstract class LeafConstraintDirective extends BaseConstraintDirective
 {
     abstract protected function specificValidateValue(
         \Graphpinator\Value\Value $value,
