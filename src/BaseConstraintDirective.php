@@ -81,7 +81,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
     public function resolveVariableDefinition(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\InputedValue $variableValue,
-    ): void
+    ) : void
     {
         $this->validateValue($variableValue, $arguments);
     }

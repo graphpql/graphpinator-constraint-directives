@@ -28,7 +28,7 @@ final class ListConstraintDirective extends BaseConstraintDirective
     public function validateVariableUsage(
         \Graphpinator\Normalizer\Variable\Variable $variable,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return self::recursiveValidateType($variable->getType(), (object) $arguments->getValuesForResolver());
     }

@@ -71,7 +71,7 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider variableInvalidDataProvider
-     * @param Json $request
+     * @param \Infinityloop\Utils\Json $request
      * @param string $exception
      */
     public function testVariableInvalid(Json $request, string $exception) : void

@@ -34,7 +34,7 @@ final class StringConstraintDirective extends LeafConstraintDirective
     public function validateVariableUsage(
         \Graphpinator\Normalizer\Variable\Variable $variable,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         $namedType = $variable->getType()->getNamedType();
 
