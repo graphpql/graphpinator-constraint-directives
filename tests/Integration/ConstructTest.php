@@ -138,6 +138,7 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
                 \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
             ],
             self::getString()->getLocations(),
         );
