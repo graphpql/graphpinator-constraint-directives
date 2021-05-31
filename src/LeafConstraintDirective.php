@@ -31,6 +31,12 @@ abstract class LeafConstraintDirective extends BaseConstraintDirective
             return;
         }
 
+        if ($value instanceof \Graphpinator\Value\VariableValue) {
+            $this->validateValue($value->getConcreteValue(), $arguments);
+
+            return;
+        }
+
         if ($value instanceof \Graphpinator\Value\ListValue) {
             foreach ($value as $item) {
                 $this->validateValue($item, $arguments);

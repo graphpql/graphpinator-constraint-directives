@@ -12,7 +12,9 @@
     }
   ],
   "require": {
-    "infinityloop-dev/graphpinator": "^1.0-rc23-2",
+    "php": ">=8.0.1",
+    "ext-fileinfo": "*",
+    "infinityloop-dev/graphpinator": "^1.0-rc24",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2"
   },
