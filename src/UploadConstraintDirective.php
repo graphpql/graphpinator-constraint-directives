@@ -72,8 +72,8 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive 
         \Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void
     {
-        $lhs = $biggerSet->getRawValues();
-        $rhs = $smallerSet->getRawValues();
+        $lhs = (object) $biggerSet->getValuesForResolver();
+        $rhs = (object) $smallerSet->getValuesForResolver();
 
         if (\is_int($lhs->maxSize) && ($rhs->maxSize === null || $rhs->maxSize > $lhs->maxSize)) {
             throw new \Exception();

@@ -109,7 +109,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
         $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
@@ -136,7 +136,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
         $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
 
@@ -161,7 +161,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
         $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
@@ -184,7 +184,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Module\Upload\FileProvider::class);
+        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
         $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
 
@@ -196,7 +196,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
     }
 
     protected static function getGraphpinator(
-        \Graphpinator\Module\Upload\FileProvider $fileProvider,
+        \Graphpinator\Upload\FileProvider $fileProvider,
         array $constraint,
     ) : \Graphpinator\Graphpinator
     {
@@ -226,7 +226,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'file',
-                            new \Graphpinator\Module\Upload\UploadType(),
+                            new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
                     ])),
                     \Graphpinator\Field\ResolvableField::create(
@@ -238,7 +238,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'files',
-                            (new \Graphpinator\Module\Upload\UploadType())->list(),
+                            (new \Graphpinator\Upload\UploadType())->list(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
                     ])),
                 ]);
@@ -250,13 +250,13 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Container\SimpleContainer([
                     'Query' => $query,
                     'UploadType' => \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType(),
-                    'Upload' => new \Graphpinator\Module\Upload\UploadType(),
+                    'Upload' => new \Graphpinator\Upload\UploadType(),
                 ], []),
                 $query,
             ),
             false,
             new \Graphpinator\Module\ModuleSet([
-                new \Graphpinator\Module\Upload\UploadModule($fileProvider),
+                new \Graphpinator\Upload\UploadModule($fileProvider),
             ]),
         );
     }

@@ -61,6 +61,8 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
         $interface = new class($parent) extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'Interface';
+
             public function __construct(
                 private array $directiveArgs,
             )
@@ -77,7 +79,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'file',
-                            new \Graphpinator\Module\Upload\UploadType(),
+                            new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
                     ]))
                 ]);
@@ -88,12 +90,14 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             }
         };
         $type = new class($interface, $child) extends \Graphpinator\Type\InterfaceType {
+            protected const NAME = 'Type';
+
             public function __construct(
                 \Graphpinator\Type\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -105,7 +109,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                     )->setArguments(new \Graphpinator\Argument\ArgumentSet([
                         \Graphpinator\Argument\Argument::create(
                             'file',
-                            new \Graphpinator\Module\Upload\UploadType(),
+                            new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
                     ]))
                 ]);
