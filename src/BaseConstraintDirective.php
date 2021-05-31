@@ -4,12 +4,21 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\FieldDefinitionLocation, \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
+abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
+    \Graphpinator\Directive\Contract\VariableDefinitionLocation
 {
     public function __construct(
         protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    ) {}
+    )
+    {
+    }
+
+    public static function isPure() : bool
+    {
+        return true;
+    }
 
     final public function validateVariance(
         ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
@@ -25,6 +34,14 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
         }
 
         $this->specificValidateVariance($biggerSet, $smallerSet);
+    }
+
+    public function resolveFieldDefinitionStart(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\ResolvedValue $parentValue,
+    ) : void
+    {
+        // nothing here
     }
 
     public function resolveFieldDefinitionBefore(
@@ -59,6 +76,14 @@ abstract class FieldConstraintDirective extends \Graphpinator\Directive\Directiv
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);
+    }
+
+    public function resolveVariableDefinition(
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+        \Graphpinator\Value\InputedValue $variableValue,
+    ) : void
+    {
+        $this->validateValue($variableValue, $arguments);
     }
 
     abstract protected function validateValue(

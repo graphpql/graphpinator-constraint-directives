@@ -14,15 +14,23 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
     }
 
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\FloatType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
+    }
+
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return $variable->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\FloatType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -70,18 +78,18 @@ final class FloatConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void
     {
-        $lhs = $biggerSet->getRawValues();
-        $rhs = $smallerSet->getRawValues();
+        $lhs = $biggerSet->getValuesForResolver();
+        $rhs = $smallerSet->getValuesForResolver();
 
-        if (\is_float($lhs->min) && ($rhs->min === null || $rhs->min < $lhs->min)) {
+        if (\is_float($lhs['min']) && ($rhs['min'] === null || $rhs['min'] < $lhs['min'])) {
             throw new \Exception();
         }
 
-        if (\is_float($lhs->max) && ($rhs->max === null || $rhs->max > $lhs->max)) {
+        if (\is_float($lhs['max']) && ($rhs['max'] === null || $rhs['max'] > $lhs['max'])) {
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs['oneOf']) && ($rhs['oneOf'] === null || !self::varianceValidateOneOf($lhs['oneOf'], $rhs['oneOf']))) {
             throw new \Exception();
         }
     }

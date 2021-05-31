@@ -4,8 +4,24 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class LeafConstraintDirective extends FieldConstraintDirective
+abstract class LeafConstraintDirective extends BaseConstraintDirective
 {
+    abstract protected function specificValidateValue(
+        \Graphpinator\Value\Value $value,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void;
+
+    protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
+    {
+        foreach ($smaller as $value) {
+            if (!\in_array($value, $greater, true)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     final protected function validateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,
@@ -30,21 +46,5 @@ abstract class LeafConstraintDirective extends FieldConstraintDirective
         }
 
         $this->specificValidateValue($value, $arguments);
-    }
-
-    abstract protected function specificValidateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void;
-
-    protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
-    {
-        foreach ($smaller as $value) {
-            if (!\in_array($value, $greater, true)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

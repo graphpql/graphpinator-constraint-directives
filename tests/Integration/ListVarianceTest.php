@@ -58,7 +58,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -66,6 +66,10 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
@@ -75,18 +79,18 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
         };
-        $type = new class($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 \Graphpinator\Type\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
+            }
+
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -97,10 +101,6 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Int()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
-            }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
             }
         };
 
@@ -158,7 +158,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovarianceInner(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -166,6 +166,10 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
@@ -175,18 +179,18 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
         };
-        $type = new class($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
             public function __construct(
                 \Graphpinator\Type\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
+            }
+
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -197,10 +201,6 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                         \Graphpinator\Container\Container::Int()->list()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
-            }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
             }
         };
 

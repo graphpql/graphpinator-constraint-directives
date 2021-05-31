@@ -15,68 +15,6 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
     private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintDirective $objectDirective = null;
     private static ?\Graphpinator\ConstraintDirectives\UploadConstraintDirective $uploadDirective = null;
 
-    public function testConstruct() : void
-    {
-        self::getString();
-        self::getInt();
-        self::getFloat();
-        self::getList();
-        self::getObject();
-        self::getUpload();
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, self::$stringDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\IntConstraintDirective::class, self::$intDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\FloatConstraintDirective::class, self::$floatDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ListConstraintDirective::class, self::$listDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ObjectConstraintDirective::class, self::$objectDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, self::$uploadDirective);
-
-        self::assertSame(
-            [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-            ],
-            self::getString()->getLocations(),
-        );
-        self::assertFalse(self::getString()->isRepeatable());
-
-        $count = [1, 1, 0, 1];
-        $index = 0;
-
-        foreach (self::getString()->getArguments() as $argument) {
-            self::assertCount($count[$index], $argument->getDirectiveUsages());
-            $index++;
-        }
-
-        $count = [0, 0, 1];
-        $index = 0;
-
-        foreach (self::getInt()->getArguments() as $argument) {
-            self::assertCount($count[$index], $argument->getDirectiveUsages());
-            $index++;
-        }
-
-        $count = [0, 0, 1];
-        $index = 0;
-
-        foreach (self::getFloat()->getArguments() as $argument) {
-            self::assertCount($count[$index], $argument->getDirectiveUsages());
-            $index++;
-        }
-
-        $count = [1, 1, 0, 0, 0];
-        $index = 0;
-
-        foreach (self::getList()->getArguments() as $argument) {
-            self::assertCount($count[$index], $argument->getDirectiveUsages());
-            $index++;
-        }
-
-        foreach (self::getObject()->getArguments() as $argument) {
-            self::assertCount(1, $argument->getDirectiveUsages());
-        }
-    }
-
     public static function getString() : \Graphpinator\ConstraintDirectives\StringConstraintDirective
     {
         if (!self::$stringDirective instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective) {
@@ -159,32 +97,32 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         if (self::$accessor === null) {
             self::$accessor = new class implements \Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor
             {
-                public function getString(): \Graphpinator\ConstraintDirectives\StringConstraintDirective
+                public function getString() : \Graphpinator\ConstraintDirectives\StringConstraintDirective
                 {
                     return ConstructTest::getString();
                 }
 
-                public function getInt(): \Graphpinator\ConstraintDirectives\IntConstraintDirective
+                public function getInt() : \Graphpinator\ConstraintDirectives\IntConstraintDirective
                 {
                     return ConstructTest::getInt();
                 }
 
-                public function getFloat(): \Graphpinator\ConstraintDirectives\FloatConstraintDirective
+                public function getFloat() : \Graphpinator\ConstraintDirectives\FloatConstraintDirective
                 {
                     return ConstructTest::getFloat();
                 }
 
-                public function getList(): \Graphpinator\ConstraintDirectives\ListConstraintDirective
+                public function getList() : \Graphpinator\ConstraintDirectives\ListConstraintDirective
                 {
                     return ConstructTest::getList();
                 }
 
-                public function getListInput(): \Graphpinator\ConstraintDirectives\ListConstraintInput
+                public function getListInput() : \Graphpinator\ConstraintDirectives\ListConstraintInput
                 {
                     return ConstructTest::getListInput();
                 }
 
-                public function getObject(): \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
+                public function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
                 {
                     return ConstructTest::getObject();
                 }
@@ -197,5 +135,66 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         }
 
         return self::$accessor;
+    }
+
+    public function testConstruct() : void
+    {
+        self::getString();
+        self::getInt();
+        self::getFloat();
+        self::getList();
+        self::getObject();
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, self::$stringDirective);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\IntConstraintDirective::class, self::$intDirective);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\FloatConstraintDirective::class, self::$floatDirective);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ListConstraintDirective::class, self::$listDirective);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ObjectConstraintDirective::class, self::$objectDirective);
+
+        self::assertSame(
+            [
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
+                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+            ],
+            self::getString()->getLocations(),
+        );
+        self::assertFalse(self::getString()->isRepeatable());
+
+        $count = [1, 1, 0, 1];
+        $index = 0;
+
+        foreach (self::getString()->getArguments() as $argument) {
+            self::assertCount($count[$index], $argument->getDirectiveUsages());
+            $index++;
+        }
+
+        $count = [0, 0, 1];
+        $index = 0;
+
+        foreach (self::getInt()->getArguments() as $argument) {
+            self::assertCount($count[$index], $argument->getDirectiveUsages());
+            $index++;
+        }
+
+        $count = [0, 0, 1];
+        $index = 0;
+
+        foreach (self::getFloat()->getArguments() as $argument) {
+            self::assertCount($count[$index], $argument->getDirectiveUsages());
+            $index++;
+        }
+
+        $count = [1, 1, 0, 0, 0];
+        $index = 0;
+
+        foreach (self::getList()->getArguments() as $argument) {
+            self::assertCount($count[$index], $argument->getDirectiveUsages());
+            $index++;
+        }
+
+        foreach (self::getObject()->getArguments() as $argument) {
+            self::assertCount(1, $argument->getDirectiveUsages());
+        }
     }
 }

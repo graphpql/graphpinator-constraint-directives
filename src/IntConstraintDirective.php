@@ -14,15 +14,23 @@ final class IntConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
 
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Scalar\IntType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
+    }
+
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return $variable->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -30,7 +38,7 @@ final class IntConstraintDirective extends LeafConstraintDirective
         return new \Graphpinator\Argument\ArgumentSet([
             \Graphpinator\Argument\Argument::create('min', \Graphpinator\Container\Container::Int()),
             \Graphpinator\Argument\Argument::create('max', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list())
+            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list()),
         ]);
     }
 
@@ -70,18 +78,18 @@ final class IntConstraintDirective extends LeafConstraintDirective
         \Graphpinator\Value\ArgumentValueSet $smallerSet,
     ) : void
     {
-        $lhs = $biggerSet->getRawValues();
-        $rhs = $smallerSet->getRawValues();
+        $lhs = $biggerSet->getValuesForResolver();
+        $rhs = $smallerSet->getValuesForResolver();
 
-        if (\is_int($lhs->min) && ($rhs->min === null || $rhs->min < $lhs->min)) {
+        if (\is_int($lhs['min']) && ($rhs['min'] === null || $rhs['min'] < $lhs['min'])) {
             throw new \Exception();
         }
 
-        if (\is_int($lhs->max) && ($rhs->max === null || $rhs->max > $lhs->max)) {
+        if (\is_int($lhs['max']) && ($rhs['max'] === null || $rhs['max'] > $lhs['max'])) {
             throw new \Exception();
         }
 
-        if (\is_array($lhs->oneOf) && ($rhs->oneOf === null || !self::varianceValidateOneOf($lhs->oneOf, $rhs->oneOf))) {
+        if (\is_array($lhs['oneOf']) && ($rhs['oneOf'] === null || !self::varianceValidateOneOf($lhs['oneOf'], $rhs['oneOf']))) {
             throw new \Exception();
         }
     }

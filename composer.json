@@ -12,16 +12,17 @@
     }
   ],
   "require": {
+    "php": ">=8.0.1",
     "ext-fileinfo": "*",
-    "infinityloop-dev/graphpinator": "^1.0-rc10+3",
+    "infinityloop-dev/graphpinator": "^1.0-rc24",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.21",
+    "infection/infection": "^0.23",
     "phpstan/phpstan": "^0.12",
-    "infinityloop-dev/coding-standard": "^0.1"
+    "infinityloop-dev/coding-standard": "^0.2"
   },
   "scripts": {
     "phpunit": "phpunit tests",

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ListConstraintDirective extends FieldConstraintDirective
+final class ListConstraintDirective extends BaseConstraintDirective
 {
     protected const NAME = 'listConstraint';
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
@@ -20,9 +20,17 @@ final class ListConstraintDirective extends FieldConstraintDirective
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
-    ): bool
+    ) : bool
     {
         return self::recursiveValidateType($argument->getType(), (object) $arguments->getValuesForResolver());
+    }
+
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return self::recursiveValidateType($variable->getType(), (object) $arguments->getValuesForResolver());
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -50,8 +58,8 @@ final class ListConstraintDirective extends FieldConstraintDirective
     ) : void
     {
         self::recursiveSpecificValidateVariance(
-            $biggerSet->getRawValues(),
-            $smallerSet->getRawValues(),
+            (object) $biggerSet->getValuesForResolver(),
+            (object) $smallerSet->getValuesForResolver(),
         );
     }
 
@@ -133,12 +141,14 @@ final class ListConstraintDirective extends FieldConstraintDirective
             throw new \Exception();
         }
 
-        if ($greater->innerList instanceof \stdClass) {
-            if ($smaller->innerList === null) {
-                throw new \Exception();
-            }
-
-            self::recursiveSpecificValidateVariance($greater->innerList, $smaller->innerList);
+        if (!($greater->innerList instanceof \stdClass)) {
+            return;
         }
+
+        if ($smaller->innerList === null) {
+            throw new \Exception();
+        }
+
+        self::recursiveSpecificValidateVariance($greater->innerList, $smaller->innerList);
     }
 }

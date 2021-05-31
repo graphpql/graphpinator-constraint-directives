@@ -6,7 +6,7 @@ namespace Graphpinator\ConstraintDirectives\Exception;
 
 abstract class ConstraintError extends \Graphpinator\Exception\GraphpinatorBase
 {
-    protected function isOutputable() : bool
+    final public function isOutputable() : bool
     {
         return true;
     }
