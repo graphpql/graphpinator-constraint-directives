@@ -6,6 +6,32 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
 {
+    public static function getUploadType() : \Graphpinator\Type\Type
+    {
+        return new class extends \Graphpinator\Type\Type
+        {
+            protected const NAME = 'UploadType';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            {
+                return new \Graphpinator\Field\ResolvableFieldSet([
+                    new \Graphpinator\Field\ResolvableField(
+                        'fileContent',
+                        \Graphpinator\Container\Container::String(),
+                        static function (?\Psr\Http\Message\UploadedFileInterface $file) : string {
+                            return $file->getStream()->getContents();
+                        },
+                    ),
+                ]);
+            }
+        };
+    }
+
     public function covarianceDataProvider() : array
     {
         return [
@@ -60,7 +86,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
             protected const NAME = 'Interface';
 
             public function __construct(
@@ -68,6 +94,10 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             )
             {
                 parent::__construct();
+            }
+
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
             }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
@@ -81,15 +111,11 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                             'file',
                             new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
-                    ]))
+                    ])),
                 ]);
             }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
-            }
         };
-        $type = new class($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
             protected const NAME = 'Type';
 
             public function __construct(
@@ -100,6 +126,10 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
             }
 
+            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
                 return new \Graphpinator\Field\FieldSet([
@@ -111,12 +141,8 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                             'file',
                             new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
-                    ]))
+                    ])),
                 ]);
-            }
-
-            public function createResolvedValue(mixed $rawValue): \Graphpinator\Value\TypeIntermediateValue
-            {
             }
         };
 
@@ -126,31 +152,5 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
         } else {
             self::assertInstanceOf(\Graphpinator\Field\FieldSet::class, $type->getFields());
         }
-    }
-
-    public static function getUploadType() : \Graphpinator\Type\Type
-    {
-        return new class extends \Graphpinator\Type\Type
-        {
-            protected const NAME = 'UploadType';
-
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
-            {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
-                        'fileContent',
-                        \Graphpinator\Container\Container::String(),
-                        static function (?\Psr\Http\Message\UploadedFileInterface $file) : string {
-                            return $file->getStream()->getContents();
-                        },
-                    ),
-                ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-        };
     }
 }

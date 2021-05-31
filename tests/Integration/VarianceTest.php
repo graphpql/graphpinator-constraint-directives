@@ -65,7 +65,7 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
 
     public function testMissingSmallerSetUpload() : void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('uploadConstraint');
         \assert($directive instanceof \Graphpinator\Directive\Directive);

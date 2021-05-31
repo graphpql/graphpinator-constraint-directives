@@ -120,8 +120,8 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider invalidUploadDataProvider
-     * @param string $exception
      * @param array $constraint
+     * @param string $exception
      */
     public function testUploadInvalid(array $constraint, string $exception) : void
     {

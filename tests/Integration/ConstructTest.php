@@ -127,7 +127,7 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
                     return ConstructTest::getObject();
                 }
 
-                public function getUpload(): \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+                public function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
                 {
                     return ConstructTest::getUpload();
                 }

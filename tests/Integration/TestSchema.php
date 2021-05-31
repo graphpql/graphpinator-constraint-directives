@@ -102,7 +102,7 @@ final class TestSchema
                     return TestSchema::getType('objectConstraint');
                 }
 
-                public function getUpload(): \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+                public function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
                 {
                     return TestSchema::getType('uploadConstraint');
                 }
