@@ -4,8 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ListConstraintDirective extends BaseConstraintDirective
+final class ListConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
+    \Graphpinator\Directive\Contract\VariableDefinitionLocation
 {
+    use TLeafConstraint;
+
     protected const NAME = 'listConstraint';
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
 

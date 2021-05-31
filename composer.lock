@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c51d6213581f72151c6d2635bc8edbf0",
+    "content-hash": "1605cda1f4c594fbe6b2e80c5c3f0e1c",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
@@ -976,6 +976,58 @@
                 "source": "https://github.com/infinityloop-dev/coding-standard/tree/v0.2.1"
             },
             "time": "2021-05-23T22:24:09+00:00"
+        },
+        {
+            "name": "infinityloop-dev/graphpinator-upload",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/infinityloop-dev/graphpinator-upload.git",
+                "reference": "89562c04b94975ec5ac2a876ae2703a0b17deb2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-upload/zipball/89562c04b94975ec5ac2a876ae2703a0b17deb2d",
+                "reference": "89562c04b94975ec5ac2a876ae2703a0b17deb2d",
+                "shasum": ""
+            },
+            "require": {
+                "infinityloop-dev/graphpinator": "^1.0-rc24",
+                "infinityloop-dev/utils": "^2.1.2",
+                "nette/utils": "^3.2",
+                "php": ">=8.0.1",
+                "psr/http-message": "^1.0.1"
+            },
+            "require-dev": {
+                "infection/infection": "^0.23",
+                "infinityloop-dev/coding-standard": "^0.2",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Graphpinator\\Upload\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Václav Pelíšek",
+                    "homepage": "https://www.peldax.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "Module to handle multipart formdata requests.",
+            "homepage": "https://www.infinityloop.dev/",
+            "support": {
+                "issues": "https://github.com/infinityloop-dev/graphpinator-upload/issues",
+                "source": "https://github.com/infinityloop-dev/graphpinator-upload/tree/v1.0"
+            },
+            "time": "2021-05-31T20:28:22+00:00"
         },
         {
             "name": "justinrainbow/json-schema",

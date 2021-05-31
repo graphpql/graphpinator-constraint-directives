@@ -4,10 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
-    \Graphpinator\Directive\Contract\VariableDefinitionLocation
+trait TLeafConstraint
 {
     public function __construct(
         protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
@@ -15,7 +12,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
     {
     }
 
-    public static function isPure() : bool
+    final public static function isPure() : bool
     {
         return true;
     }
@@ -36,7 +33,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         $this->specificValidateVariance($biggerSet, $smallerSet);
     }
 
-    public function resolveFieldDefinitionStart(
+    final public function resolveFieldDefinitionStart(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $parentValue,
     ) : void
@@ -44,7 +41,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         // nothing here
     }
 
-    public function resolveFieldDefinitionBefore(
+    final public function resolveFieldDefinitionBefore(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $parentValue,
         \Graphpinator\Value\ArgumentValueSet $fieldArguments,
@@ -53,7 +50,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         // nothing here
     }
 
-    public function resolveFieldDefinitionAfter(
+    final public function resolveFieldDefinitionAfter(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ResolvedValue $resolvedValue,
         \Graphpinator\Value\ArgumentValueSet $fieldArguments,
@@ -62,7 +59,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         // nothing here
     }
 
-    public function resolveFieldDefinitionValue(
+    final public function resolveFieldDefinitionValue(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\FieldValue $fieldValue,
     ) : void
@@ -70,7 +67,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         $this->validateValue($fieldValue->getValue(), $arguments);
     }
 
-    public function resolveArgumentDefinition(
+    final public function resolveArgumentDefinition(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\ArgumentValue $argumentValue,
     ) : void
@@ -78,7 +75,7 @@ abstract class BaseConstraintDirective extends \Graphpinator\Directive\Directive
         $this->validateValue($argumentValue->getValue(), $arguments);
     }
 
-    public function resolveVariableDefinition(
+    final public function resolveVariableDefinition(
         \Graphpinator\Value\ArgumentValueSet $arguments,
         \Graphpinator\Value\InputedValue $variableValue,
     ) : void

@@ -4,8 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class IntConstraintDirective extends LeafConstraintDirective
+final class IntConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
+    \Graphpinator\Directive\Contract\VariableDefinitionLocation
 {
+    use TScalarConstraint;
+
     protected const NAME = 'intConstraint';
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';
 

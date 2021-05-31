@@ -4,8 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-abstract class LeafConstraintDirective extends BaseConstraintDirective
+trait TScalarConstraint
 {
+    use TLeafConstraint;
+
     abstract protected function specificValidateValue(
         \Graphpinator\Value\Value $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,

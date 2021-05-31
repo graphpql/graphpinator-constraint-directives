@@ -4,80 +4,29 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
-    implements \Graphpinator\Directive\Contract\ArgumentDefinitionLocation
+final class UploadConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
+    \Graphpinator\Directive\Contract\VariableDefinitionLocation
 {
+    use TScalarConstraint;
+
     protected const NAME = 'uploadConstraint';
     protected const DESCRIPTION = 'Graphpinator uploadConstraint directive.';
-
-    public function __construct(
-        protected ConstraintDirectiveAccessor $constraintDirectiveAccessor,
-    ) {}
-
-    public function validateType(
-        \Graphpinator\Type\Contract\Definition $definition,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
-    {
-        return $definition->getNamedType() instanceof \Graphpinator\Module\Upload\UploadType;
-    }
-
-    final public function validateVariance(
-        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
-        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
-    ) : void
-    {
-        if ($biggerSet === null) {
-            return;
-        }
-
-        if ($smallerSet === null) {
-            throw new \Exception();
-        }
-
-        $this->specificValidateVariance($biggerSet, $smallerSet);
-    }
-
-    public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ArgumentValue $argumentValue,
-    ) : void
-    {
-        $this->validateValue($argumentValue->getValue(), $arguments);
-    }
-
-    final protected function validateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : void
-    {
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            return;
-        }
-
-        if ($value instanceof \Graphpinator\Value\VariableValue) {
-            $this->validateValue($value->getConcreteValue(), $arguments);
-
-            return;
-        }
-
-        if ($value instanceof \Graphpinator\Value\ListInputedValue) {
-            foreach ($value as $item) {
-                $this->validateValue($item, $arguments);
-            }
-
-            return;
-        }
-
-        $this->specificValidateValue($value, $arguments);
-    }
 
     public function validateArgumentUsage(
         \Graphpinator\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Module\Upload\UploadType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Upload\UploadType;
+    }
+
+    public function validateVariableUsage(
+        \Graphpinator\Normalizer\Variable\Variable $variable,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : bool
+    {
+        return $variable->getType()->getNamedType() instanceof \Graphpinator\Upload\UploadType;
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -88,7 +37,7 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
         ]);
     }
 
-    protected function appendDirectives(): void
+    protected function afterGetFieldDefinition() : void
     {
         $this->arguments['maxSize']->addDirective(
             $this->constraintDirectiveAccessor->getInt(),
@@ -133,16 +82,5 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive
         if (\is_array($lhs->mimeType) && ($rhs->mimeType === null || !self::varianceValidateOneOf($lhs->mimeType, $rhs->mimeType))) {
             throw new \Exception();
         }
-    }
-
-    protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
-    {
-        foreach ($smaller as $value) {
-            if (!\in_array($value, $greater, true)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

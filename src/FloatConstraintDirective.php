@@ -4,8 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class FloatConstraintDirective extends LeafConstraintDirective
+final class FloatConstraintDirective extends \Graphpinator\Directive\Directive implements
+    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
+    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
+    \Graphpinator\Directive\Contract\VariableDefinitionLocation
 {
+    use TScalarConstraint;
+
     protected const NAME = 'floatConstraint';
     protected const DESCRIPTION = 'Graphpinator floatConstraint directive.';
 

@@ -19,6 +19,7 @@
     "nette/utils": "^3.2"
   },
   "require-dev": {
+    "infinityloop-dev/graphpinator-upload": "^1.0",
     "phpunit/phpunit": "^9.5",
     "infection/infection": "^0.23",
     "phpstan/phpstan": "^0.12",
