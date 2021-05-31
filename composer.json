@@ -24,6 +24,9 @@
     "phpstan/phpstan": "^0.12",
     "infinityloop-dev/coding-standard": "^0.2"
   },
+  "suggest": {
+    "infinityloop-dev/graphpinator-upload": "Combine Upload type and uploadConstraint directive."
+  },
   "scripts": {
     "phpunit": "phpunit tests",
     "infection": [
