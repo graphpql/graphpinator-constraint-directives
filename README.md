@@ -4,7 +4,7 @@
 
 ## Introduction
 
-
+This package allows server to declare additional constraints on accepted values for arguments and input fields. It is also possible for client to declare constraints for variables in request document.
 
 ## Installation
 
