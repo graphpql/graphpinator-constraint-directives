@@ -70,7 +70,7 @@ $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintD
 
 ### Add constraint to Type & Interface & InputType
 
-Special case is `ObjectConstraint` which declares additional information on which fields must be filled. It is a flexible solution to the input-union problem, but can also by applied on Interface/Type to semanticaly indicate which values are returned.
+Special case is `ObjectConstraint` which declares additional information on which fields must be filled. It is a flexible solution to the input-union problem, but can also be applied on Interface/Type to semantically indicate which values are returned.
 
 ```php
 class DogOrCatInput extends \Graphpinator\Type\InputType
@@ -97,10 +97,10 @@ class DogOrCatInput extends \Graphpinator\Type\InputType
 
 ### Variance
 
-Question of variance comes into play, because field, argument and object constraints can be declared in an interface context and than implemented by concrete type. Traditional rules apply here.
+Question of variance comes into play, because field, argument and object constraints can be declared in an interface context and then implemented by concrete type. Traditional rules apply here.
 
-- Covariance for Field constraints - child can restrict parent's constraint, but may not loose it.
-- Contravariance for Argument constraints - child can loose parent's constraint, but may not restrict it.
+- Covariance for Field constraints - child can restrict parent's constraint, but may not release it.
+- Contravariance for Argument constraints - child can soften parent's constraint, but may not restrict it.
 - Invariance for Object constraints - child must contain the same constraint as parent.
 
 
