@@ -106,3 +106,23 @@ Question of variance comes into play, because field, argument and object constra
 
 ### Directive options
 
+- `@stringConstraint`
+    - minLength
+    - maxLength
+    - regex
+    - oneOf
+- `@intConstraint` & `@floatConstraint`
+    - min
+    - max
+    - oneOf
+- `@listConstraint`
+    - minItems
+    - maxItems
+    - unique
+    - innerList (object with the same arguments to apply constraint to inner list)
+- `@uploadConstraint`
+    - maxSize
+    - mimeType
+- `@objectConstraint`
+    - atLeastOne
+    - exactlyOne
