@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This package allows server to declare additional constraints on accepted values for arguments, fields, and input fields. It is also possible for client to declare constraints for variables in request document.
+This package allows server to declare additional constraints on accepted values for arguments, fields and input fields. It is also possible for client to declare constraints for variables in request document.
 
 Additional benefit of using constraint directives is that expected values are displayed to client using GraphQL type language in a self-documenting manner.
 
