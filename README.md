@@ -82,7 +82,7 @@ class DogOrCatInput extends \Graphpinator\Type\InputType
     )
     {
         parent::__construct();
-        $this->addDirective($this->objectConstraint, ['exactlyOne' => ['dog', 'cat']]);
+        $this->addDirective($objectConstraint, ['exactlyOne' => ['dog', 'cat']]);
     }
 
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
