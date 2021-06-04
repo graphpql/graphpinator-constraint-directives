@@ -1,6 +1,6 @@
 # GraPHPinator Constraint directives [![PHP](https://github.com/infinityloop-dev/graphpinator-constraint-directives/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator-constraint-directives/actions?query=workflow%3APHP) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives)
 
-:zap::globe_with_meridians::zap: Typesystem directives to declare additional validation on top of GraphQL type system.
+:zap::globe_with_meridians::zap: Typesystem directives declare additional validation on the top of the GraphQL type system.
 
 ## Introduction
 
@@ -16,7 +16,7 @@ Install package using composer
 
 ## How to use
 
-In order to enable constraint directives on your server, the only thing you need to do is to put selected directives to your `Container`. To avoid cyclic dependencies `ConstraintDirectiveAccessor` must be implemented. This step should be automated when using DI solution.
+In order to enable constraint directives on your server, the only thing you need to do is to put selected directives to your `Container`. To avoid cyclic dependencies `ConstraintDirectiveAccessor` must be implemented. This step should be automated when using a DI solution.
 
 Here is example configuration for Nette DI:
 ```neon
@@ -38,7 +38,7 @@ Here is example configuration for Nette DI:
 
 ### Add constraint to Argument
 
-The most common usage of constraint directives is to validate input from client without having to do it yourself in resolve function.
+The most common usage of constraint directives is to validate input from client without having to do it yourself in the resolve function.
 
 ```php
 $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintDirective
@@ -97,7 +97,7 @@ class DogOrCatInput extends \Graphpinator\Type\InputType
 
 ### Variance
 
-Question of variance comes into play, because field, argument and object constraints can be declared in an interface context and then implemented by concrete type. Traditional rules apply here.
+Question of variance comes into play because field, argument, and object constraints can be declared in an interface context and then implemented by the concrete type. Traditional rules apply here.
 
 - Covariance for Field constraints - child can restrict parent's constraint, but may not release it.
 - Contravariance for Argument constraints - child can soften parent's constraint, but may not restrict it.
