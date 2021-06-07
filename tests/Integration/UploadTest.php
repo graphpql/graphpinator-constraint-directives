@@ -204,7 +204,9 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         {
             protected const NAME = 'Query';
 
-            public function __construct(protected array $constraint)
+            public function __construct(
+                protected array $constraint,
+            )
             {
                 parent::__construct();
             }
