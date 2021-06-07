@@ -9,11 +9,8 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
     public function testMissingBiggerSet() : void
     {
         $directive = TestSchema::getType('stringConstraint');
-        self::assertInstanceOf(\Graphpinator\Typesystem\Directive::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Typesystem\Location\FieldDefinitionLocation::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class, $directive);
-
-        \assert($directive instanceof \Graphpinator\Directive\Directive);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, $directive);
+        \assert($directive instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective);
 
         $values = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
@@ -31,7 +28,8 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('stringConstraint');
-        \assert($directive instanceof \Graphpinator\Directive\Directive);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, $directive);
+        \assert($directive instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective);
 
         $values = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
@@ -47,10 +45,8 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
     public function testMissingBiggerSetUpload() : void
     {
         $directive = TestSchema::getType('uploadConstraint');
-        self::assertInstanceOf(\Graphpinator\Directive\Directive::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class, $directive);
-
-        \assert($directive instanceof \Graphpinator\Directive\Directive);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, $directive);
+        \assert($directive instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective);
 
         $values = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
@@ -68,7 +64,8 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('uploadConstraint');
-        \assert($directive instanceof \Graphpinator\Directive\Directive);
+        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, $directive);
+        \assert($directive instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective);
 
         $values = new \Graphpinator\Value\ArgumentValueSet(
             (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
