@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\ObjectLocation,
-    \Graphpinator\Directive\Contract\InputObjectLocation
+final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\ObjectLocation,
+    \Graphpinator\Typesystem\Location\InputObjectLocation
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
@@ -19,7 +19,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive 
     }
 
     public function validateObjectUsage(
-        \Graphpinator\Type\Type|\Graphpinator\Type\InterfaceType $type,
+        \Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -27,7 +27,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive 
     }
 
     public function validateInputUsage(
-        \Graphpinator\Type\InputType $inputType,
+        \Graphpinator\Typesystem\InputType $inputType,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -50,15 +50,15 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive 
         $this->validate($inputValue, $arguments);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('atLeastOne', \Graphpinator\Container\Container::String()->notNull()->list())
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('atLeastOne', \Graphpinator\Typesystem\Container::String()->notNull()->list())
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getList(),
                     ['minItems' => 1],
                 ),
-            \Graphpinator\Argument\Argument::create('exactlyOne', \Graphpinator\Container\Container::String()->notNull()->list())
+            \Graphpinator\Typesystem\Argument\Argument::create('exactlyOne', \Graphpinator\Typesystem\Container::String()->notNull()->list())
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getList(),
                     ['minItems' => 1],
@@ -67,7 +67,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Directive\Directive 
     }
 
     private function validateUsage(
-        \Graphpinator\Field\FieldSet|\Graphpinator\Argument\ArgumentSet $fields,
+        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet $fields,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {

@@ -37,22 +37,22 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['minLength' => 1],
                 ['minLength' => 0],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['maxLength' => 3],
                 ['maxLength' => 4],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['regex' => 'regexString'],
                 ['regex' => 'differentString'],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['oneOf' => ['one', 'two']],
                 ['oneOf' => ['zero', 'one', 'two', 'four']],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
         ];
     }

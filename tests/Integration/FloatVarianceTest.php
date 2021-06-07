@@ -35,17 +35,17 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['min' => 1.0],
                 ['min' => 0.0],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['max' => 3.0],
                 ['max' => 4.0],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['oneOf' => [1.1, 1.2]],
                 ['oneOf' => [1.0, 1.1, 1.2, 1.3]],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
         ];
     }

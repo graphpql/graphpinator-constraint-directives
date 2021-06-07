@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ListConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
-    \Graphpinator\Directive\Contract\VariableDefinitionLocation
+final class ListConstraintDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
+    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
+    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
 {
     use TLeafConstraint;
 
@@ -15,7 +15,7 @@ final class ListConstraintDirective extends \Graphpinator\Directive\Directive im
     protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
 
     public function validateFieldUsage(
-        \Graphpinator\Field\Field $field,
+        \Graphpinator\Typesystem\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -23,7 +23,7 @@ final class ListConstraintDirective extends \Graphpinator\Directive\Directive im
     }
 
     public function validateArgumentUsage(
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -38,7 +38,7 @@ final class ListConstraintDirective extends \Graphpinator\Directive\Directive im
         return self::recursiveValidateType($variable->getType(), (object) $arguments->getValuesForResolver());
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
         return $this->constraintDirectiveAccessor->getListInput()->getArguments();
     }
@@ -69,19 +69,19 @@ final class ListConstraintDirective extends \Graphpinator\Directive\Directive im
     }
 
     private static function recursiveValidateType(
-        \Graphpinator\Type\Contract\Definition $type,
+        \Graphpinator\Typesystem\Contract\Type $type,
         \stdClass $options,
     ) : bool
     {
         $usedType = $type->getShapingType();
 
-        if (!$usedType instanceof \Graphpinator\Type\ListType) {
+        if (!$usedType instanceof \Graphpinator\Typesystem\ListType) {
             return false;
         }
 
         $usedType = $usedType->getInnerType()->getShapingType();
 
-        if ($options->unique && !$usedType instanceof \Graphpinator\Type\Contract\LeafDefinition) {
+        if ($options->unique && !$usedType instanceof \Graphpinator\Typesystem\Contract\LeafType) {
             throw new Exception\UniqueConstraintOnlyScalar();
         }
 

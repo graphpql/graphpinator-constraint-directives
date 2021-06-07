@@ -9,9 +9,9 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
     public function testMissingBiggerSet() : void
     {
         $directive = TestSchema::getType('stringConstraint');
-        self::assertInstanceOf(\Graphpinator\Directive\Directive::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Directive\Contract\FieldDefinitionLocation::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Directive\Contract\ArgumentDefinitionLocation::class, $directive);
+        self::assertInstanceOf(\Graphpinator\Typesystem\Directive::class, $directive);
+        self::assertInstanceOf(\Graphpinator\Typesystem\Location\FieldDefinitionLocation::class, $directive);
+        self::assertInstanceOf(\Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class, $directive);
 
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 
@@ -48,7 +48,7 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
     {
         $directive = TestSchema::getType('uploadConstraint');
         self::assertInstanceOf(\Graphpinator\Directive\Directive::class, $directive);
-        self::assertInstanceOf(\Graphpinator\Directive\Contract\ArgumentDefinitionLocation::class, $directive);
+        self::assertInstanceOf(\Graphpinator\Typesystem\Location\ArgumentDefinitionLocation::class, $directive);
 
         \assert($directive instanceof \Graphpinator\Directive\Directive);
 

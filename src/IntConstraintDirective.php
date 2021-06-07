@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class IntConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
-    \Graphpinator\Directive\Contract\VariableDefinitionLocation
+final class IntConstraintDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
+    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
+    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
 {
     use TScalarConstraint;
 
@@ -15,19 +15,19 @@ final class IntConstraintDirective extends \Graphpinator\Directive\Directive imp
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';
 
     public function validateFieldUsage(
-        \Graphpinator\Field\Field $field,
+        \Graphpinator\Typesystem\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
+        return $field->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
     }
 
     public function validateArgumentUsage(
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
+        return $argument->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
     }
 
     public function validateVariableUsage(
@@ -35,15 +35,15 @@ final class IntConstraintDirective extends \Graphpinator\Directive\Directive imp
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
-        return $variable->getType()->getNamedType() instanceof \Graphpinator\Type\Spec\IntType;
+        return $variable->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('min', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('max', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::Int()->notNull()->list()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('min', \Graphpinator\Typesystem\Container::Int()),
+            \Graphpinator\Typesystem\Argument\Argument::create('max', \Graphpinator\Typesystem\Container::Int()),
+            \Graphpinator\Typesystem\Argument\Argument::create('oneOf', \Graphpinator\Typesystem\Container::Int()->notNull()->list()),
         ]);
     }
 

@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class StringConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\FieldDefinitionLocation,
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
-    \Graphpinator\Directive\Contract\VariableDefinitionLocation
+final class StringConstraintDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
+    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
+    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
 {
     use TScalarConstraint;
 
@@ -15,25 +15,25 @@ final class StringConstraintDirective extends \Graphpinator\Directive\Directive 
     protected const DESCRIPTION = 'Graphpinator stringConstraint directive.';
 
     public function validateFieldUsage(
-        \Graphpinator\Field\Field $field,
+        \Graphpinator\Typesystem\Field\Field $field,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
         $namedType = $field->getType()->getNamedType();
 
-        return $namedType instanceof \Graphpinator\Type\Spec\StringType
-            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
+        return $namedType instanceof \Graphpinator\Typesystem\Spec\StringType
+            || $namedType instanceof \Graphpinator\Typesystem\Spec\IdType;
     }
 
     public function validateArgumentUsage(
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
         $namedType = $argument->getType()->getNamedType();
 
-        return $namedType instanceof \Graphpinator\Type\Spec\StringType
-            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
+        return $namedType instanceof \Graphpinator\Typesystem\Spec\StringType
+            || $namedType instanceof \Graphpinator\Typesystem\Spec\IdType;
     }
 
     public function validateVariableUsage(
@@ -43,17 +43,17 @@ final class StringConstraintDirective extends \Graphpinator\Directive\Directive 
     {
         $namedType = $variable->getType()->getNamedType();
 
-        return $namedType instanceof \Graphpinator\Type\Spec\StringType
-            || $namedType instanceof \Graphpinator\Type\Spec\IdType;
+        return $namedType instanceof \Graphpinator\Typesystem\Spec\StringType
+            || $namedType instanceof \Graphpinator\Typesystem\Spec\IdType;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('minLength', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('maxLength', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('regex', \Graphpinator\Container\Container::String()),
-            \Graphpinator\Argument\Argument::create('oneOf', \Graphpinator\Container\Container::String()->notNull()->list()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('minLength', \Graphpinator\Typesystem\Container::Int()),
+            \Graphpinator\Typesystem\Argument\Argument::create('maxLength', \Graphpinator\Typesystem\Container::Int()),
+            \Graphpinator\Typesystem\Argument\Argument::create('regex', \Graphpinator\Typesystem\Container::String()),
+            \Graphpinator\Typesystem\Argument\Argument::create('oneOf', \Graphpinator\Typesystem\Container::String()->notNull()->list()),
         ]);
     }
 

@@ -8,8 +8,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInvalidConstraintTypeString() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -30,8 +30,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeInt() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -52,8 +52,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeFloat() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -74,8 +74,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeList() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ConstraintInput';
@@ -230,8 +230,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerInvalidType() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         $type = new class extends \Graphpinator\Type\InputType {
             protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
@@ -478,8 +478,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeMissingFieldAtLeastOne() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         new class extends \Graphpinator\Type\InputType {
             public function __construct()
@@ -510,8 +510,8 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeMissingFieldExactlyOne() : void
     {
-        $this->expectException(\Graphpinator\Exception\Type\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Exception\Type\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
 
         new class extends \Graphpinator\Type\InputType {
             public function __construct()

@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1605cda1f4c594fbe6b2e80c5c3f0e1c",
+    "content-hash": "e86011689f1f853fd65d6c96fec74261",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc24",
+            "version": "v1.0-rc28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "f2b1c79660c8ebf6889c3bda03ebb108466a9d5f"
+                "reference": "3b218944f11125410da45f693e77d73d4e43af34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/f2b1c79660c8ebf6889c3bda03ebb108466a9d5f",
-                "reference": "f2b1c79660c8ebf6889c3bda03ebb108466a9d5f",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/3b218944f11125410da45f693e77d73d4e43af34",
+                "reference": "3b218944f11125410da45f693e77d73d4e43af34",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Graphpinator\\": "src/"
+                    "Graphpinator\\": [
+                        "src/",
+                        "bc_aliases/"
+                    ]
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -67,9 +70,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc24"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc28"
             },
-            "time": "2021-05-31T20:00:41+00:00"
+            "time": "2021-06-07T14:57:22+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -123,28 +126,28 @@
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.0.1",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator-parser.git",
-                "reference": "6fba7355e2eda1e386cc229b2659592cbf2bc736"
+                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/6fba7355e2eda1e386cc229b2659592cbf2bc736",
-                "reference": "6fba7355e2eda1e386cc229b2659592cbf2bc736",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-parser/zipball/b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
+                "reference": "b7686d0ea9e2855bfced19e35d09a43b4ec0d5be",
                 "shasum": ""
             },
             "require": {
                 "infinityloop-dev/graphpinator-common": "^1.1",
-                "infinityloop-dev/graphpinator-tokenizer": "^1.0",
+                "infinityloop-dev/graphpinator-tokenizer": "^1.1.1",
                 "infinityloop-dev/utils": "^2.0",
                 "nette/utils": "^3.0",
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.20 || ^0.21",
-                "infinityloop-dev/coding-standard": "^0.1",
+                "infection/infection": "^0.23",
+                "infinityloop-dev/coding-standard": "^0.2",
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^9.3"
             },
@@ -169,22 +172,22 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-parser/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.0.1"
+                "source": "https://github.com/infinityloop-dev/graphpinator-parser/tree/v1.1"
             },
-            "time": "2021-03-22T10:31:09+00:00"
+            "time": "2021-06-01T21:26:47+00:00"
         },
         {
-            "name": "infinityloop-dev/graphpinator-tokenizer",
-            "version": "v1.0.2",
+            "name": "infinityloop-dev/graphpinator-source",
+            "version": "v1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/infinityloop-dev/graphpinator-tokenizer.git",
-                "reference": "e68b8103499ac314305b097488541d6f9f92b506"
+                "url": "https://github.com/infinityloop-dev/graphpinator-source.git",
+                "reference": "1b6891a93883dff8c1dfd0947422d30db2a432f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-tokenizer/zipball/e68b8103499ac314305b097488541d6f9f92b506",
-                "reference": "e68b8103499ac314305b097488541d6f9f92b506",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-source/zipball/1b6891a93883dff8c1dfd0947422d30db2a432f3",
+                "reference": "1b6891a93883dff8c1dfd0947422d30db2a432f3",
                 "shasum": ""
             },
             "require": {
@@ -194,15 +197,67 @@
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.20 || ^0.21",
-                "infinityloop-dev/coding-standard": "^0.1",
+                "infection/infection": "^0.23",
+                "infinityloop-dev/coding-standard": "^0.2",
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^9.3"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Graphpinator\\": "src/"
+                    "Graphpinator\\Source\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Václav Pelíšek",
+                    "homepage": "https://www.peldax.com",
+                    "role": "lead"
+                }
+            ],
+            "description": "Source subproject for GraPHPinator: GraphQL server implementation for PHP.",
+            "homepage": "https://www.infinityloop.dev/",
+            "support": {
+                "issues": "https://github.com/infinityloop-dev/graphpinator-source/issues",
+                "source": "https://github.com/infinityloop-dev/graphpinator-source/tree/v1.0"
+            },
+            "time": "2021-06-01T18:07:02+00:00"
+        },
+        {
+            "name": "infinityloop-dev/graphpinator-tokenizer",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/infinityloop-dev/graphpinator-tokenizer.git",
+                "reference": "6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-tokenizer/zipball/6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92",
+                "reference": "6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92",
+                "shasum": ""
+            },
+            "require": {
+                "infinityloop-dev/graphpinator-common": "^1.0",
+                "infinityloop-dev/graphpinator-source": "^1.0",
+                "infinityloop-dev/utils": "^2.0",
+                "nette/utils": "^3.0",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "infection/infection": "^0.23",
+                "infinityloop-dev/coding-standard": "^0.2",
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Graphpinator\\Tokenizer\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -220,9 +275,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-tokenizer/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-tokenizer/tree/v1.0.2"
+                "source": "https://github.com/infinityloop-dev/graphpinator-tokenizer/tree/v1.1.1"
             },
-            "time": "2021-03-22T10:27:09+00:00"
+            "time": "2021-06-01T20:40:36+00:00"
         },
         {
             "name": "infinityloop-dev/utils",
@@ -3414,16 +3469,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "7.0.8",
+            "version": "7.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "48141737f9e5ed701ef8bcea2027e701b50bd932"
+                "reference": "d59652e000bcde019459dcba677de030867d0232"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/48141737f9e5ed701ef8bcea2027e701b50bd932",
-                "reference": "48141737f9e5ed701ef8bcea2027e701b50bd932",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/d59652e000bcde019459dcba677de030867d0232",
+                "reference": "d59652e000bcde019459dcba677de030867d0232",
                 "shasum": ""
             },
             "require": {
@@ -3435,16 +3490,16 @@
             "require-dev": {
                 "phing/phing": "2.16.4",
                 "php-parallel-lint/php-parallel-lint": "1.3.0",
-                "phpstan/phpstan": "0.12.86",
+                "phpstan/phpstan": "0.12.88",
                 "phpstan/phpstan-deprecation-rules": "0.12.6",
-                "phpstan/phpstan-phpunit": "0.12.18",
+                "phpstan/phpstan-phpunit": "0.12.19",
                 "phpstan/phpstan-strict-rules": "0.12.9",
-                "phpunit/phpunit": "7.5.20|8.5.5|9.5.4"
+                "phpunit/phpunit": "7.5.20|8.5.5|9.5.5"
             },
             "type": "phpcodesniffer-standard",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.x-dev"
+                    "dev-master": "7.x-dev"
                 }
             },
             "autoload": {
@@ -3459,7 +3514,7 @@
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
             "support": {
                 "issues": "https://github.com/slevomat/coding-standard/issues",
-                "source": "https://github.com/slevomat/coding-standard/tree/7.0.8"
+                "source": "https://github.com/slevomat/coding-standard/tree/7.0.9"
             },
             "funding": [
                 {
@@ -3471,7 +3526,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-10T08:51:20+00:00"
+            "time": "2021-06-07T10:08:42+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

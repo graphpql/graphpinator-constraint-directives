@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class UploadConstraintDirective extends \Graphpinator\Directive\Directive implements
-    \Graphpinator\Directive\Contract\ArgumentDefinitionLocation,
-    \Graphpinator\Directive\Contract\VariableDefinitionLocation
+final class UploadConstraintDirective extends \Graphpinator\Typesystem\Directive implements
+    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
+    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
 {
     use TScalarConstraint;
 
@@ -14,7 +14,7 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive 
     protected const DESCRIPTION = 'Graphpinator uploadConstraint directive.';
 
     public function validateArgumentUsage(
-        \Graphpinator\Argument\Argument $argument,
+        \Graphpinator\Typesystem\Argument\Argument $argument,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : bool
     {
@@ -29,11 +29,11 @@ final class UploadConstraintDirective extends \Graphpinator\Directive\Directive 
         return $variable->getType()->getNamedType() instanceof \Graphpinator\Upload\UploadType;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('maxSize', \Graphpinator\Container\Container::Int()),
-            \Graphpinator\Argument\Argument::create('mimeType', \Graphpinator\Container\Container::String()->notNull()->list()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('maxSize', \Graphpinator\Typesystem\Container::Int()),
+            \Graphpinator\Typesystem\Argument\Argument::create('mimeType', \Graphpinator\Typesystem\Container::String()->notNull()->list()),
         ]);
     }
 

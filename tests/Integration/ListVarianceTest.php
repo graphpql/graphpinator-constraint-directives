@@ -35,17 +35,17 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['minItems' => 1],
                 ['minItems' => 0],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['maxItems' => 3],
                 ['maxItems' => 4],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['unique' => true],
                 ['unique' => false],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
         ];
     }
@@ -145,7 +145,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                     'innerList' => (object) ['minItems' => 2],
                 ],
                 [],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
         ];
     }

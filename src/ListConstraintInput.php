@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ListConstraintInput extends \Graphpinator\Type\InputType
+final class ListConstraintInput extends \Graphpinator\Typesystem\InputType
 {
     protected const NAME = 'ListConstraintInput';
 
@@ -15,22 +15,22 @@ final class ListConstraintInput extends \Graphpinator\Type\InputType
         parent::__construct();
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('minItems', \Graphpinator\Container\Container::Int())
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('minItems', \Graphpinator\Typesystem\Container::Int())
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
-            \Graphpinator\Argument\Argument::create('maxItems', \Graphpinator\Container\Container::Int())
+            \Graphpinator\Typesystem\Argument\Argument::create('maxItems', \Graphpinator\Typesystem\Container::Int())
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
-            \Graphpinator\Argument\Argument::create('unique', \Graphpinator\Container\Container::Boolean()->notNull())
+            \Graphpinator\Typesystem\Argument\Argument::create('unique', \Graphpinator\Typesystem\Container::Boolean()->notNull())
                 ->setDefaultValue(false),
-            \Graphpinator\Argument\Argument::create('innerList', $this),
+            \Graphpinator\Typesystem\Argument\Argument::create('innerList', $this),
         ]);
     }
 }

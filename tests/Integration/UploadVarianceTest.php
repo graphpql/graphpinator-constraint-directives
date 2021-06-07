@@ -63,17 +63,17 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['maxSize' => 5000],
                 ['maxSize' => 4000],
-                \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant::class,
+                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
             ],
             [
                 ['mimeType' => ['text/plain', 'text/html']],
                 ['mimeType' => ['text/plain']],
-                \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant::class,
+                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
             ],
             [
                 [],
                 ['maxSize' => 4000],
-                \Graphpinator\Exception\Type\ArgumentDirectiveNotContravariant::class,
+                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
             ],
         ];
     }

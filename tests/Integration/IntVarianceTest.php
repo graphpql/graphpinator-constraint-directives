@@ -35,17 +35,17 @@ final class IntVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['min' => 1],
                 ['min' => 0],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['max' => 3],
                 ['max' => 4],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
             [
                 ['oneOf' => [1, 2]],
                 ['oneOf' => [0, 1, 2, 3]],
-                \Graphpinator\Exception\Type\FieldDirectiveNotCovariant::class,
+                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
             ],
         ];
     }
@@ -108,7 +108,7 @@ final class IntVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
         }
     }
 }

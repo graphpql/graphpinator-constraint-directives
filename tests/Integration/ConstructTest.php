@@ -152,10 +152,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             [
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-                \Graphpinator\Directive\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-                \Graphpinator\Directive\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::FIELD_DEFINITION,
+                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
+                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
             ],
             self::getString()->getLocations(),
         );
