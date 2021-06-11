@@ -45,7 +45,7 @@ $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintD
 
 \Graphpinator\Argument\Argument::create(
     'year'
-    \Graphpinator\Container\Container::Int(),
+    \Graphpinator\Typesystem\Container::Int(),
 )->addDirective(
     $intConstraint,
     ['min' => 1900, 'max' => 2021],
@@ -61,7 +61,7 @@ $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintD
 
 \Graphpinator\Field\Field::create(
     'year'
-    \Graphpinator\Container\Container::Int(),
+    \Graphpinator\Typesystem\Container::Int(),
 )->addDirective(
     $intConstraint,
     ['min' => 1900, 'max' => 2021],
@@ -88,8 +88,8 @@ class DogOrCatInput extends \Graphpinator\Type\InputType
     protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
     {
         return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('dog', \Graphpinator\Container\Container::String()),
-            \Graphpinator\Argument\Argument::create('cat', \Graphpinator\Container\Container::String()),
+            \Graphpinator\Argument\Argument::create('dog', \Graphpinator\Typesystem\Container::String()),
+            \Graphpinator\Argument\Argument::create('cat', \Graphpinator\Typesystem\Container::String()),
         ]);
     }
 }

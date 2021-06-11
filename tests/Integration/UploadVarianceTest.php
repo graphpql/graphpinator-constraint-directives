@@ -22,7 +22,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'fileContent',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                         static function (?\Psr\Http\Message\UploadedFileInterface $file) : string {
                             return $file->getStream()->getContents();
                         },

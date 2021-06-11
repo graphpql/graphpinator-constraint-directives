@@ -82,7 +82,7 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'stringField',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -105,7 +105,7 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'stringField',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
                 ]);
             }

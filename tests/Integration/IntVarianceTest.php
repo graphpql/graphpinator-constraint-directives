@@ -75,7 +75,7 @@ final class IntVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'intField',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     )->addDirective(TestSchema::getType('intConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -98,7 +98,7 @@ final class IntVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'intField',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     )->addDirective(TestSchema::getType('intConstraint'), $this->directiveArgs),
                 ]);
             }

@@ -19,7 +19,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::Float(),
+                        \Graphpinator\Typesystem\Container::Float(),
                     )->addDirective(TestSchema::getType('stringConstraint'), []),
                 ]);
             }
@@ -41,7 +41,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('intConstraint'), []),
                 ]);
             }
@@ -63,7 +63,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::Int(),
+                        \Graphpinator\Typesystem\Container::Int(),
                     )->addDirective(TestSchema::getType('floatConstraint'), []),
                 ]);
             }
@@ -85,7 +85,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('listConstraint'), []),
                 ]);
             }
@@ -107,7 +107,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => -20]),
                 ]);
             }
@@ -129,7 +129,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String(),
+                        \Graphpinator\Typesystem\Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => -20]),
                 ]);
             }
@@ -151,7 +151,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String()->list(),
+                        \Graphpinator\Typesystem\Container::String()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), ['minItems' => -20]),
                 ]);
             }
@@ -173,7 +173,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String()->list()->notNull(),
+                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
                     )->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => -20]),
                 ]);
             }
@@ -193,7 +193,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String()->list()->notNull(),
+                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['minItems' => -20]],
@@ -216,7 +216,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String()->list()->notNull(),
+                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['maxItems' => -20]],
@@ -239,7 +239,7 @@ final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
                         'arg',
-                        \Graphpinator\Container\Container::String()->list(),
+                        \Graphpinator\Typesystem\Container::String()->list(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['maxItems' => 20]],

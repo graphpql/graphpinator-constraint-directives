@@ -75,7 +75,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'listField',
-                        \Graphpinator\Container\Container::Int()->list(),
+                        \Graphpinator\Typesystem\Container::Int()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -98,7 +98,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'listField',
-                        \Graphpinator\Container\Container::Int()->list(),
+                        \Graphpinator\Typesystem\Container::Int()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -175,7 +175,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'listField',
-                        \Graphpinator\Container\Container::Int()->list()->list(),
+                        \Graphpinator\Typesystem\Container::Int()->list()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -198,7 +198,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'listField',
-                        \Graphpinator\Container\Container::Int()->list()->list(),
+                        \Graphpinator\Typesystem\Container::Int()->list()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }

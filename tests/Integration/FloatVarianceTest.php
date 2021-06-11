@@ -75,7 +75,7 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'floatField',
-                        \Graphpinator\Container\Container::Float(),
+                        \Graphpinator\Typesystem\Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -98,7 +98,7 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                 return new \Graphpinator\Field\FieldSet([
                     \Graphpinator\Field\Field::create(
                         'floatField',
-                        \Graphpinator\Container\Container::Float(),
+                        \Graphpinator\Typesystem\Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
             }
