@@ -43,7 +43,7 @@ The most common usage of constraint directives is to validate input from client 
 ```php
 $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintDirective
 
-\Graphpinator\Argument\Argument::create(
+\Graphpinator\Typesystem\Argument\Argument::create(
     'year'
     \Graphpinator\Typesystem\Container::Int(),
 )->addDirective(
@@ -59,7 +59,7 @@ Additional usage of constraint directives is to validate output from your resolv
 ```php
 $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintDirective
 
-\Graphpinator\Field\Field::create(
+\Graphpinator\Typesystem\Field\Field::create(
     'year'
     \Graphpinator\Typesystem\Container::Int(),
 )->addDirective(
@@ -73,7 +73,7 @@ $intConstraint; // instance of \Graphpinator\ConstraintDirectives\IntConstraintD
 Special case is `ObjectConstraint` which declares additional information on which fields must be filled. It is a flexible solution to the input-union problem, but can also be applied on Interface/Type to semantically indicate which values are returned.
 
 ```php
-class DogOrCatInput extends \Graphpinator\Type\InputType
+class DogOrCatInput extends \Graphpinator\Typesystem\InputType
 {
     protected const NAME = 'DogOrCatInput';
 
@@ -85,11 +85,11 @@ class DogOrCatInput extends \Graphpinator\Type\InputType
         $this->addDirective($objectConstraint, ['exactlyOne' => ['dog', 'cat']]);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
     {
-        return new \Graphpinator\Argument\ArgumentSet([
-            \Graphpinator\Argument\Argument::create('dog', \Graphpinator\Typesystem\Container::String()),
-            \Graphpinator\Argument\Argument::create('cat', \Graphpinator\Typesystem\Container::String()),
+        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+            \Graphpinator\Typesystem\Argument\Argument::create('dog', \Graphpinator\Typesystem\Container::String()),
+            \Graphpinator\Typesystem\Argument\Argument::create('cat', \Graphpinator\Typesystem\Container::String()),
         ]);
     }
 }
