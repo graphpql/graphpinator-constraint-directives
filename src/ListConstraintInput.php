@@ -19,18 +19,21 @@ final class ListConstraintInput extends \Graphpinator\Typesystem\InputType
     {
         return new \Graphpinator\Typesystem\Argument\ArgumentSet([
             \Graphpinator\Typesystem\Argument\Argument::create('minItems', \Graphpinator\Typesystem\Container::Int())
+                ->setDefaultValue(null)
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
             \Graphpinator\Typesystem\Argument\Argument::create('maxItems', \Graphpinator\Typesystem\Container::Int())
+                ->setDefaultValue(null)
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
             \Graphpinator\Typesystem\Argument\Argument::create('unique', \Graphpinator\Typesystem\Container::Boolean()->notNull())
                 ->setDefaultValue(false),
-            \Graphpinator\Typesystem\Argument\Argument::create('innerList', $this),
+            \Graphpinator\Typesystem\Argument\Argument::create('innerList', $this)
+                ->setDefaultValue(null),
         ]);
     }
 }

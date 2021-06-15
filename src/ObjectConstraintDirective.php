@@ -39,7 +39,8 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         \Graphpinator\Value\TypeValue $typeValue,
     ) : void
     {
-        $this->validate($typeValue, $arguments);
+        $this->validateAtLeastOne($typeValue, $arguments);
+        $this->validateExactlyOneType($typeValue, $arguments);
     }
 
     public function resolveInputObject(
@@ -47,7 +48,8 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         \Graphpinator\Value\InputValue $inputValue,
     ) : void
     {
-        $this->validate($inputValue, $arguments);
+        $this->validateAtLeastOne($inputValue, $arguments);
+        $this->validateExactlyOneInput($inputValue, $arguments);
     }
 
     protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
@@ -93,31 +95,60 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         return true;
     }
 
-    private function validate(
+    private function validateAtLeastOne(
         \Graphpinator\Value\TypeValue|\Graphpinator\Value\InputValue $value,
         \Graphpinator\Value\ArgumentValueSet $arguments,
     ) : void
     {
         $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue()->getRawValue();
+
+        if (!\is_array($atLeastOne)) {
+            return;
+        }
+
+        foreach ($atLeastOne as $fieldName) {
+            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                continue;
+            }
+
+            return;
+        }
+
+        throw new Exception\AtLeastOneConstraintNotSatisfied();
+    }
+
+    private function validateExactlyOneInput(
+        \Graphpinator\Value\InputValue $value,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
         $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue()->getRawValue();
 
-        if (\is_array($atLeastOne)) {
-            $valid = false;
-
-            foreach ($atLeastOne as $fieldName) {
-                if (isset($value->{$fieldName}) && $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
-                    continue;
-                }
-
-                $valid = true;
-
-                break;
-            }
-
-            if (!$valid) {
-                throw new Exception\AtLeastOneConstraintNotSatisfied();
-            }
+        if (!\is_array($exactlyOne)) {
+            return;
         }
+
+        $count = 0;
+
+        foreach ($exactlyOne as $fieldName) {
+            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+                continue;
+            }
+
+            ++$count;
+        }
+
+        if ($count !== 1) {
+            throw new Exception\ExactlyOneConstraintNotSatisfied();
+        }
+    }
+
+    private function validateExactlyOneType(
+        \Graphpinator\Value\TypeValue $value,
+        \Graphpinator\Value\ArgumentValueSet $arguments,
+    ) : void
+    {
+        $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue()->getRawValue();
 
         if (!\is_array($exactlyOne)) {
             return;
