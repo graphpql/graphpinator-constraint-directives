@@ -4,27 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de9e0b4617cf7f7c2f3436cb2e601a1b",
+    "content-hash": "e4e6206426cf77ca88c30c9cd44c2822",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc29-2",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "5c5d61fd2db84c34ccc2ed414b798f25ab3d0466"
+                "reference": "c239234ad1a9aa690b3508cb5c9a05c4967dfbe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/5c5d61fd2db84c34ccc2ed414b798f25ab3d0466",
-                "reference": "5c5d61fd2db84c34ccc2ed414b798f25ab3d0466",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/c239234ad1a9aa690b3508cb5c9a05c4967dfbe0",
+                "reference": "c239234ad1a9aa690b3508cb5c9a05c4967dfbe0",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "infinityloop-dev/graphpinator-common": "^1.2",
                 "infinityloop-dev/graphpinator-parser": "^1.0",
-                "infinityloop-dev/utils": "^2.1.2",
+                "infinityloop-dev/utils": "^2.2",
                 "nette/utils": "^3.2",
                 "php": ">=8.0.1",
                 "psr/http-message": "^1.0.1",
@@ -70,9 +70,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc29-2"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0"
             },
-            "time": "2021-06-15T21:10:50+00:00"
+            "time": "2021-06-24T16:55:56+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -281,16 +281,16 @@
         },
         {
             "name": "infinityloop-dev/utils",
-            "version": "v2.1.2",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/utils.git",
-                "reference": "fc1bf9cec56dde8af81ca993d8b64ce8a3ec29ab"
+                "reference": "5ac9ae283d36aa0c55ac7b478f28f36681338383"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/utils/zipball/fc1bf9cec56dde8af81ca993d8b64ce8a3ec29ab",
-                "reference": "fc1bf9cec56dde8af81ca993d8b64ce8a3ec29ab",
+                "url": "https://api.github.com/repos/infinityloop-dev/utils/zipball/5ac9ae283d36aa0c55ac7b478f28f36681338383",
+                "reference": "5ac9ae283d36aa0c55ac7b478f28f36681338383",
                 "shasum": ""
             },
             "require": {
@@ -324,9 +324,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/utils/issues",
-                "source": "https://github.com/infinityloop-dev/utils/tree/v2.1.2"
+                "source": "https://github.com/infinityloop-dev/utils/tree/v2.2"
             },
-            "time": "2020-12-07T15:29:38+00:00"
+            "time": "2021-06-24T16:47:55+00:00"
         },
         {
             "name": "nette/utils",
@@ -1034,16 +1034,16 @@
         },
         {
             "name": "infinityloop-dev/graphpinator-upload",
-            "version": "v1.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator-upload.git",
-                "reference": "89562c04b94975ec5ac2a876ae2703a0b17deb2d"
+                "reference": "cce96c332b6964d3a74f3d8033183b22cf61b418"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-upload/zipball/89562c04b94975ec5ac2a876ae2703a0b17deb2d",
-                "reference": "89562c04b94975ec5ac2a876ae2703a0b17deb2d",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-upload/zipball/cce96c332b6964d3a74f3d8033183b22cf61b418",
+                "reference": "cce96c332b6964d3a74f3d8033183b22cf61b418",
                 "shasum": ""
             },
             "require": {
@@ -1080,9 +1080,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator-upload/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-upload/tree/v1.0"
+                "source": "https://github.com/infinityloop-dev/graphpinator-upload/tree/v1.0.1"
             },
-            "time": "2021-05-31T20:28:22+00:00"
+            "time": "2021-06-22T14:15:42+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -1790,16 +1790,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.89",
+            "version": "0.12.90",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "54c0f5a6c30511b77128d58b6369f718df250542"
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/54c0f5a6c30511b77128d58b6369f718df250542",
-                "reference": "54c0f5a6c30511b77128d58b6369f718df250542",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f0e4b56630fc3d4eb5be86606d07212ac212ede4",
+                "reference": "f0e4b56630fc3d4eb5be86606d07212ac212ede4",
                 "shasum": ""
             },
             "require": {
@@ -1830,7 +1830,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.89"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.90"
             },
             "funding": [
                 {
@@ -1850,7 +1850,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-06-09T20:23:49+00:00"
+            "time": "2021-06-18T07:15:38+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2172,16 +2172,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.5",
+            "version": "9.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "89ff45ea9d70e35522fb6654a2ebc221158de276"
+                "reference": "fb9b8333f14e3dce976a60ef6a7e05c7c7ed8bfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/89ff45ea9d70e35522fb6654a2ebc221158de276",
-                "reference": "89ff45ea9d70e35522fb6654a2ebc221158de276",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fb9b8333f14e3dce976a60ef6a7e05c7c7ed8bfb",
+                "reference": "fb9b8333f14e3dce976a60ef6a7e05c7c7ed8bfb",
                 "shasum": ""
             },
             "require": {
@@ -2211,7 +2211,7 @@
                 "sebastian/global-state": "^5.0.1",
                 "sebastian/object-enumerator": "^4.0.3",
                 "sebastian/resource-operations": "^3.0.3",
-                "sebastian/type": "^2.3.2",
+                "sebastian/type": "^2.3.4",
                 "sebastian/version": "^3.0.2"
             },
             "require-dev": {
@@ -2259,7 +2259,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.6"
             },
             "funding": [
                 {
@@ -2271,7 +2271,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-05T04:49:07+00:00"
+            "time": "2021-06-23T05:14:38+00:00"
         },
         {
             "name": "psr/container",
@@ -3590,16 +3590,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v5.3.0",
+            "version": "v5.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "058553870f7809087fa80fa734704a21b9bcaeb2"
+                "reference": "649730483885ff2ca99ca0560ef0e5f6b03f2ac1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/058553870f7809087fa80fa734704a21b9bcaeb2",
-                "reference": "058553870f7809087fa80fa734704a21b9bcaeb2",
+                "url": "https://api.github.com/repos/symfony/console/zipball/649730483885ff2ca99ca0560ef0e5f6b03f2ac1",
+                "reference": "649730483885ff2ca99ca0560ef0e5f6b03f2ac1",
                 "shasum": ""
             },
             "require": {
@@ -3668,7 +3668,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v5.3.0"
+                "source": "https://github.com/symfony/console/tree/v5.3.2"
             },
             "funding": [
                 {
@@ -3684,7 +3684,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-06-12T09:42:48+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -4364,16 +4364,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.3.0",
+            "version": "v5.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191"
+                "reference": "714b47f9196de61a196d86c4bad5f09201b307df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/53e36cb1c160505cdaf1ef201501669c4c317191",
-                "reference": "53e36cb1c160505cdaf1ef201501669c4c317191",
+                "url": "https://api.github.com/repos/symfony/process/zipball/714b47f9196de61a196d86c4bad5f09201b307df",
+                "reference": "714b47f9196de61a196d86c4bad5f09201b307df",
                 "shasum": ""
             },
             "require": {
@@ -4406,7 +4406,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.3.0"
+                "source": "https://github.com/symfony/process/tree/v5.3.2"
             },
             "funding": [
                 {
@@ -4422,7 +4422,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T12:52:38+00:00"
+            "time": "2021-06-12T10:15:01+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4505,16 +4505,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.3.0",
+            "version": "v5.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "a9a0f8b6aafc5d2d1c116dcccd1573a95153515b"
+                "reference": "0732e97e41c0a590f77e231afc16a327375d50b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/a9a0f8b6aafc5d2d1c116dcccd1573a95153515b",
-                "reference": "a9a0f8b6aafc5d2d1c116dcccd1573a95153515b",
+                "url": "https://api.github.com/repos/symfony/string/zipball/0732e97e41c0a590f77e231afc16a327375d50b0",
+                "reference": "0732e97e41c0a590f77e231afc16a327375d50b0",
                 "shasum": ""
             },
             "require": {
@@ -4568,7 +4568,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.3.0"
+                "source": "https://github.com/symfony/string/tree/v5.3.2"
             },
             "funding": [
                 {
@@ -4584,7 +4584,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-06-06T09:51:56+00:00"
         },
         {
             "name": "thecodingmachine/safe",
@@ -4886,9 +4886,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "infinityloop-dev/graphpinator": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
