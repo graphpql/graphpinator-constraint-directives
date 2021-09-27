@@ -372,7 +372,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
 
     protected static function getGraphpinator(array $settings) : \Graphpinator\Graphpinator
     {
-        $query = new class ($settings) extends \Graphpinator\Type\Type
+        $query = new class ($settings) extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -388,10 +388,10 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field1',
                         $this->settings['type'],
                         function() : mixed {
@@ -403,8 +403,8 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
         };
 
         return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], []),
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], []),
                 $query,
             ),
         );

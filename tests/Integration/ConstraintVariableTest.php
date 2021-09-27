@@ -84,7 +84,7 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
 
     protected static function getGraphpinator() : \Graphpinator\Graphpinator
     {
-        $query = new class extends \Graphpinator\Type\Type
+        $query = new class extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -93,10 +93,10 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'field1',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function() : int {
@@ -108,8 +108,8 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
         };
 
         return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([$query], [
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([$query], [
                     ConstructTest::getInt(),
                     ConstructTest::getFloat(),
                     ConstructTest::getString(),

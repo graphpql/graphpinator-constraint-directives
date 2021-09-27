@@ -6,9 +6,9 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
 {
-    public static function getUploadType() : \Graphpinator\Type\Type
+    public static function getUploadType() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type
+        return new class extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'UploadType';
 
@@ -17,10 +17,10 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fileContent',
                         \Graphpinator\Typesystem\Container::String(),
                         static function (?\Psr\Http\Message\UploadedFileInterface $file) : string {
@@ -86,7 +86,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'Interface';
 
             public function __construct(
@@ -100,14 +100,14 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'uploadField',
                         \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNull(),
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'file',
                             new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
@@ -115,29 +115,29 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
             protected const NAME = 'Type';
 
             public function __construct(
-                \Graphpinator\Type\InterfaceType $interface,
+                \Graphpinator\Typesystem\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
             }
 
             public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'uploadField',
                         \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNull(),
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'file',
                             new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
@@ -150,7 +150,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
         }
     }
 }

@@ -200,7 +200,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         array $constraint,
     ) : \Graphpinator\Graphpinator
     {
-        $query = new class ($constraint) extends \Graphpinator\Type\Type
+        $query = new class ($constraint) extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -216,29 +216,29 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldUpload',
                         \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType(),
                         static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : ?\Psr\Http\Message\UploadedFileInterface {
                             return $file;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'file',
                             new \Graphpinator\Upload\UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldMultiUpload',
                         \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNullList(),
                         static function ($parent, array $files) : array {
                             return $files;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        \Graphpinator\Argument\Argument::create(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        \Graphpinator\Typesystem\Argument\Argument::create(
                             'files',
                             (new \Graphpinator\Upload\UploadType())->list(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
@@ -248,8 +248,8 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         };
 
         return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Type\Schema(
-                new \Graphpinator\Container\SimpleContainer([
+            new \Graphpinator\Typesystem\Schema(
+                new \Graphpinator\SimpleContainer([
                     'Query' => $query,
                     'UploadType' => \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType(),
                     'Upload' => new \Graphpinator\Upload\UploadType(),

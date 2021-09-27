@@ -12,17 +12,17 @@ final class TestSchema
     private static ?\Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor $accessor = null;
     private static ?\Graphpinator\Typesystem\Container $container = null;
 
-    public static function getSchema() : \Graphpinator\Type\Schema
+    public static function getSchema() : \Graphpinator\Typesystem\Schema
     {
-        return new \Graphpinator\Type\Schema(
+        return new \Graphpinator\Typesystem\Schema(
             self::getContainer(),
             self::getQuery(),
         );
     }
 
-    public static function getFullSchema() : \Graphpinator\Type\Schema
+    public static function getFullSchema() : \Graphpinator\Typesystem\Schema
     {
-        return new \Graphpinator\Type\Schema(
+        return new \Graphpinator\Typesystem\Schema(
             self::getContainer(),
             self::getQuery(),
             self::getQuery(),
@@ -118,7 +118,7 @@ final class TestSchema
             return self::$container;
         }
 
-        self::$container = new \Graphpinator\Container\SimpleContainer([
+        self::$container = new \Graphpinator\SimpleContainer([
             'Query' => self::getType('Query'),
             'ConstraintInput' => self::getType('ConstraintInput'),
             'ExactlyOneInput' => self::getType('ExactlyOneInput'),
@@ -136,9 +136,9 @@ final class TestSchema
         return self::$container;
     }
 
-    public static function getQuery() : \Graphpinator\Type\Type
+    public static function getQuery() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type
+        return new class extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'Query';
 
@@ -147,41 +147,41 @@ final class TestSchema
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    \Graphpinator\Field\ResolvableField::create(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldInput',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function ($parent, \stdClass $arg) : int {
                             return 1;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'arg',
                             TestSchema::getConstraintInput(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldExactlyOne',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function ($parent, \stdClass $arg) : int {
                             return 1;
                         },
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'arg',
                             TestSchema::getExactlyOneInput(),
                         ),
                     ])),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldAOrB',
                         TestSchema::getAOrBType()->notNull(),
                         static function ($parent) : int {
                             return 0;
                         },
                     ),
-                    \Graphpinator\Field\ResolvableField::create(
+                    \Graphpinator\Typesystem\Field\ResolvableField::create(
                         'fieldList',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                         static function ($parent, array $arg) : array {
@@ -190,8 +190,8 @@ final class TestSchema
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['minItems' => 3, 'maxItems' => 5],
-                    )->setArguments(new \Graphpinator\Argument\ArgumentSet([
-                        new \Graphpinator\Argument\Argument(
+                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                        new \Graphpinator\Typesystem\Argument\Argument(
                             'arg',
                             \Graphpinator\Typesystem\Container::Int()->list(),
                         ),
@@ -201,9 +201,9 @@ final class TestSchema
         };
     }
 
-    public static function getConstraintType() : \Graphpinator\Type\Type
+    public static function getConstraintType() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type
+        return new class extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'ConstraintType';
 
@@ -235,73 +235,73 @@ final class TestSchema
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    (new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'intMinField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'intMaxField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'intOneOfField',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function () : int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'floatMinField',
                         \Graphpinator\Typesystem\Container::Float(),
                         static function () {
                             return 4.02;
                         },
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'floatMaxField',
                         \Graphpinator\Typesystem\Container::Float(),
                         static function () {
                             return 1.1;
                         },
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'floatOneOfField',
                         \Graphpinator\Typesystem\Container::Float(),
                         static function () {
                             return 1.01;
                         },
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'stringMinField',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () {
                             return 1;
                         },
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'stringMaxField',
                         \Graphpinator\Typesystem\Container::String(),
                         static function () {
                             return 1;
                         },
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'listMinField',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                         static function () : array {
                             return [1];
                         },
                     ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
-                    (new \Graphpinator\Field\ResolvableField(
+                    (new \Graphpinator\Typesystem\Field\ResolvableField(
                         'listMaxField',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                         static function () : array {
@@ -313,9 +313,9 @@ final class TestSchema
         };
     }
 
-    public static function getConstraintInput() : \Graphpinator\Type\InputType
+    public static function getConstraintInput() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'ConstraintInput';
 
@@ -347,62 +347,62 @@ final class TestSchema
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    (new \Graphpinator\Argument\Argument(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'intMinArg',
                         \Graphpinator\Typesystem\Container::Int(),
                     ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'intMaxArg',
                         \Graphpinator\Typesystem\Container::Int(),
                     ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'intOneOfArg',
                         \Graphpinator\Typesystem\Container::Int(),
                     ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'floatMinArg',
                         \Graphpinator\Typesystem\Container::Float(),
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'floatMaxArg',
                         \Graphpinator\Typesystem\Container::Float(),
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'floatOneOfArg',
                         \Graphpinator\Typesystem\Container::Float(),
                     ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'stringMinArg',
                         \Graphpinator\Typesystem\Container::String(),
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'stringMaxArg',
                         \Graphpinator\Typesystem\Container::String(),
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'stringRegexArg',
                         \Graphpinator\Typesystem\Container::String(),
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['regex' => '/^(abc)|(foo)$/']),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'stringOneOfArg',
                         \Graphpinator\Typesystem\Container::String(),
                     ))->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => ['abc', 'foo']]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'listMinArg',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                     ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'listMaxArg',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                     ))->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => 3]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'listUniqueArg',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                     ))->addDirective(TestSchema::getType('listConstraint'), ['unique' => true]),
-                    (new \Graphpinator\Argument\Argument(
+                    (new \Graphpinator\Typesystem\Argument\Argument(
                         'listInnerListArg',
                         \Graphpinator\Typesystem\Container::Int()->list()->list(),
                     ))->addDirective(TestSchema::getType('listConstraint'), [
@@ -411,7 +411,7 @@ final class TestSchema
                             'maxItems' => 3,
                         ],
                     ]),
-                    \Graphpinator\Argument\Argument::create('listMinIntMinArg', \Graphpinator\Typesystem\Container::Int()->list())
+                    \Graphpinator\Typesystem\Argument\Argument::create('listMinIntMinArg', \Graphpinator\Typesystem\Container::Int()->list())
                         ->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 3])
                         ->addDirective(TestSchema::getType('intConstraint'), ['min' => 3]),
                 ]);
@@ -419,9 +419,9 @@ final class TestSchema
         };
     }
 
-    public static function getExactlyOneInput() : \Graphpinator\Type\InputType
+    public static function getExactlyOneInput() : \Graphpinator\Typesystem\InputType
     {
-        return new class extends \Graphpinator\Type\InputType
+        return new class extends \Graphpinator\Typesystem\InputType
         {
             protected const NAME = 'ExactlyOneInput';
 
@@ -435,14 +435,14 @@ final class TestSchema
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
             {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    new \Graphpinator\Argument\Argument(
+                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'int1',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
-                    new \Graphpinator\Argument\Argument(
+                    new \Graphpinator\Typesystem\Argument\Argument(
                         'int2',
                         \Graphpinator\Typesystem\Container::Int(),
                     ),
@@ -451,9 +451,9 @@ final class TestSchema
         };
     }
 
-    public static function getAOrBType() : \Graphpinator\Type\Type
+    public static function getAOrBType() : \Graphpinator\Typesystem\Type
     {
-        return new class extends \Graphpinator\Type\Type
+        return new class extends \Graphpinator\Typesystem\Type
         {
             protected const NAME = 'AOrB';
             protected const DESCRIPTION = 'Graphpinator Constraints: AOrB type';
@@ -473,10 +473,10 @@ final class TestSchema
                 return \is_int($rawValue) && \in_array($rawValue, [0, 1], true);
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
             {
-                return new \Graphpinator\Field\ResolvableFieldSet([
-                    new \Graphpinator\Field\ResolvableField(
+                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldA',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function (?int $parent) : ?int {
@@ -485,7 +485,7 @@ final class TestSchema
                                 : null;
                         },
                     ),
-                    new \Graphpinator\Field\ResolvableField(
+                    new \Graphpinator\Typesystem\Field\ResolvableField(
                         'fieldB',
                         \Graphpinator\Typesystem\Container::Int(),
                         static function (int $parent) : ?int {

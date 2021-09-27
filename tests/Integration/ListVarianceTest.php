@@ -58,7 +58,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -70,33 +70,33 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'listField',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
             public function __construct(
-                \Graphpinator\Type\InterfaceType $interface,
+                \Graphpinator\Typesystem\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
             }
 
             public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'listField',
                         \Graphpinator\Typesystem\Container::Int()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
@@ -108,7 +108,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
         }
     }
 
@@ -158,7 +158,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovarianceInner(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Type\InterfaceType {
+        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -170,33 +170,33 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'listField',
                         \Graphpinator\Typesystem\Container::Int()->list()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Type\InterfaceType {
+        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
             public function __construct(
-                \Graphpinator\Type\InterfaceType $interface,
+                \Graphpinator\Typesystem\InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Type\InterfaceSet([$interface]));
+                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
             }
 
             public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
+            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
             {
-                return new \Graphpinator\Field\FieldSet([
-                    \Graphpinator\Field\Field::create(
+                return new \Graphpinator\Typesystem\Field\FieldSet([
+                    \Graphpinator\Typesystem\Field\Field::create(
                         'listField',
                         \Graphpinator\Typesystem\Container::Int()->list()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
@@ -208,7 +208,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
         }
     }
 }
