@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "b714b3f5403e4dc6d3bc131fc41e7c1be6af45c0"
+                "reference": "9ef61db5660749be46b505f005abc3411c37c3e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/b714b3f5403e4dc6d3bc131fc41e7c1be6af45c0",
-                "reference": "b714b3f5403e4dc6d3bc131fc41e7c1be6af45c0",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/9ef61db5660749be46b505f005abc3411c37c3e6",
+                "reference": "9ef61db5660749be46b505f005abc3411c37c3e6",
                 "shasum": ""
             },
             "require": {
@@ -33,7 +33,7 @@
             "require-dev": {
                 "infection/infection": "^0.23 || ^0.24 || ^0.25",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12 || ^1.0",
                 "phpunit/phpunit": "^9.3"
             },
             "suggest": {
@@ -67,9 +67,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.1"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.1.2"
             },
-            "time": "2021-09-22T13:47:24+00:00"
+            "time": "2021-11-09T11:40:08+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
