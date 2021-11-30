@@ -227,43 +227,43 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\AtLeastOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {intMinArg: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\AtLeastOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: 3, int2: 3}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int2: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: null, int2: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyOneConstraintNotSatisfied::class,
+                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [

@@ -174,7 +174,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
             }
         }
 
-        throw new Exception\AtLeastOneConstraintNotSatisfied();
+        throw new Exception\AtLeastConstraintNotSatisfied();
     }
 
     private static function resolveAtMost(
@@ -194,7 +194,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         }
 
         if ($currentCount >= $count) {
-            throw new Exception\AtMostOneConstraintNotSatisfied();
+            throw new Exception\AtMostConstraintNotSatisfied();
         }
     }
 
@@ -230,7 +230,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         }
 
         if ($currentCount !== $count) {
-            throw new Exception\ExactlyOneConstraintNotSatisfied();
+            throw new Exception\ExactlyConstraintNotSatisfied();
         }
     }
 
@@ -259,7 +259,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         }
 
         if ($currentCount > $count || ($currentCount < $count && $notRequested === 0)) {
-            throw new Exception\ExactlyOneConstraintNotSatisfied();
+            throw new Exception\ExactlyConstraintNotSatisfied();
         }
     }
 }
