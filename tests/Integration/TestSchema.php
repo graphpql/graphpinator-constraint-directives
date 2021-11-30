@@ -44,6 +44,9 @@ final class TestSchema
             'ListConstraintInput' => new \Graphpinator\ConstraintDirectives\ListConstraintInput(
                 self::getAccessor(),
             ),
+            'ObjectConstraintInput' => new \Graphpinator\ConstraintDirectives\ObjectConstraintInput(
+                self::getAccessor(),
+            ),
             'stringConstraint' => new \Graphpinator\ConstraintDirectives\StringConstraintDirective(
                 self::getAccessor(),
             ),
@@ -100,6 +103,11 @@ final class TestSchema
                 public function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
                 {
                     return TestSchema::getType('objectConstraint');
+                }
+
+                public function getObjectInput() : \Graphpinator\ConstraintDirectives\ObjectConstraintInput
+                {
+                    return TestSchema::getType('ObjectConstraintInput');
                 }
 
                 public function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective

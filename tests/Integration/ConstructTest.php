@@ -12,6 +12,7 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
     private static ?\Graphpinator\ConstraintDirectives\FloatConstraintDirective $floatDirective = null;
     private static ?\Graphpinator\ConstraintDirectives\ListConstraintDirective $listDirective = null;
     private static ?\Graphpinator\ConstraintDirectives\ListConstraintInput $listInput = null;
+    private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintInput $objectInput = null;
     private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintDirective $objectDirective = null;
     private static ?\Graphpinator\ConstraintDirectives\UploadConstraintDirective $uploadDirective = null;
 
@@ -81,6 +82,17 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$listInput;
     }
 
+    public static function getObjectInput() : \Graphpinator\ConstraintDirectives\ObjectConstraintInput
+    {
+        if (!self::$objectInput instanceof \Graphpinator\ConstraintDirectives\ObjectConstraintInput) {
+            self::$objectInput = new \Graphpinator\ConstraintDirectives\ObjectConstraintInput(
+                self::getAccessor(),
+            );
+        }
+
+        return self::$objectInput;
+    }
+
     public static function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
     {
         if (!self::$uploadDirective instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective) {
@@ -125,6 +137,11 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
                 public function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
                 {
                     return ConstructTest::getObject();
+                }
+
+                public function getObjectInput() : \Graphpinator\ConstraintDirectives\ObjectConstraintInput
+                {
+                    return ConstructTest::getObjectInput();
                 }
 
                 public function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
@@ -193,8 +210,12 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
             $index++;
         }
 
+        $count = [1, 1, 1, 0, 0, 0];
+        $index = 0;
+
         foreach (self::getObject()->getArguments() as $argument) {
-            self::assertCount(1, $argument->getDirectiveUsages());
+            self::assertCount($count[$index], $argument->getDirectiveUsages());
+            $index++;
         }
     }
 }

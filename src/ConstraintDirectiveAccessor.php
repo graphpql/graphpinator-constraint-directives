@@ -16,5 +16,7 @@ interface ConstraintDirectiveAccessor
 
     public function getListInput() : ListConstraintInput;
 
+    public function getObjectInput() : ObjectConstraintInput;
+
     public function getObject() : ObjectConstraintDirective;
 }
