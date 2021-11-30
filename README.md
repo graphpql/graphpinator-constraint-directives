@@ -107,22 +107,30 @@ Question of variance comes into play because field, argument, and object constra
 ### Directive options
 
 - `@stringConstraint`
-    - minLength
-    - maxLength
-    - regex
-    - oneOf
-- `@intConstraint` & `@floatConstraint`
-    - min
-    - max
-    - oneOf
+    - minLength - `Int`
+    - maxLength - `Int`
+    - regex - `String`
+    - oneOf - `[String!]`
+- `@intConstraint`
+    - min - `Int`
+    - max - `Int`
+    - oneOf - `[Int!]`
+- `@floatConstraint`
+    - min - `Float`
+    - max - `Float`
+    - oneOf - `[Float!]`
 - `@listConstraint`
-    - minItems
-    - maxItems
-    - unique
-    - innerList (object with the same arguments to apply constraint to inner list)
+    - minItems - `Int`
+    - maxItems - `Int`
+    - unique - `Boolean`
+    - innerList - object with the same arguments to recursivelly apply constraint to inner list
 - `@uploadConstraint`
-    - maxSize
-    - mimeType
+    - maxSize - `Int`
+    - mimeType - `[String!]`
 - `@objectConstraint`
-    - atLeastOne
-    - exactlyOne
+    - atLeastOne - `[String!]`
+    - atMostOne - `[String!]`
+    - exactlyOne - `[String!]`
+    - atLeast - `{count: Int!, from: [String!]!}`
+    - atMost - `{count: Int!, from: [String!]!}`
+    - exactly - `{count: Int!, from: [String!]!}`
