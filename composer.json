@@ -14,7 +14,7 @@
   "require": {
     "php": ">=8.0.1",
     "ext-fileinfo": "*",
-    "infinityloop-dev/graphpinator": "^1.2",
+    "infinityloop-dev/graphpinator": "^1.2.1",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2"
   },
@@ -22,7 +22,7 @@
     "infinityloop-dev/graphpinator-upload": "^1.0.2",
     "phpunit/phpunit": "^9.5",
     "infection/infection": "^0.25",
-    "phpstan/phpstan": "^0.12 || ^1.0",
+    "phpstan/phpstan": "^1.0",
     "infinityloop-dev/coding-standard": "^0.2"
   },
   "suggest": {

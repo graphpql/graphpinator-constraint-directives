@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class ValidateTypeTest extends \PHPUnit\Framework\TestCase
+final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 {
     public function testInvalidConstraintTypeString() : void
     {

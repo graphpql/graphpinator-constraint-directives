@@ -193,7 +193,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
             ++$currentCount;
         }
 
-        if ($currentCount >= $count) {
+        if ($currentCount > $count) {
             throw new Exception\AtMostConstraintNotSatisfied();
         }
     }
