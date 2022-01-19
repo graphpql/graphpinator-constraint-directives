@@ -21,7 +21,7 @@
   "require-dev": {
     "infinityloop-dev/graphpinator-upload": "^1.0.2",
     "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.25",
+    "infection/infection": "^0.25 || ^0.26",
     "phpstan/phpstan": "^1.0",
     "infinityloop-dev/coding-standard": "^0.2"
   },
