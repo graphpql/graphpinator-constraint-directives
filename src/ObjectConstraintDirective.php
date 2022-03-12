@@ -6,8 +6,12 @@ namespace Graphpinator\ConstraintDirectives;
 
 use \Graphpinator\Typesystem\Argument\Argument;
 use \Graphpinator\Typesystem\Container;
+use \Graphpinator\Typesystem\Field\FieldSet;
+use \Graphpinator\Typesystem\Argument\ArgumentSet;
+use \Graphpinator\Value\ArgumentValueSet;
 use \Graphpinator\Value\InputValue;
 use \Graphpinator\Value\ListValue;
+use \Graphpinator\Value\TypeValue;
 
 final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive implements
     \Graphpinator\Typesystem\Location\ObjectLocation,
@@ -23,41 +27,29 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
     {
     }
 
-    public function validateObjectUsage(
-        \Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    public function validateObjectUsage(\Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type, ArgumentValueSet $arguments) : bool
     {
         return self::validateUsage($type->getFields(), $arguments);
     }
 
-    public function validateInputUsage(
-        \Graphpinator\Typesystem\InputType $inputType,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    public function validateInputUsage(\Graphpinator\Typesystem\InputType $inputType, ArgumentValueSet $arguments) : bool
     {
         return self::validateUsage($inputType->getArguments(), $arguments);
     }
 
-    public function resolveObject(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\TypeValue $typeValue,
-    ) : void
+    public function resolveObject(ArgumentValueSet $arguments, TypeValue $typeValue) : void
     {
         self::resolve($arguments, $typeValue);
     }
 
-    public function resolveInputObject(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\InputValue $inputValue,
-    ) : void
+    public function resolveInputObject(ArgumentValueSet $arguments, InputValue $inputValue) : void
     {
         self::resolve($arguments, $inputValue);
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
+        return new ArgumentSet([
             Argument::create('atLeastOne', Container::String()->notNull()->list())
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getList(),
@@ -79,10 +71,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         ]);
     }
 
-    private static function validateUsage(
-        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet $fields,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-    ) : bool
+    private static function validateUsage(FieldSet|ArgumentSet $fields, ArgumentValueSet $arguments) : bool
     {
         $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
         $atMostOne = $arguments->offsetGet('atMostOne')->getValue();
@@ -99,10 +88,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
             && (!$exactly instanceof InputValue || self::validateObjectInput($fields, $exactly));
     }
 
-    private static function resolve(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\TypeValue|InputValue $value,
-    ) : void
+    private static function resolve(ArgumentValueSet $arguments, TypeValue|InputValue $value) : void
     {
         $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
         $atMostOne = $arguments->offsetGet('atMostOne')->getValue();
@@ -131,10 +117,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         );
     }
 
-    private static function validateFieldsArePresent(
-        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet $fields,
-        ListValue $list,
-    ) : bool
+    private static function validateFieldsArePresent(FieldSet|ArgumentSet $fields, ListValue $list) : bool
     {
         foreach ($list as $item) {
             if (!$fields->offsetExists($item->getRawValue())) {
@@ -145,79 +128,64 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         return true;
     }
 
-    private static function validateObjectInput(
-        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet $fields,
-        InputValue $object,
-    ) : bool
+    private static function validateObjectInput(FieldSet|ArgumentSet $fields, InputValue $object) : bool
     {
         return $object->count->getValue()->getRawValue() <= \count($object->from->getValue())
             && self::validateFieldsArePresent($fields, $object->from->getValue());
     }
 
-    private static function resolveAtLeast(
-        \Graphpinator\Value\TypeValue|\Graphpinator\Value\InputValue $value,
-        array $atLeast,
-        int $count = 1,
-    ) : void
+    private static function resolveAtLeast(TypeValue|InputValue $value, array $atLeast, int $count = 1) : void
     {
-        $currentCount = 0;
+        if ($value instanceof TypeValue) {
+            [$currentCount, $notRequested] = self::countFieldsType($value, $atLeast);
 
-        foreach ($atLeast as $fieldName) {
-            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
-                continue;
+            if (($currentCount + $notRequested) < $count) {
+                throw new Exception\AtLeastConstraintNotSatisfied();
             }
-
-            ++$currentCount;
-
-            if ($currentCount >= $count) {
-                return;
-            }
-        }
-
-        throw new Exception\AtLeastConstraintNotSatisfied();
-    }
-
-    private static function resolveAtMost(
-        \Graphpinator\Value\TypeValue|\Graphpinator\Value\InputValue $value,
-        array $atMost,
-        int $count = 1,
-    ) : void
-    {
-        $currentCount = 0;
-
-        foreach ($atMost as $fieldName) {
-            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
-                continue;
-            }
-
-            ++$currentCount;
-        }
-
-        if ($currentCount > $count) {
-            throw new Exception\AtMostConstraintNotSatisfied();
-        }
-    }
-
-    private static function resolveExactly(
-        \Graphpinator\Value\TypeValue|\Graphpinator\Value\InputValue $value,
-        array $exactly,
-        int $count = 1,
-    ) : void
-    {
-        if ($value instanceof \Graphpinator\Value\TypeValue) {
-            self::resolveExactlyType($value, $exactly, $count);
 
             return;
         }
 
-        self::resolveExactlyInput($value, $exactly, $count);
+        if (self::countFieldsInput($value, $atLeast) < $count) {
+            throw new Exception\AtLeastConstraintNotSatisfied();
+        }
     }
 
-    private static function resolveExactlyInput(
-        \Graphpinator\Value\InputValue $value,
-        array $exactly,
-        int $count = 1,
-    ) : void
+    private static function resolveAtMost(TypeValue|InputValue $value, array $atMost, int $count = 1) : void
+    {
+        if ($value instanceof TypeValue) {
+            [$currentCount, $notRequested] = self::countFieldsType($value, $atMost);
+
+            if ($currentCount > $count) {
+                throw new Exception\AtMostConstraintNotSatisfied();
+            }
+
+            return;
+        }
+
+        if (self::countFieldsInput($value, $atMost) > $count) {
+            throw new Exception\AtMostConstraintNotSatisfied();
+        }
+    }
+
+    private static function resolveExactly(TypeValue|InputValue $value, array $exactly, int $count = 1) : void
+    {
+        if ($value instanceof TypeValue) {
+            [$currentCount, $notRequested] = self::countFieldsType($value, $exactly);
+
+            if ($currentCount > $count || ($currentCount + $notRequested) < $count) {
+                throw new Exception\ExactlyConstraintNotSatisfied();
+            }
+
+            return;
+        }
+
+        if (self::countFieldsInput($value, $exactly) !== $count) {
+            throw new Exception\ExactlyConstraintNotSatisfied();
+        }
+    }
+
+    private static function countFieldsInput(InputValue $value, array $exactly) : int
     {
         $currentCount = 0;
 
@@ -229,16 +197,10 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
             ++$currentCount;
         }
 
-        if ($currentCount !== $count) {
-            throw new Exception\ExactlyConstraintNotSatisfied();
-        }
+        return $currentCount;
     }
 
-    private static function resolveExactlyType(
-        \Graphpinator\Value\TypeValue $value,
-        array $exactly,
-        int $count = 1,
-    ) : void
+    private static function countFieldsType(TypeValue $value, array $exactly) : array
     {
         $currentCount = 0;
         $notRequested = 0;
@@ -258,8 +220,6 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
             ++$currentCount;
         }
 
-        if ($currentCount > $count || ($currentCount < $count && $notRequested === 0)) {
-            throw new Exception\ExactlyConstraintNotSatisfied();
-        }
+        return [$currentCount, $notRequested];
     }
 }
