@@ -6,8 +6,6 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class TestSchema
 {
-    use \Nette\StaticClass;
-
     private static array $types = [];
     private static ?\Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor $accessor = null;
     private static ?\Graphpinator\Typesystem\Container $container = null;

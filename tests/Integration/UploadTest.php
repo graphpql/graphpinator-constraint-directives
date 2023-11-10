@@ -6,7 +6,7 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class UploadTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleUploadDataProvider() : array
+    public static function simpleUploadDataProvider() : array
     {
         return [
             [
@@ -24,7 +24,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function invalidUploadDataProvider() : array
+    public static function invalidUploadDataProvider() : array
     {
         return [
             [
@@ -38,7 +38,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function requestDataProvider() : array
+    public static function requestDataProvider() : array
     {
         return [
             [
@@ -68,7 +68,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function requestInvalidDataProvider() : array
+    public static function requestInvalidDataProvider() : array
     {
         return [
             [
@@ -110,7 +110,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
         $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
+        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
             ->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -137,11 +137,11 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
         $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString('{ "0": ["variables.var1"] }'));
+        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
 
-        self::expectException($exception);
-        self::expectExceptionMessage(\constant($exception . '::MESSAGE'));
+        $this->expectException($exception);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         self::getGraphpinator($fileProvider, $constraint)
             ->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -162,7 +162,7 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
         $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString($map));
+        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
             ->run(new \Graphpinator\Request\JsonRequestFactory($request));
@@ -185,11 +185,11 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
         $file->method('getStream')->willReturn($stream);
         $file->method('getSize')->willReturn(5000);
         $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json\MapJson::fromString($map));
+        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
 
-        self::expectException($exception);
-        self::expectExceptionMessage(\constant($exception . '::MESSAGE'));
+        $this->expectException($exception);
+        $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         self::getGraphpinator($fileProvider, $constraint)
             ->run(new \Graphpinator\Request\JsonRequestFactory($request));

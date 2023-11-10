@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
 {
-    public function fieldDataProvider() : array
+    public static function fieldDataProvider() : array
     {
         return [
             [
@@ -175,7 +175,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function fieldInvalidDataProvider() : array
+    public static function fieldInvalidDataProvider() : array
     {
         return [
             [

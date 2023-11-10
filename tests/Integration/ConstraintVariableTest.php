@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
 {
-    public function variableDataProvider() : array
+    public static function variableDataProvider() : array
     {
         return [
             [
@@ -56,7 +56,7 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function variableInvalidDataProvider() : array
+    public static function variableInvalidDataProvider() : array
     {
         return [
             [

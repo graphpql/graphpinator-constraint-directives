@@ -1,7 +1,7 @@
 {
   "name": "infinityloop-dev/graphpinator-constraint-directives",
   "description": "Typesystem directives to declare additional validation on top of GraphQL type system.",
-  "homepage": "https://www.infinityloop.dev/",
+  "homepage": "https://github.com/graphpql/",
   "type": "library",
   "license": ["MIT"],
   "authors": [
@@ -12,17 +12,16 @@
     }
   ],
   "require": {
-    "php": ">=8.0.1",
+    "php": ">=8.1",
     "ext-fileinfo": "*",
-    "infinityloop-dev/graphpinator": "^1.2.1",
-    "infinityloop-dev/utils": "^2.1.2",
-    "nette/utils": "^3.2"
+    "infinityloop-dev/graphpinator": "^1.6",
+    "infinityloop-dev/utils": "^2.3"
   },
   "require-dev": {
-    "infinityloop-dev/graphpinator-upload": "^1.0.2",
-    "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.26",
-    "phpstan/phpstan": "^1.0",
+    "infinityloop-dev/graphpinator-upload": "^1.1",
+    "phpunit/phpunit": "^10.4",
+    "infection/infection": "^0.27",
+    "phpstan/phpstan": "^1.10",
     "infinityloop-dev/coding-standard": "^0.2"
   },
   "suggest": {

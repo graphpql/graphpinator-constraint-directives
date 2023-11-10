@@ -32,7 +32,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public function covarianceDataProvider() : array
+    public static function covarianceDataProvider() : array
     {
         return [
             [

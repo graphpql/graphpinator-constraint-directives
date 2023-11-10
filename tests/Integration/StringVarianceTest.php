@@ -6,7 +6,7 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class StringVarianceTest extends \PHPUnit\Framework\TestCase
 {
-    public function covarianceDataProvider() : array
+    public static function covarianceDataProvider() : array
     {
         return [
             [

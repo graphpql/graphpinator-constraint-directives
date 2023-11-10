@@ -8,7 +8,7 @@ use \Infinityloop\Utils\Json;
 
 final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
 {
-    public function argumentDataProvider() : array
+    public static function argumentDataProvider() : array
     {
         return [
             [
@@ -130,7 +130,7 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
         self::assertNull($result->getErrors());
     }
 
-    public function argumentInvalidDataProvider() : array
+    public static function argumentInvalidDataProvider() : array
     {
         return [
             [

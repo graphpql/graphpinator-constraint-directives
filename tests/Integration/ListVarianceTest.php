@@ -6,7 +6,7 @@ namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
 final class ListVarianceTest extends \PHPUnit\Framework\TestCase
 {
-    public function covarianceDataProvider() : array
+    public static function covarianceDataProvider() : array
     {
         return [
             [
@@ -112,7 +112,7 @@ final class ListVarianceTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function covarianceDataProviderInner() : array
+    public static function covarianceDataProviderInner() : array
     {
         return [
             [
