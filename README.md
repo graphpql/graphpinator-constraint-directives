@@ -1,4 +1,4 @@
-# GraPHPinator Constraint directives [![PHP](https://github.com/infinityloop-dev/graphpinator-constraint-directives/workflows/PHP/badge.svg?branch=master)](https://github.com/infinityloop-dev/graphpinator-constraint-directives/actions?query=workflow%3APHP) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives)
+# GraPHPinator Constraint directives [![PHP](https://github.com/graphpql/graphpinator-constraint-directives/actions/workflows/php.yml/badge.svg)](https://github.com/graphpql/graphpinator-constraint-directives/actions/workflows/php.yml) [![codecov](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives/branch/master/graph/badge.svg)](https://codecov.io/gh/infinityloop-dev/graphpinator-constraint-directives)
 
 :zap::globe_with_meridians::zap: Typesystem directives declare additional validation on the top of the GraphQL type system.
 
