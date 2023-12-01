@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "1.6",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "56bff134461c819058cacfebb5ef4a2158230b24"
+                "reference": "78069297203e711ff585d2d821ddd71bfb997c13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/56bff134461c819058cacfebb5ef4a2158230b24",
-                "reference": "56bff134461c819058cacfebb5ef4a2158230b24",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/78069297203e711ff585d2d821ddd71bfb997c13",
+                "reference": "78069297203e711ff585d2d821ddd71bfb997c13",
                 "shasum": ""
             },
             "require": {
@@ -63,12 +63,12 @@
                 }
             ],
             "description": "Easy-to-use & Fast GraphQL server implementation for PHP.",
-            "homepage": "https://www.infinityloop.dev/",
+            "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/1.6"
+                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.1"
             },
-            "time": "2023-11-10T15:24:45+00:00"
+            "time": "2023-11-13T10:04:38+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
