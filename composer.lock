@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "78069297203e711ff585d2d821ddd71bfb997c13"
+                "reference": "cab0d9553bd7c9bc37e673538fcf977d4654fb3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/78069297203e711ff585d2d821ddd71bfb997c13",
-                "reference": "78069297203e711ff585d2d821ddd71bfb997c13",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/cab0d9553bd7c9bc37e673538fcf977d4654fb3e",
+                "reference": "cab0d9553bd7c9bc37e673538fcf977d4654fb3e",
                 "shasum": ""
             },
             "require": {
@@ -30,10 +30,10 @@
                 "psr/log": "^3.0"
             },
             "require-dev": {
-                "infection/infection": "^0.27",
-                "infinityloop-dev/coding-standard": "^0.2",
+                "infection/infection": "^0.27 || ^0.28 || ^0.29",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.4",
+                "webthinx/codestyle": "dev-main"
             },
             "suggest": {
                 "infinityloop-dev/graphpinator-constraint-directives": "Directives for additional value validation.",
@@ -66,9 +66,9 @@
             "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.1"
+                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.2"
             },
-            "time": "2023-11-13T10:04:38+00:00"
+            "time": "2024-07-18T08:45:12+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
