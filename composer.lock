@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.7.2",
+            "version": "v1.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "cab0d9553bd7c9bc37e673538fcf977d4654fb3e"
+                "reference": "6f73b19ce4d66fdfea6ac18a059117be3c27b447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/cab0d9553bd7c9bc37e673538fcf977d4654fb3e",
-                "reference": "cab0d9553bd7c9bc37e673538fcf977d4654fb3e",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/6f73b19ce4d66fdfea6ac18a059117be3c27b447",
+                "reference": "6f73b19ce4d66fdfea6ac18a059117be3c27b447",
                 "shasum": ""
             },
             "require": {
@@ -66,9 +66,9 @@
             "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.2"
+                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.4"
             },
-            "time": "2024-07-18T08:45:12+00:00"
+            "time": "2024-08-30T07:10:00+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -372,16 +372,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
+                "reference": "79dff0b268932c640297f5208d6298f71855c03e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/79dff0b268932c640297f5208d6298f71855c03e",
+                "reference": "79dff0b268932c640297f5208d6298f71855c03e",
                 "shasum": ""
             },
             "require": {
@@ -416,9 +416,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.0"
+                "source": "https://github.com/php-fig/log/tree/3.0.1"
             },
-            "time": "2021-07-14T16:46:02+00:00"
+            "time": "2024-08-21T13:31:24+00:00"
         }
     ],
     "packages-dev": [
