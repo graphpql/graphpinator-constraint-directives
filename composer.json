@@ -21,7 +21,7 @@
     "infinityloop-dev/graphpinator-upload": "^1.1",
     "phpunit/phpunit": "^10.4",
     "infection/infection": "^0.27 || ^0.29",
-    "phpstan/phpstan": "^1.10",
+    "phpstan/phpstan": "^1.10 || ^2.0",
     "infinityloop-dev/coding-standard": "^0.2"
   },
   "suggest": {
