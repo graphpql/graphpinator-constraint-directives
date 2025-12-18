@@ -4,7 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class ListConstraintInput extends \Graphpinator\Typesystem\InputType
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\InputType;
+
+final class ListConstraintInput extends InputType
 {
     protected const NAME = 'ListConstraintInput';
 
@@ -15,24 +20,25 @@ final class ListConstraintInput extends \Graphpinator\Typesystem\InputType
         parent::__construct();
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    #[\Override]
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            \Graphpinator\Typesystem\Argument\Argument::create('minItems', \Graphpinator\Typesystem\Container::Int())
+        return new ArgumentSet([
+            Argument::create('minItems', Container::Int())
                 ->setDefaultValue(null)
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
-            \Graphpinator\Typesystem\Argument\Argument::create('maxItems', \Graphpinator\Typesystem\Container::Int())
+            Argument::create('maxItems', Container::Int())
                 ->setDefaultValue(null)
                 ->addDirective(
                     $this->constraintDirectiveAccessor->getInt(),
                     ['min' => 0],
                 ),
-            \Graphpinator\Typesystem\Argument\Argument::create('unique', \Graphpinator\Typesystem\Container::Boolean()->notNull())
+            Argument::create('unique', Container::Boolean()->notNull())
                 ->setDefaultValue(false),
-            \Graphpinator\Typesystem\Argument\Argument::create('innerList', $this)
+            Argument::create('innerList', $this)
                 ->setDefaultValue(null),
         ]);
     }

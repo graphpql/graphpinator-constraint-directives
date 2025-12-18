@@ -4,18 +4,25 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-use \Graphpinator\Typesystem\Argument\Argument;
-use \Graphpinator\Typesystem\Container;
-use \Graphpinator\Typesystem\Field\FieldSet;
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Value\ArgumentValueSet;
-use \Graphpinator\Value\InputValue;
-use \Graphpinator\Value\ListValue;
-use \Graphpinator\Value\TypeValue;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Location\InputObjectLocation;
+use Graphpinator\Typesystem\Location\ObjectLocation;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\ListValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\TypeValue;
 
-final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\ObjectLocation,
-    \Graphpinator\Typesystem\Location\InputObjectLocation
+final class ObjectConstraintDirective extends Directive implements
+    ObjectLocation,
+    InputObjectLocation
 {
     protected const NAME = 'objectConstraint';
     protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
@@ -27,26 +34,31 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
     {
     }
 
-    public function validateObjectUsage(\Graphpinator\Typesystem\Type|\Graphpinator\Typesystem\InterfaceType $type, ArgumentValueSet $arguments) : bool
+    #[\Override]
+    public function validateObjectUsage(Type|InterfaceType $type, ArgumentValueSet $arguments) : bool
     {
         return self::validateUsage($type->getFields(), $arguments);
     }
 
-    public function validateInputUsage(\Graphpinator\Typesystem\InputType $inputType, ArgumentValueSet $arguments) : bool
+    #[\Override]
+    public function validateInputUsage(InputType $inputType, ArgumentValueSet $arguments) : bool
     {
         return self::validateUsage($inputType->getArguments(), $arguments);
     }
 
+    #[\Override]
     public function resolveObject(ArgumentValueSet $arguments, TypeValue $typeValue) : void
     {
         self::resolve($arguments, $typeValue);
     }
 
+    #[\Override]
     public function resolveInputObject(ArgumentValueSet $arguments, InputValue $inputValue) : void
     {
         self::resolve($arguments, $inputValue);
     }
 
+    #[\Override]
     protected function getFieldDefinition() : ArgumentSet
     {
         return new ArgumentSet([
@@ -139,7 +151,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         if ($value instanceof TypeValue) {
             [$currentCount, $notRequested] = self::countFieldsType($value, $atLeast);
 
-            if (($currentCount + $notRequested) < $count) {
+            if ($currentCount + $notRequested < $count) {
                 throw new Exception\AtLeastConstraintNotSatisfied();
             }
 
@@ -190,7 +202,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
         $currentCount = 0;
 
         foreach ($exactly as $fieldName) {
-            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof NullValue) {
                 continue;
             }
 
@@ -213,7 +225,7 @@ final class ObjectConstraintDirective extends \Graphpinator\Typesystem\Directive
                 continue;
             }
 
-            if ($value->{$fieldName}->getValue() instanceof \Graphpinator\Value\NullValue) {
+            if ($value->{$fieldName}->getValue() instanceof NullValue) {
                 continue;
             }
 

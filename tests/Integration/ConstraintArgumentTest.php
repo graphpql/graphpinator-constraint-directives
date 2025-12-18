@@ -4,9 +4,23 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinLengthConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\RegexConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
+final class ConstraintArgumentTest extends TestCase
 {
     public static function argumentDataProvider() : array
     {
@@ -118,13 +132,13 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider argumentDataProvider
-     * @param \Infinityloop\Utils\Json $request
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $request
+     * @param Json $expected
      */
     public function testArgument(Json $request, Json $expected) : void
     {
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $result = $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
         self::assertNull($result->getErrors());
@@ -137,133 +151,133 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {intMinArg: -21}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class,
+                MinConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {intMaxArg: 21}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied::class,
+                MaxConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {intOneOfArg: 4}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied::class,
+                OneOfConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {floatMinArg: 4.0}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class,
+                MinConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {floatMaxArg: 20.1011}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied::class,
+                MaxConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {floatOneOfArg: 2.03}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied::class,
+                OneOfConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {stringMinArg: "abc"}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinLengthConstraintNotSatisfied::class,
+                MinLengthConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {stringMaxArg: "abcdefghijk"}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied::class,
+                MaxLengthConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {stringOneOfArg: "abcd"}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied::class,
+                OneOfConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {stringRegexArg: "fooo"}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\RegexConstraintNotSatisfied::class,
+                RegexConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {listMinArg: []}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {listMaxArg: [1, 2, 3, 4]}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
+                MaxItemsConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {listUniqueArg: [1, 1]}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied::class,
+                UniqueConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {listMinIntMinArg: [3]}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {listMinIntMinArg: [1, 1, 1]}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class,
+                MinConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied::class,
+                AtLeastConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldInput(arg: {intMinArg: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied::class,
+                AtLeastConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: 3, int2: 3}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
+                ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
+                ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
+                ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int2: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
+                ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
                     'query' => 'query { fieldExactlyOne(arg: {int1: null, int2: null}) }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class,
+                ExactlyConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
@@ -271,7 +285,7 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
                         fieldList(arg: [1,2,3,4,5,6])
                     }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
+                MaxItemsConstraintNotSatisfied::class,
             ],
             [
                 Json::fromNative((object) [
@@ -279,14 +293,14 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
                         fieldList(arg: [])
                     }',
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
         ];
     }
 
     /**
      * @dataProvider argumentInvalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $exception
      */
     public function testArgumentInvalid(Json $request, string $exception) : void
@@ -294,7 +308,7 @@ final class ConstraintArgumentTest extends \PHPUnit\Framework\TestCase
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
-        $graphpinator = new \Graphpinator\Graphpinator(TestSchema::getSchema());
-        $graphpinator->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        $graphpinator = new Graphpinator(TestSchema::getSchema());
+        $graphpinator->run(new JsonRequestFactory($request));
     }
 }

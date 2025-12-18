@@ -4,39 +4,57 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class UploadConstraintDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
-    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
+use Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied;
+use Graphpinator\Normalizer\Variable\Variable;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Upload\UploadType;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Value;
+
+final class UploadConstraintDirective extends Directive implements
+    ArgumentDefinitionLocation,
+    VariableDefinitionLocation
 {
     use TScalarConstraint;
 
     protected const NAME = 'uploadConstraint';
     protected const DESCRIPTION = 'Graphpinator uploadConstraint directive.';
 
+    #[\Override]
     public function validateArgumentUsage(
-        \Graphpinator\Typesystem\Argument\Argument $argument,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Argument $argument,
+        ArgumentValueSet $arguments,
     ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Upload\UploadType;
+        return $argument->getType()->accept(new GetNamedTypeVisitor()) instanceof UploadType;
     }
 
+    #[\Override]
     public function validateVariableUsage(
-        \Graphpinator\Normalizer\Variable\Variable $variable,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Variable $variable,
+        ArgumentValueSet $arguments,
     ) : bool
     {
-        return $variable->getType()->getNamedType() instanceof \Graphpinator\Upload\UploadType;
+        return $variable->getType()->accept(new GetNamedTypeVisitor()) instanceof UploadType;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    #[\Override]
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            \Graphpinator\Typesystem\Argument\Argument::create('maxSize', \Graphpinator\Typesystem\Container::Int()),
-            \Graphpinator\Typesystem\Argument\Argument::create('mimeType', \Graphpinator\Typesystem\Container::String()->notNull()->list()),
+        return new ArgumentSet([
+            Argument::create('maxSize', Container::Int()),
+            Argument::create('mimeType', Container::String()->notNull()->list()),
         ]);
     }
 
+    #[\Override]
     protected function afterGetFieldDefinition() : void
     {
         $this->arguments['maxSize']->addDirective(
@@ -49,9 +67,10 @@ final class UploadConstraintDirective extends \Graphpinator\Typesystem\Directive
         );
     }
 
+    #[\Override]
     protected function specificValidateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Value $value,
+        ArgumentValueSet $arguments,
     ) : void
     {
         $rawValue = $value->getRawValue();
@@ -59,17 +78,18 @@ final class UploadConstraintDirective extends \Graphpinator\Typesystem\Directive
         $mimeType = $arguments->offsetGet('mimeType')->getValue()->getRawValue();
 
         if (\is_int($maxSize) && $rawValue->getSize() > $maxSize) {
-            throw new \Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied();
+            throw new MaxSizeConstraintNotSatisfied();
         }
 
         if (\is_array($mimeType) && !\in_array(\mime_content_type($rawValue->getStream()->getMetadata('uri')), $mimeType, true)) {
-            throw new \Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied();
+            throw new MimeTypeConstraintNotSatisfied();
         }
     }
 
+    #[\Override]
     protected function specificValidateVariance(
-        \Graphpinator\Value\ArgumentValueSet $biggerSet,
-        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ArgumentValueSet $biggerSet,
+        ArgumentValueSet $smallerSet,
     ) : void
     {
         $lhs = (object) $biggerSet->getValuesForResolver();

@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Exception;
 
-abstract class ConstraintError extends \Graphpinator\Exception\GraphpinatorBase
+use Graphpinator\Exception\GraphpinatorBase;
+
+abstract class ConstraintError extends GraphpinatorBase
 {
+    #[\Override]
     final public function isOutputable() : bool
     {
         return true;

@@ -4,22 +4,33 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintOnlyScalar;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Value\Exception\InvalidValue;
+use PHPUnit\Framework\TestCase;
+
+final class ValidateUsageTest extends TestCase
 {
     public function testInvalidConstraintTypeString() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Float(),
+                        Container::Float(),
                     )->addDirective(TestSchema::getType('stringConstraint'), []),
                 ]);
             }
@@ -30,18 +41,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeInt() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('intConstraint'), []),
                 ]);
             }
@@ -52,18 +63,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeFloat() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     )->addDirective(TestSchema::getType('floatConstraint'), []),
                 ]);
             }
@@ -74,18 +85,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeList() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('listConstraint'), []),
                 ]);
             }
@@ -96,18 +107,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testNegativeMinLength() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => -20]),
                 ]);
             }
@@ -118,18 +129,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testNegativeMaxLength() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => -20]),
                 ]);
             }
@@ -140,18 +151,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testNegativeMinItems() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->list(),
+                        Container::String()->list(),
                     )->addDirective(TestSchema::getType('listConstraint'), ['minItems' => -20]),
                 ]);
             }
@@ -162,18 +173,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testNegativeMaxItems() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
+                        Container::String()->list()->notNull(),
                     )->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => -20]),
                 ]);
             }
@@ -184,16 +195,16 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerNegativeMinItems() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+        $type = new class extends InputType {
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
+                        Container::String()->list()->notNull(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['minItems' => -20]],
@@ -207,16 +218,16 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerNegativeMaxItems() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+        $type = new class extends InputType {
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->list()->notNull(),
+                        Container::String()->list()->notNull(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['maxItems' => -20]],
@@ -230,16 +241,16 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInnerInvalidType() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+        $type = new class extends InputType {
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->list(),
+                        Container::String()->list(),
                     )->addDirective(
                         TestSchema::getType('listConstraint'),
                         ['innerList' => (object) ['maxItems' => 20]],
@@ -253,18 +264,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyOneOfInt() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinItemsConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     )->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => []]),
                 ]);
             }
@@ -275,17 +286,17 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidOneOfInt() : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(\Graphpinator\Value\Exception\InvalidValue::class);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     )->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => ['string']]),
                 ]);
             }
@@ -296,18 +307,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyOneOfFloat() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinItemsConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Float(),
+                        Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => []]),
                 ]);
             }
@@ -318,17 +329,17 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidOneOfFloat() : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::Float(),
+                        Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => ['string']]),
                 ]);
             }
@@ -339,18 +350,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testEmptyOneOfString() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinItemsConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => []]),
                 ]);
             }
@@ -361,17 +372,17 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidOneOfString() : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => [1]]),
                 ]);
             }
@@ -382,18 +393,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testUniqueConstraintList() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\UniqueConstraintOnlyScalar::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\UniqueConstraintOnlyScalar::MESSAGE);
+        $this->expectException(UniqueConstraintOnlyScalar::class);
+        $this->expectExceptionMessage(UniqueConstraintOnlyScalar::MESSAGE);
 
-        $type = new class extends \Graphpinator\Typesystem\InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    \Graphpinator\Typesystem\Argument\Argument::create(
+                return new ArgumentSet([
+                    Argument::create(
                         'arg',
-                        \Graphpinator\Typesystem\Container::String()->notNullList()->list()->notNull(),
+                        Container::String()->notNullList()->list()->notNull(),
                     )->addDirective(TestSchema::getType('listConstraint'), ['unique' => true]),
                 ]);
             }
@@ -404,10 +415,10 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidAtLeastOneParameter() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinItemsConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        new class extends \Graphpinator\Typesystem\InputType {
+        new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -420,18 +431,18 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
     }
 
     public function testInvalidAtLeastOneParameter2() : void
     {
-        $this->expectException(\Graphpinator\Exception\Value\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
-        new class extends \Graphpinator\Typesystem\InputType {
+        new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -444,19 +455,19 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
     }
 
     public function testInvalidExactlyOneParameter() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(\Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::MESSAGE);
+        $this->expectException(MinItemsConstraintNotSatisfied::class);
+        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        new class extends \Graphpinator\Typesystem\InputType {
+        new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -469,19 +480,19 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet();
+                return new ArgumentSet();
             }
         };
     }
 
     public function testInvalidConstraintTypeMissingFieldAtLeastOne() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        new class extends \Graphpinator\Typesystem\InputType {
+        new class extends InputType {
             public function __construct()
             {
                 parent::__construct();
@@ -492,16 +503,16 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'arg1',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'arg3',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }
@@ -510,10 +521,10 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidConstraintTypeMissingFieldExactlyOne() : void
     {
-        $this->expectException(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::class);
-        $this->expectExceptionMessage(\Graphpinator\Typesystem\Exception\DirectiveIncorrectType::MESSAGE);
+        $this->expectException(DirectiveIncorrectType::class);
+        $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        new class extends \Graphpinator\Typesystem\InputType {
+        new class extends InputType {
             public function __construct()
             {
                 parent::__construct();
@@ -524,16 +535,16 @@ final class ValidateUsageTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'arg1',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'arg3',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                     ),
                 ]);
             }

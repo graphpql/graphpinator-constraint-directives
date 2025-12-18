@@ -4,7 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class FloatVarianceTest extends TestCase
 {
     public static function covarianceDataProvider() : array
     {
@@ -35,17 +44,17 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['min' => 1.0],
                 ['min' => 0.0],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
             [
                 ['max' => 3.0],
                 ['max' => 4.0],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
             [
                 ['oneOf' => [1.1, 1.2]],
                 ['oneOf' => [1.0, 1.1, 1.2, 1.3]],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
         ];
     }
@@ -58,7 +67,7 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
+        $interface = new class ($parent) extends InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -66,39 +75,39 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'floatField',
-                        \Graphpinator\Typesystem\Container::Float(),
+                        Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
+        $type = new class ($interface, $child) extends InterfaceType {
             public function __construct(
-                \Graphpinator\Typesystem\InterfaceType $interface,
+                InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
+                parent::__construct(new InterfaceSet([$interface]));
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'floatField',
-                        \Graphpinator\Typesystem\Container::Float(),
+                        Container::Float(),
                     )->addDirective(TestSchema::getType('floatConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -108,7 +117,7 @@ final class FloatVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(FieldSet::class, $type->getFields());
         }
     }
 }

@@ -4,22 +4,35 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class ConstructTest extends \PHPUnit\Framework\TestCase
-{
-    private static ?\Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor $accessor = null;
-    private static ?\Graphpinator\ConstraintDirectives\StringConstraintDirective $stringDirective = null;
-    private static ?\Graphpinator\ConstraintDirectives\IntConstraintDirective $intDirective = null;
-    private static ?\Graphpinator\ConstraintDirectives\FloatConstraintDirective $floatDirective = null;
-    private static ?\Graphpinator\ConstraintDirectives\ListConstraintDirective $listDirective = null;
-    private static ?\Graphpinator\ConstraintDirectives\ListConstraintInput $listInput = null;
-    private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintInput $objectInput = null;
-    private static ?\Graphpinator\ConstraintDirectives\ObjectConstraintDirective $objectDirective = null;
-    private static ?\Graphpinator\ConstraintDirectives\UploadConstraintDirective $uploadDirective = null;
+use Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor;
+use Graphpinator\ConstraintDirectives\FloatConstraintDirective;
+use Graphpinator\ConstraintDirectives\IntConstraintDirective;
+use Graphpinator\ConstraintDirectives\ListConstraintDirective;
+use Graphpinator\ConstraintDirectives\ListConstraintInput;
+use Graphpinator\ConstraintDirectives\ObjectConstraintDirective;
+use Graphpinator\ConstraintDirectives\ObjectConstraintInput;
+use Graphpinator\ConstraintDirectives\StringConstraintDirective;
+use Graphpinator\ConstraintDirectives\UploadConstraintDirective;
+use Graphpinator\Typesystem\Location\ExecutableDirectiveLocation;
+use Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation;
+use PHPUnit\Framework\TestCase;
 
-    public static function getString() : \Graphpinator\ConstraintDirectives\StringConstraintDirective
+final class ConstructTest extends TestCase
+{
+    private static ?ConstraintDirectiveAccessor $accessor = null;
+    private static ?StringConstraintDirective $stringDirective = null;
+    private static ?IntConstraintDirective $intDirective = null;
+    private static ?FloatConstraintDirective $floatDirective = null;
+    private static ?ListConstraintDirective $listDirective = null;
+    private static ?ListConstraintInput $listInput = null;
+    private static ?ObjectConstraintInput $objectInput = null;
+    private static ?ObjectConstraintDirective $objectDirective = null;
+    private static ?UploadConstraintDirective $uploadDirective = null;
+
+    public static function getString() : StringConstraintDirective
     {
-        if (!self::$stringDirective instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective) {
-            self::$stringDirective = new \Graphpinator\ConstraintDirectives\StringConstraintDirective(
+        if (!self::$stringDirective instanceof StringConstraintDirective) {
+            self::$stringDirective = new StringConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -27,10 +40,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$stringDirective;
     }
 
-    public static function getInt() : \Graphpinator\ConstraintDirectives\IntConstraintDirective
+    public static function getInt() : IntConstraintDirective
     {
-        if (!self::$intDirective instanceof \Graphpinator\ConstraintDirectives\IntConstraintDirective) {
-            self::$intDirective = new \Graphpinator\ConstraintDirectives\IntConstraintDirective(
+        if (!self::$intDirective instanceof IntConstraintDirective) {
+            self::$intDirective = new IntConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -38,10 +51,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$intDirective;
     }
 
-    public static function getFloat() : \Graphpinator\ConstraintDirectives\FloatConstraintDirective
+    public static function getFloat() : FloatConstraintDirective
     {
-        if (!self::$floatDirective instanceof \Graphpinator\ConstraintDirectives\FloatConstraintDirective) {
-            self::$floatDirective = new \Graphpinator\ConstraintDirectives\FloatConstraintDirective(
+        if (!self::$floatDirective instanceof FloatConstraintDirective) {
+            self::$floatDirective = new FloatConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -49,10 +62,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$floatDirective;
     }
 
-    public static function getList() : \Graphpinator\ConstraintDirectives\ListConstraintDirective
+    public static function getList() : ListConstraintDirective
     {
-        if (!self::$listDirective instanceof \Graphpinator\ConstraintDirectives\ListConstraintDirective) {
-            self::$listDirective = new \Graphpinator\ConstraintDirectives\ListConstraintDirective(
+        if (!self::$listDirective instanceof ListConstraintDirective) {
+            self::$listDirective = new ListConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -60,10 +73,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$listDirective;
     }
 
-    public static function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
+    public static function getObject() : ObjectConstraintDirective
     {
-        if (!self::$objectDirective instanceof \Graphpinator\ConstraintDirectives\ObjectConstraintDirective) {
-            self::$objectDirective = new \Graphpinator\ConstraintDirectives\ObjectConstraintDirective(
+        if (!self::$objectDirective instanceof ObjectConstraintDirective) {
+            self::$objectDirective = new ObjectConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -71,10 +84,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$objectDirective;
     }
 
-    public static function getListInput() : \Graphpinator\ConstraintDirectives\ListConstraintInput
+    public static function getListInput() : ListConstraintInput
     {
-        if (!self::$listInput instanceof \Graphpinator\ConstraintDirectives\ListConstraintInput) {
-            self::$listInput = new \Graphpinator\ConstraintDirectives\ListConstraintInput(
+        if (!self::$listInput instanceof ListConstraintInput) {
+            self::$listInput = new ListConstraintInput(
                 self::getAccessor(),
             );
         }
@@ -82,10 +95,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$listInput;
     }
 
-    public static function getObjectInput() : \Graphpinator\ConstraintDirectives\ObjectConstraintInput
+    public static function getObjectInput() : ObjectConstraintInput
     {
-        if (!self::$objectInput instanceof \Graphpinator\ConstraintDirectives\ObjectConstraintInput) {
-            self::$objectInput = new \Graphpinator\ConstraintDirectives\ObjectConstraintInput(
+        if (!self::$objectInput instanceof ObjectConstraintInput) {
+            self::$objectInput = new ObjectConstraintInput(
                 self::getAccessor(),
             );
         }
@@ -93,10 +106,10 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$objectInput;
     }
 
-    public static function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+    public static function getUpload() : UploadConstraintDirective
     {
-        if (!self::$uploadDirective instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective) {
-            self::$uploadDirective = new \Graphpinator\ConstraintDirectives\UploadConstraintDirective(
+        if (!self::$uploadDirective instanceof UploadConstraintDirective) {
+            self::$uploadDirective = new UploadConstraintDirective(
                 self::getAccessor(),
             );
         }
@@ -104,47 +117,47 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         return self::$uploadDirective;
     }
 
-    public static function getAccessor() : \Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor
+    public static function getAccessor() : ConstraintDirectiveAccessor
     {
         if (self::$accessor === null) {
-            self::$accessor = new class implements \Graphpinator\ConstraintDirectives\ConstraintDirectiveAccessor
+            self::$accessor = new class implements ConstraintDirectiveAccessor
             {
-                public function getString() : \Graphpinator\ConstraintDirectives\StringConstraintDirective
+                public function getString() : StringConstraintDirective
                 {
                     return ConstructTest::getString();
                 }
 
-                public function getInt() : \Graphpinator\ConstraintDirectives\IntConstraintDirective
+                public function getInt() : IntConstraintDirective
                 {
                     return ConstructTest::getInt();
                 }
 
-                public function getFloat() : \Graphpinator\ConstraintDirectives\FloatConstraintDirective
+                public function getFloat() : FloatConstraintDirective
                 {
                     return ConstructTest::getFloat();
                 }
 
-                public function getList() : \Graphpinator\ConstraintDirectives\ListConstraintDirective
+                public function getList() : ListConstraintDirective
                 {
                     return ConstructTest::getList();
                 }
 
-                public function getListInput() : \Graphpinator\ConstraintDirectives\ListConstraintInput
+                public function getListInput() : ListConstraintInput
                 {
                     return ConstructTest::getListInput();
                 }
 
-                public function getObject() : \Graphpinator\ConstraintDirectives\ObjectConstraintDirective
+                public function getObject() : ObjectConstraintDirective
                 {
                     return ConstructTest::getObject();
                 }
 
-                public function getObjectInput() : \Graphpinator\ConstraintDirectives\ObjectConstraintInput
+                public function getObjectInput() : ObjectConstraintInput
                 {
                     return ConstructTest::getObjectInput();
                 }
 
-                public function getUpload() : \Graphpinator\ConstraintDirectives\UploadConstraintDirective
+                public function getUpload() : UploadConstraintDirective
                 {
                     return ConstructTest::getUpload();
                 }
@@ -161,18 +174,18 @@ final class ConstructTest extends \PHPUnit\Framework\TestCase
         self::getFloat();
         self::getList();
         self::getObject();
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, self::$stringDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\IntConstraintDirective::class, self::$intDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\FloatConstraintDirective::class, self::$floatDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ListConstraintDirective::class, self::$listDirective);
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\ObjectConstraintDirective::class, self::$objectDirective);
+        self::assertInstanceOf(StringConstraintDirective::class, self::$stringDirective);
+        self::assertInstanceOf(IntConstraintDirective::class, self::$intDirective);
+        self::assertInstanceOf(FloatConstraintDirective::class, self::$floatDirective);
+        self::assertInstanceOf(ListConstraintDirective::class, self::$listDirective);
+        self::assertInstanceOf(ObjectConstraintDirective::class, self::$objectDirective);
 
         self::assertSame(
             [
-                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::FIELD_DEFINITION,
-                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
-                \Graphpinator\Typesystem\Location\TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
-                \Graphpinator\Typesystem\Location\ExecutableDirectiveLocation::VARIABLE_DEFINITION,
+                TypeSystemDirectiveLocation::FIELD_DEFINITION,
+                TypeSystemDirectiveLocation::ARGUMENT_DEFINITION,
+                TypeSystemDirectiveLocation::INPUT_FIELD_DEFINITION,
+                ExecutableDirectiveLocation::VARIABLE_DEFINITION,
             ],
             self::getString()->getLocations(),
         );

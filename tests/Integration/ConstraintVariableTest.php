@@ -4,9 +4,19 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
+final class ConstraintVariableTest extends TestCase
 {
     public static function variableDataProvider() : array
     {
@@ -46,13 +56,13 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider variableDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      */
     public function testVariable(Json $request) : void
     {
         self::assertSame(
             Json::fromNative((object) ['data' => ['field1' => 1]])->toString(),
-            self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request))->toString(),
+            self::getGraphpinator()->run(new JsonRequestFactory($request))->toString(),
         );
     }
 
@@ -64,14 +74,14 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
                     'query' => 'query ($str: String! @stringConstraint(minLength: 1, maxLength: 3)) { field1 }',
                     'variables' => (object) ['str' => 'aaaa'],
                 ]),
-                \Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied::class,
+                MaxLengthConstraintNotSatisfied::class,
             ],
         ];
     }
 
     /**
      * @dataProvider variableInvalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $exception
      */
     public function testVariableInvalid(Json $request, string $exception) : void
@@ -79,12 +89,12 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
-        self::getGraphpinator()->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        self::getGraphpinator()->run(new JsonRequestFactory($request));
     }
 
-    protected static function getGraphpinator() : \Graphpinator\Graphpinator
+    protected static function getGraphpinator() : Graphpinator
     {
-        $query = new class extends \Graphpinator\Typesystem\Type
+        $query = new class extends Type
         {
             protected const NAME = 'Query';
 
@@ -93,12 +103,12 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field1',
-                        \Graphpinator\Typesystem\Container::Int(),
+                        Container::Int(),
                         static function() : int {
                             return 1;
                         },
@@ -107,9 +117,9 @@ final class ConstraintVariableTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], [
+        return new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], [
                     ConstructTest::getInt(),
                     ConstructTest::getFloat(),
                     ConstructTest::getString(),

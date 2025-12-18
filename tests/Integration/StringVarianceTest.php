@@ -4,7 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class StringVarianceTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class StringVarianceTest extends TestCase
 {
     public static function covarianceDataProvider() : array
     {
@@ -37,22 +46,22 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
             [
                 ['minLength' => 1],
                 ['minLength' => 0],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
             [
                 ['maxLength' => 3],
                 ['maxLength' => 4],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
             [
                 ['regex' => 'regexString'],
                 ['regex' => 'differentString'],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
             [
                 ['oneOf' => ['one', 'two']],
                 ['oneOf' => ['zero', 'one', 'two', 'four']],
-                \Graphpinator\Typesystem\Exception\FieldDirectiveNotCovariant::class,
+                FieldDirectiveNotCovariant::class,
             ],
         ];
     }
@@ -65,7 +74,7 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
+        $interface = new class ($parent) extends InterfaceType {
             public function __construct(
                 private array $directiveArgs,
             )
@@ -73,39 +82,39 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'stringField',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
+        $type = new class ($interface, $child) extends InterfaceType {
             public function __construct(
-                \Graphpinator\Typesystem\InterfaceType $interface,
+                InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
+                parent::__construct(new InterfaceSet([$interface]));
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'stringField',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
                 ]);
             }
@@ -115,7 +124,7 @@ final class StringVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(FieldSet::class, $type->getFields());
         }
     }
 }

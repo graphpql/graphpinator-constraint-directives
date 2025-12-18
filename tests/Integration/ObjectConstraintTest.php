@@ -4,104 +4,117 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class ObjectConstraintTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\AtMostConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied;
+use Graphpinator\Normalizer\VariableValueSet;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use Graphpinator\Value\InputValue;
+use PHPUnit\Framework\TestCase;
+
+final class ObjectConstraintTest extends TestCase
 {
     public function testAtLeastValidExactly() : void
     {
         $value = self::getAtLeastInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
-        \assert($value instanceof \Graphpinator\Value\InputValue);
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        \assert($value instanceof InputValue);
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testAtLeastValidMore() : void
     {
         $value = self::getAtLeastInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testAtLeastInvalid() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied::class);
+        $this->expectException(AtLeastConstraintNotSatisfied::class);
 
         $value = self::getAtLeastInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
     }
 
     public function testAtMostValidExactly() : void
     {
         $value = self::getAtMostInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
-        \assert($value instanceof \Graphpinator\Value\InputValue);
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        \assert($value instanceof InputValue);
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testAtMostValidLess() : void
     {
         $value = self::getAtMostInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testAtMostInvalid() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\AtMostConstraintNotSatisfied::class);
+        $this->expectException(AtMostConstraintNotSatisfied::class);
 
         $value = self::getAtMostInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
     }
 
     public function testExactlyValidEmpty() : void
     {
         $value = self::getExactlyInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
-        \assert($value instanceof \Graphpinator\Value\InputValue);
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        \assert($value instanceof InputValue);
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testExactlyValidNull() : void
     {
         $value = self::getExactlyInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => null], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
 
-        self::assertInstanceOf(\Graphpinator\Value\InputValue::class, $value);
+        self::assertInstanceOf(InputValue::class, $value);
     }
 
     public function testExactlyInvalid() : void
     {
-        $this->expectException(\Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied::class);
+        $this->expectException(ExactlyConstraintNotSatisfied::class);
 
         $value = self::getExactlyInput()->accept(
-            new \Graphpinator\Value\ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new \Graphpinator\Common\Path()),
+            new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new \Graphpinator\Normalizer\VariableValueSet([]));
+        $value->applyVariables(new VariableValueSet([]));
     }
 
-    private static function getAtLeastInput() : \Graphpinator\Typesystem\InputType
+    private static function getAtLeastInput() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType {
+        return new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -114,25 +127,25 @@ final class ObjectConstraintTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'arg1',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'arg2',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function getAtMostInput() : \Graphpinator\Typesystem\InputType
+    private static function getAtMostInput() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType {
+        return new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -145,25 +158,25 @@ final class ObjectConstraintTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'arg1',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'arg2',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                 ]);
             }
         };
     }
 
-    private static function getExactlyInput() : \Graphpinator\Typesystem\InputType
+    private static function getExactlyInput() : InputType
     {
-        return new class extends \Graphpinator\Typesystem\InputType {
+        return new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -176,16 +189,16 @@ final class ObjectConstraintTest extends \PHPUnit\Framework\TestCase
                 );
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+            protected function getFieldDefinition() : ArgumentSet
             {
-                return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                return new ArgumentSet([
+                    new Argument(
                         'arg1',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
-                    new \Graphpinator\Typesystem\Argument\Argument(
+                    new Argument(
                         'arg2',
-                        \Graphpinator\Typesystem\Container::String(),
+                        Container::String(),
                     ),
                 ]);
             }

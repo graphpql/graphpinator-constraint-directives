@@ -4,13 +4,19 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\ListValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\Value;
+use Graphpinator\Value\VariableValue;
+
 trait TScalarConstraint
 {
     use TLeafConstraint;
 
     abstract protected function specificValidateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Value $value,
+        ArgumentValueSet $arguments,
     ) : void;
 
     protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
@@ -25,21 +31,21 @@ trait TScalarConstraint
     }
 
     final protected function validateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Value $value,
+        ArgumentValueSet $arguments,
     ) : void
     {
-        if ($value instanceof \Graphpinator\Value\NullValue) {
+        if ($value instanceof NullValue) {
             return;
         }
 
-        if ($value instanceof \Graphpinator\Value\VariableValue) {
+        if ($value instanceof VariableValue) {
             $this->validateValue($value->getConcreteValue(), $arguments);
 
             return;
         }
 
-        if ($value instanceof \Graphpinator\Value\ListValue) {
+        if ($value instanceof ListValue) {
             foreach ($value as $item) {
                 $this->validateValue($item, $arguments);
             }

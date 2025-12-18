@@ -4,19 +4,26 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class VarianceTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Common\Path;
+use Graphpinator\ConstraintDirectives\StringConstraintDirective;
+use Graphpinator\ConstraintDirectives\UploadConstraintDirective;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
+use PHPUnit\Framework\TestCase;
+
+final class VarianceTest extends TestCase
 {
     public function testMissingBiggerSet() : void
     {
         $directive = TestSchema::getType('stringConstraint');
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, $directive);
-        \assert($directive instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective);
+        self::assertInstanceOf(StringConstraintDirective::class, $directive);
+        \assert($directive instanceof StringConstraintDirective);
 
-        $values = new \Graphpinator\Value\ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+        $values = new ArgumentValueSet(
+            (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 new \stdClass(),
-                new \Graphpinator\Common\Path(),
+                new Path(),
             ),
         );
 
@@ -28,14 +35,14 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('stringConstraint');
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\StringConstraintDirective::class, $directive);
-        \assert($directive instanceof \Graphpinator\ConstraintDirectives\StringConstraintDirective);
+        self::assertInstanceOf(StringConstraintDirective::class, $directive);
+        \assert($directive instanceof StringConstraintDirective);
 
-        $values = new \Graphpinator\Value\ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+        $values = new ArgumentValueSet(
+            (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 new \stdClass(),
-                new \Graphpinator\Common\Path(),
+                new Path(),
             ),
         );
 
@@ -45,14 +52,14 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
     public function testMissingBiggerSetUpload() : void
     {
         $directive = TestSchema::getType('uploadConstraint');
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, $directive);
-        \assert($directive instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective);
+        self::assertInstanceOf(UploadConstraintDirective::class, $directive);
+        \assert($directive instanceof UploadConstraintDirective);
 
-        $values = new \Graphpinator\Value\ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+        $values = new ArgumentValueSet(
+            (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 new \stdClass(),
-                new \Graphpinator\Common\Path(),
+                new Path(),
             ),
         );
 
@@ -64,14 +71,14 @@ final class VarianceTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Throwable::class);
 
         $directive = TestSchema::getType('uploadConstraint');
-        self::assertInstanceOf(\Graphpinator\ConstraintDirectives\UploadConstraintDirective::class, $directive);
-        \assert($directive instanceof \Graphpinator\ConstraintDirectives\UploadConstraintDirective);
+        self::assertInstanceOf(UploadConstraintDirective::class, $directive);
+        \assert($directive instanceof UploadConstraintDirective);
 
-        $values = new \Graphpinator\Value\ArgumentValueSet(
-            (array) \Graphpinator\Value\ConvertRawValueVisitor::convertArgumentSet(
+        $values = new ArgumentValueSet(
+            (array) ConvertRawValueVisitor::convertArgumentSet(
                 $directive->getArguments(),
                 new \stdClass(),
-                new \Graphpinator\Common\Path(),
+                new Path(),
             ),
         );
 

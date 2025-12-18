@@ -4,6 +4,13 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\FieldValue;
+use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\ResolvedValue;
+use Graphpinator\Value\Value;
+
 trait TLeafConstraint
 {
     public function __construct(
@@ -18,8 +25,8 @@ trait TLeafConstraint
     }
 
     final public function validateVariance(
-        ?\Graphpinator\Value\ArgumentValueSet $biggerSet,
-        ?\Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ?ArgumentValueSet $biggerSet,
+        ?ArgumentValueSet $smallerSet,
     ) : void
     {
         if ($biggerSet === null) {
@@ -34,62 +41,62 @@ trait TLeafConstraint
     }
 
     final public function resolveFieldDefinitionStart(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
+        ArgumentValueSet $arguments,
+        ResolvedValue $parentValue,
     ) : void
     {
         // nothing here
     }
 
     final public function resolveFieldDefinitionBefore(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $parentValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
+        ArgumentValueSet $arguments,
+        ResolvedValue $parentValue,
+        ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     final public function resolveFieldDefinitionAfter(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ResolvedValue $resolvedValue,
-        \Graphpinator\Value\ArgumentValueSet $fieldArguments,
+        ArgumentValueSet $arguments,
+        ResolvedValue $resolvedValue,
+        ArgumentValueSet $fieldArguments,
     ) : void
     {
         // nothing here
     }
 
     final public function resolveFieldDefinitionValue(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\FieldValue $fieldValue,
+        ArgumentValueSet $arguments,
+        FieldValue $fieldValue,
     ) : void
     {
         $this->validateValue($fieldValue->getValue(), $arguments);
     }
 
     final public function resolveArgumentDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\ArgumentValue $argumentValue,
+        ArgumentValueSet $arguments,
+        ArgumentValue $argumentValue,
     ) : void
     {
         $this->validateValue($argumentValue->getValue(), $arguments);
     }
 
     final public function resolveVariableDefinition(
-        \Graphpinator\Value\ArgumentValueSet $arguments,
-        \Graphpinator\Value\InputedValue $variableValue,
+        ArgumentValueSet $arguments,
+        InputedValue $variableValue,
     ) : void
     {
         $this->validateValue($variableValue, $arguments);
     }
 
     abstract protected function validateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Value $value,
+        ArgumentValueSet $arguments,
     ) : void;
 
     abstract protected function specificValidateVariance(
-        \Graphpinator\Value\ArgumentValueSet $biggerSet,
-        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ArgumentValueSet $biggerSet,
+        ArgumentValueSet $smallerSet,
     ) : void;
 }

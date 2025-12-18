@@ -4,16 +4,36 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class UploadTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied;
+use Graphpinator\Graphpinator;
+use Graphpinator\Module\ModuleSet;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Upload\FileProvider;
+use Graphpinator\Upload\UploadModule;
+use Graphpinator\Upload\UploadType;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UploadedFileInterface;
+
+final class UploadTest extends TestCase
 {
     public static function simpleUploadDataProvider() : array
     {
         return [
             [
-                ['maxSize' => 10000],
+                ['maxSize' => 10_000],
             ],
             [
-                ['maxSize' => 5000],
+                ['maxSize' => 5_000],
             ],
             [
                 ['mimeType' => ['text/plain']],
@@ -28,12 +48,12 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                ['maxSize' => 4999],
-                \Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied::class,
+                ['maxSize' => 4_999],
+                MaxSizeConstraintNotSatisfied::class,
             ],
             [
                 ['mimeType' => ['application/x-httpd-php']],
-                \Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied::class,
+                MimeTypeConstraintNotSatisfied::class,
             ],
         ];
     }
@@ -42,28 +62,28 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Infinityloop\Utils\Json::fromNative((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
                     'variables' => (object) ['var1' => null],
                 ]),
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
-                ['maxSize' => 10000],
+                ['maxSize' => 10_000],
             ],
             [
-                \Infinityloop\Utils\Json::fromNative((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
                     'variables' => (object) ['var1' => null],
                 ]),
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
-                ['maxSize' => 10000],
+                ['maxSize' => 10_000],
             ],
             [
-                \Infinityloop\Utils\Json::fromNative((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName($var1: Upload = null) { fieldUpload(file: $var1) { fileContent } }',
                     'variables' => (object) ['var1' => null],
                 ]),
                 '{}',
-                ['maxSize' => 10000],
+                ['maxSize' => 10_000],
             ],
         ];
     }
@@ -72,22 +92,22 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                \Infinityloop\Utils\Json::fromNative((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
                     'variables' => (object) ['var1' => null],
                 ]),
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
-                ['maxSize' => 4999],
-                \Graphpinator\ConstraintDirectives\Exception\MaxSizeConstraintNotSatisfied::class,
+                ['maxSize' => 4_999],
+                MaxSizeConstraintNotSatisfied::class,
             ],
             [
-                \Infinityloop\Utils\Json::fromNative((object) [
+                Json::fromNative((object) [
                     'query' => 'query queryName($var1: [Upload]) { fieldMultiUpload(files: $var1) { fileContent } }',
                     'variables' => (object) ['var1' => null],
                 ]),
                 '{ "0": ["variables.var1.0", "variables.var1.1"] }',
                 ['mimeType' => ['application/x-httpd-php', 'application/pdf']],
-                \Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied::class,
+                MimeTypeConstraintNotSatisfied::class,
             ],
         ];
     }
@@ -98,22 +118,22 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
      */
     public function testUploadSimple(array $constraint) : void
     {
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileContent } }',
             'variables' => (object) ['var1' => null],
         ]);
 
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');
         $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
-        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file = $this->createStub(UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
-        $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString('{ "0": ["variables.var1"] }'));
+        $file->method('getSize')->willReturn(5_000);
+        $fileProvider = $this->createStub(FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
-            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+            ->run(new JsonRequestFactory($request));
 
         self::assertTrue(true);
     }
@@ -125,82 +145,82 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
      */
     public function testUploadInvalid(array $constraint, string $exception) : void
     {
-        $request = \Infinityloop\Utils\Json::fromNative((object) [
+        $request = Json::fromNative((object) [
             'query' => 'query queryName($var1: Upload) { fieldUpload(file: $var1) { fileContent } }',
             'variables' => (object) ['var1' => null],
         ]);
 
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');
         $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
-        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file = $this->createStub(UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
-        $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString('{ "0": ["variables.var1"] }'));
+        $file->method('getSize')->willReturn(5_000);
+        $fileProvider = $this->createStub(FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json::fromString('{ "0": ["variables.var1"] }'));
         $fileProvider->method('getFile')->willReturn($file);
 
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         self::getGraphpinator($fileProvider, $constraint)
-            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+            ->run(new JsonRequestFactory($request));
     }
 
     /**
      * @dataProvider requestDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $map
      * @param array $constraint
      */
-    public function testUploadRequest(\Infinityloop\Utils\Json $request, string $map, array $constraint) : void
+    public function testUploadRequest(Json $request, string $map, array $constraint) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');
         $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
-        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file = $this->createStub(UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
-        $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString($map));
+        $file->method('getSize')->willReturn(5_000);
+        $fileProvider = $this->createStub(FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
         self::getGraphpinator($fileProvider, $constraint)
-            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+            ->run(new JsonRequestFactory($request));
 
         self::assertTrue(true);
     }
 
     /**
      * @dataProvider requestInvalidDataProvider
-     * @param \Infinityloop\Utils\Json $request
+     * @param Json $request
      * @param string $map
      * @param array $constraint
      */
-    public function testUploadRequestInvalid(\Infinityloop\Utils\Json $request, string $map, array $constraint, string $exception) : void
+    public function testUploadRequestInvalid(Json $request, string $map, array $constraint, string $exception) : void
     {
-        $stream = $this->createStub(\Psr\Http\Message\StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn('test file');
         $stream->method('getMetaData')->willReturn(__DIR__ . '/textFile.txt');
-        $file = $this->createStub(\Psr\Http\Message\UploadedFileInterface::class);
+        $file = $this->createStub(UploadedFileInterface::class);
         $file->method('getStream')->willReturn($stream);
-        $file->method('getSize')->willReturn(5000);
-        $fileProvider = $this->createStub(\Graphpinator\Upload\FileProvider::class);
-        $fileProvider->method('getMap')->willReturn(\Infinityloop\Utils\Json::fromString($map));
+        $file->method('getSize')->willReturn(5_000);
+        $fileProvider = $this->createStub(FileProvider::class);
+        $fileProvider->method('getMap')->willReturn(Json::fromString($map));
         $fileProvider->method('getFile')->willReturn($file);
 
         $this->expectException($exception);
         $this->expectExceptionMessage(\constant($exception . '::MESSAGE'));
 
         self::getGraphpinator($fileProvider, $constraint)
-            ->run(new \Graphpinator\Request\JsonRequestFactory($request));
+            ->run(new JsonRequestFactory($request));
     }
 
     protected static function getGraphpinator(
-        \Graphpinator\Upload\FileProvider $fileProvider,
+        FileProvider $fileProvider,
         array $constraint,
-    ) : \Graphpinator\Graphpinator
+    ) : Graphpinator
     {
-        $query = new class ($constraint) extends \Graphpinator\Typesystem\Type
+        $query = new class ($constraint) extends Type
         {
             protected const NAME = 'Query';
 
@@ -216,49 +236,49 @@ final class UploadTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'fieldUpload',
-                        \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType(),
-                        static function ($parent, ?\Psr\Http\Message\UploadedFileInterface $file) : ?\Psr\Http\Message\UploadedFileInterface {
+                        UploadVarianceTest::getUploadType(),
+                        static function ($parent, ?UploadedFileInterface $file) : ?UploadedFileInterface {
                             return $file;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'file',
-                            new \Graphpinator\Upload\UploadType(),
+                            new UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
                     ])),
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                    ResolvableField::create(
                         'fieldMultiUpload',
-                        \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNullList(),
+                        UploadVarianceTest::getUploadType()->notNullList(),
                         static function ($parent, array $files) : array {
                             return $files;
                         },
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'files',
-                            (new \Graphpinator\Upload\UploadType())->list(),
+                            (new UploadType())->list(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
                     ])),
                 ]);
             }
         };
 
-        return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([
+        return new Graphpinator(
+            new Schema(
+                new SimpleContainer([
                     'Query' => $query,
-                    'UploadType' => \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType(),
-                    'Upload' => new \Graphpinator\Upload\UploadType(),
+                    'UploadType' => UploadVarianceTest::getUploadType(),
+                    'Upload' => new UploadType(),
                 ], []),
                 $query,
             ),
             false,
-            new \Graphpinator\Module\ModuleSet([
-                new \Graphpinator\Upload\UploadModule($fileProvider),
+            new ModuleSet([
+                new UploadModule($fileProvider),
             ]),
         );
     }

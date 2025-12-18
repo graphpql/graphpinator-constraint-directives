@@ -4,11 +4,27 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Upload\UploadType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\UploadedFileInterface;
+
+final class UploadVarianceTest extends TestCase
 {
-    public static function getUploadType() : \Graphpinator\Typesystem\Type
+    public static function getUploadType() : Type
     {
-        return new class extends \Graphpinator\Typesystem\Type
+        return new class extends Type
         {
             protected const NAME = 'UploadType';
 
@@ -17,13 +33,13 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    new \Graphpinator\Typesystem\Field\ResolvableField(
+                return new ResolvableFieldSet([
+                    new ResolvableField(
                         'fileContent',
-                        \Graphpinator\Typesystem\Container::String(),
-                        static function (?\Psr\Http\Message\UploadedFileInterface $file) : string {
+                        Container::String(),
+                        static function (?UploadedFileInterface $file) : string {
                             return $file->getStream()->getContents();
                         },
                     ),
@@ -36,18 +52,18 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                ['maxSize' => 5000],
-                ['maxSize' => 5000],
+                ['maxSize' => 5_000],
+                ['maxSize' => 5_000],
                 null,
             ],
             [
-                ['maxSize' => 5000],
+                ['maxSize' => 5_000],
                 [],
                 null,
             ],
             [
-                ['maxSize' => 5000],
-                ['maxSize' => 6000],
+                ['maxSize' => 5_000],
+                ['maxSize' => 6_000],
                 null,
             ],
             [
@@ -61,19 +77,19 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 null,
             ],
             [
-                ['maxSize' => 5000],
-                ['maxSize' => 4000],
-                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
+                ['maxSize' => 5_000],
+                ['maxSize' => 4_000],
+                ArgumentDirectiveNotContravariant::class,
             ],
             [
                 ['mimeType' => ['text/plain', 'text/html']],
                 ['mimeType' => ['text/plain']],
-                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
+                ArgumentDirectiveNotContravariant::class,
             ],
             [
                 [],
-                ['maxSize' => 4000],
-                \Graphpinator\Typesystem\Exception\ArgumentDirectiveNotContravariant::class,
+                ['maxSize' => 4_000],
+                ArgumentDirectiveNotContravariant::class,
             ],
         ];
     }
@@ -86,7 +102,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
      */
     public function testCovariance(array $parent, array $child, ?string $exception) : void
     {
-        $interface = new class ($parent) extends \Graphpinator\Typesystem\InterfaceType {
+        $interface = new class ($parent) extends InterfaceType {
             protected const NAME = 'Interface';
 
             public function __construct(
@@ -96,50 +112,50 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
                 parent::__construct();
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'uploadField',
-                        \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNull(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                        UploadVarianceTest::getUploadType()->notNull(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'file',
-                            new \Graphpinator\Upload\UploadType(),
+                            new UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
                     ])),
                 ]);
             }
         };
-        $type = new class ($interface, $child) extends \Graphpinator\Typesystem\InterfaceType {
+        $type = new class ($interface, $child) extends InterfaceType {
             protected const NAME = 'Type';
 
             public function __construct(
-                \Graphpinator\Typesystem\InterfaceType $interface,
+                InterfaceType $interface,
                 private array $directiveArgs,
             )
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([$interface]));
+                parent::__construct(new InterfaceSet([$interface]));
             }
 
-            public function createResolvedValue(mixed $rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue(mixed $rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'uploadField',
-                        \Graphpinator\ConstraintDirectives\Tests\Integration\UploadVarianceTest::getUploadType()->notNull(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create(
+                        UploadVarianceTest::getUploadType()->notNull(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create(
                             'file',
-                            new \Graphpinator\Upload\UploadType(),
+                            new UploadType(),
                         )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
                     ])),
                 ]);
@@ -150,7 +166,7 @@ final class UploadVarianceTest extends \PHPUnit\Framework\TestCase
             $this->expectException($exception);
             $type->getFields();
         } else {
-            self::assertInstanceOf(\Graphpinator\Typesystem\Field\FieldSet::class, $type->getFields());
+            self::assertInstanceOf(FieldSet::class, $type->getFields());
         }
     }
 }

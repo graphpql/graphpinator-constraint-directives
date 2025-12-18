@@ -4,16 +4,34 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives\Tests\Integration;
 
-use \Infinityloop\Utils\Json;
+use Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinLengthConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\RegexConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied;
+use Graphpinator\Graphpinator;
+use Graphpinator\Request\JsonRequestFactory;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Field\ResolvableField;
+use Graphpinator\Typesystem\Field\ResolvableFieldSet;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Infinityloop\Utils\Json;
+use PHPUnit\Framework\TestCase;
 
-final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
+final class ConstraintFieldTest extends TestCase
 {
     public static function fieldDataProvider() : array
     {
         return [
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => -19,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['min' => -20],
@@ -22,7 +40,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => 19,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['max' => 20],
@@ -31,7 +49,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => 2,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['oneOf' => [1, 2, 3]],
@@ -40,7 +58,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->notNullList(),
+                    'type' => Container::Int()->notNullList(),
                     'value' => [1, 2],
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['min' => 1],
@@ -49,7 +67,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2],
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['max' => 2],
@@ -58,7 +76,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['unique' => true],
@@ -67,7 +85,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
@@ -76,7 +94,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list()->list(),
+                    'type' => Container::Int()->list()->list(),
                     'value' => [[1, 2]],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['innerList' => (object) ['minItems' => 2, 'maxItems' => 3, 'unique' => true]],
@@ -85,7 +103,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 1.00,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['min' => 0.99],
@@ -94,7 +112,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 2.00,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['max' => 2.01],
@@ -103,7 +121,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 2.00,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['oneOf' => [1.05, 2.00, 2.05]],
@@ -112,7 +130,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'Shrek',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['minLength' => 4],
@@ -121,7 +139,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'abc',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['maxLength' => 4],
@@ -130,7 +148,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'beetlejuice',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['regex' => '/^(shrek)|(beetlejuice)$/'],
@@ -139,7 +157,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String()->notNullList(),
+                    'type' => Container::String()->notNullList(),
                     'value' => ['valid', 'valid'],
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['maxLength' => 5],
@@ -148,7 +166,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float()->notNullList(),
+                    'type' => Container::Float()->notNullList(),
                     'value' => [1.00, 2.00, 3.00],
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['min' => 1.00, 'max' => 3.00],
@@ -161,7 +179,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider fieldDataProvider
      * @param array $settings
-     * @param \Infinityloop\Utils\Json $expected
+     * @param Json $expected
      */
     public function testField(array $settings, Json $expected) : void
     {
@@ -171,7 +189,7 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
 
         self::assertSame(
             $expected->toString(),
-            self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request))->toString(),
+            self::getGraphpinator($settings)->run(new JsonRequestFactory($request))->toString(),
         );
     }
 
@@ -180,88 +198,88 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => -25,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['min' => -20],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class,
+                MinConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => 25,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['max' => -20],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied::class,
+                MaxConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int(),
+                    'type' => Container::Int(),
                     'value' => 5,
                     'directive' => TestSchema::getType('intConstraint'),
                     'constraint' => ['oneOf' => [1, 2, 3]],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied::class,
+                OneOfConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['minItems' => 3],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2, 3],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['maxItems' => 2],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
+                MaxItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2, 2, 3],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['unique' => true],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied::class,
+                UniqueConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2, 3, 4],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
+                MaxItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list(),
+                    'type' => Container::Int()->list(),
                     'value' => [1, 2, 2],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied::class,
+                UniqueConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list()->list(),
+                    'type' => Container::Int()->list()->list(),
                     'value' => [[1]],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => [
@@ -271,11 +289,11 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied::class,
+                MinItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Int()->list()->list(),
+                    'type' => Container::Int()->list()->list(),
                     'value' => [[1, 2, 3, 4]],
                     'directive' => TestSchema::getType('listConstraint'),
                     'constraint' => [
@@ -285,70 +303,70 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
                         ],
                     ],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied::class,
+                MaxItemsConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 0.10,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['min' => 0.99],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied::class,
+                MinConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 2.01,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['max' => 2.00],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied::class,
+                MaxConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::Float(),
+                    'type' => Container::Float(),
                     'value' => 5.35,
                     'directive' => TestSchema::getType('floatConstraint'),
                     'constraint' => ['oneOf' => [1.05, 2.00, 2.05]],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied::class,
+                OneOfConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'abc',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['minLength' => 4],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MinLengthConstraintNotSatisfied::class,
+                MinLengthConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'Shrek',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['maxLength' => 4],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied::class,
+                MaxLengthConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String(),
+                    'type' => Container::String(),
                     'value' => 'invalid',
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['regex' => '/^(shrek)|(beetlejuice)$/'],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\RegexConstraintNotSatisfied::class,
+                RegexConstraintNotSatisfied::class,
             ],
             [
                 [
-                    'type' => \Graphpinator\Typesystem\Container::String()->notNullList(),
+                    'type' => Container::String()->notNullList(),
                     'value' => ['valid', 'invalid'],
                     'directive' => TestSchema::getType('stringConstraint'),
                     'constraint' => ['maxLength' => 5],
                 ],
-                \Graphpinator\ConstraintDirectives\Exception\MaxLengthConstraintNotSatisfied::class,
+                MaxLengthConstraintNotSatisfied::class,
             ],
         ];
     }
@@ -367,12 +385,12 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             'query' => 'query { field1 }',
         ]);
 
-        self::getGraphpinator($settings)->run(new \Graphpinator\Request\JsonRequestFactory($request));
+        self::getGraphpinator($settings)->run(new JsonRequestFactory($request));
     }
 
-    protected static function getGraphpinator(array $settings) : \Graphpinator\Graphpinator
+    protected static function getGraphpinator(array $settings) : Graphpinator
     {
-        $query = new class ($settings) extends \Graphpinator\Typesystem\Type
+        $query = new class ($settings) extends Type
         {
             protected const NAME = 'Query';
 
@@ -388,10 +406,10 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
                 return true;
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\ResolvableFieldSet
+            protected function getFieldDefinition() : ResolvableFieldSet
             {
-                return new \Graphpinator\Typesystem\Field\ResolvableFieldSet([
-                    \Graphpinator\Typesystem\Field\ResolvableField::create(
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
                         'field1',
                         $this->settings['type'],
                         function() : mixed {
@@ -402,9 +420,9 @@ final class ConstraintFieldTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        return new \Graphpinator\Graphpinator(
-            new \Graphpinator\Typesystem\Schema(
-                new \Graphpinator\SimpleContainer([$query], []),
+        return new Graphpinator(
+            new Schema(
+                new SimpleContainer([$query], []),
                 $query,
             ),
         );

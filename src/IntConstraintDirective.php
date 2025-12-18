@@ -4,49 +4,68 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
-final class IntConstraintDirective extends \Graphpinator\Typesystem\Directive implements
-    \Graphpinator\Typesystem\Location\FieldDefinitionLocation,
-    \Graphpinator\Typesystem\Location\ArgumentDefinitionLocation,
-    \Graphpinator\Typesystem\Location\VariableDefinitionLocation
+use Graphpinator\Normalizer\Variable\Variable;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
+use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
+use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
+use Graphpinator\Typesystem\Spec\IntType;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Value;
+
+final class IntConstraintDirective extends Directive implements
+    FieldDefinitionLocation,
+    ArgumentDefinitionLocation,
+    VariableDefinitionLocation
 {
     use TScalarConstraint;
 
     protected const NAME = 'intConstraint';
     protected const DESCRIPTION = 'Graphpinator intConstraint directive.';
 
+    #[\Override]
     public function validateFieldUsage(
-        \Graphpinator\Typesystem\Field\Field $field,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Field $field,
+        ArgumentValueSet $arguments,
     ) : bool
     {
-        return $field->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
+        return $field->getType()->accept(new GetNamedTypeVisitor()) instanceof IntType;
     }
 
+    #[\Override]
     public function validateArgumentUsage(
-        \Graphpinator\Typesystem\Argument\Argument $argument,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Argument $argument,
+        ArgumentValueSet $arguments,
     ) : bool
     {
-        return $argument->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
+        return $argument->getType()->accept(new GetNamedTypeVisitor()) instanceof IntType;
     }
 
+    #[\Override]
     public function validateVariableUsage(
-        \Graphpinator\Normalizer\Variable\Variable $variable,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Variable $variable,
+        ArgumentValueSet $arguments,
     ) : bool
     {
-        return $variable->getType()->getNamedType() instanceof \Graphpinator\Typesystem\Spec\IntType;
+        return $variable->getType()->accept(new GetNamedTypeVisitor()) instanceof IntType;
     }
 
-    protected function getFieldDefinition() : \Graphpinator\Typesystem\Argument\ArgumentSet
+    #[\Override]
+    protected function getFieldDefinition() : ArgumentSet
     {
-        return new \Graphpinator\Typesystem\Argument\ArgumentSet([
-            \Graphpinator\Typesystem\Argument\Argument::create('min', \Graphpinator\Typesystem\Container::Int()),
-            \Graphpinator\Typesystem\Argument\Argument::create('max', \Graphpinator\Typesystem\Container::Int()),
-            \Graphpinator\Typesystem\Argument\Argument::create('oneOf', \Graphpinator\Typesystem\Container::Int()->notNull()->list()),
+        return new ArgumentSet([
+            Argument::create('min', Container::Int()),
+            Argument::create('max', Container::Int()),
+            Argument::create('oneOf', Container::Int()->notNull()->list()),
         ]);
     }
 
+    #[\Override]
     protected function afterGetFieldDefinition() : void
     {
         $this->arguments['oneOf']->addDirective(
@@ -55,9 +74,10 @@ final class IntConstraintDirective extends \Graphpinator\Typesystem\Directive im
         );
     }
 
+    #[\Override]
     protected function specificValidateValue(
-        \Graphpinator\Value\Value $value,
-        \Graphpinator\Value\ArgumentValueSet $arguments,
+        Value $value,
+        ArgumentValueSet $arguments,
     ) : void
     {
         $rawValue = $value->getRawValue();
@@ -78,9 +98,10 @@ final class IntConstraintDirective extends \Graphpinator\Typesystem\Directive im
         }
     }
 
+    #[\Override]
     protected function specificValidateVariance(
-        \Graphpinator\Value\ArgumentValueSet $biggerSet,
-        \Graphpinator\Value\ArgumentValueSet $smallerSet,
+        ArgumentValueSet $biggerSet,
+        ArgumentValueSet $smallerSet,
     ) : void
     {
         $lhs = $biggerSet->getValuesForResolver();
