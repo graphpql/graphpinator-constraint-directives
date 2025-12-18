@@ -12,6 +12,7 @@ use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Exception\DirectiveIncorrectType;
 use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Value\Exception\InvalidValue;
 use PHPUnit\Framework\TestCase;
 
@@ -31,12 +32,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Float(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), []),
+                    )->addDirective(TestSchema::$stringConstraint, []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidConstraintTypeInt() : void
@@ -53,12 +54,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('intConstraint'), []),
+                    )->addDirective(TestSchema::$intConstraint, []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidConstraintTypeFloat() : void
@@ -75,12 +76,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Int(),
-                    )->addDirective(TestSchema::getType('floatConstraint'), []),
+                    )->addDirective(TestSchema::$floatConstraint, []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidConstraintTypeList() : void
@@ -97,12 +98,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('listConstraint'), []),
+                    )->addDirective(TestSchema::$listConstraint, []),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testNegativeMinLength() : void
@@ -119,12 +120,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => -20]),
+                    )->addDirective(TestSchema::$stringConstraint, ['minLength' => -20]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testNegativeMaxLength() : void
@@ -141,12 +142,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => -20]),
+                    )->addDirective(TestSchema::$stringConstraint, ['maxLength' => -20]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testNegativeMinItems() : void
@@ -163,12 +164,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String()->list(),
-                    )->addDirective(TestSchema::getType('listConstraint'), ['minItems' => -20]),
+                    )->addDirective(TestSchema::$listConstraint, ['minItems' => -20]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testNegativeMaxItems() : void
@@ -185,12 +186,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String()->list()->notNull(),
-                    )->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => -20]),
+                    )->addDirective(TestSchema::$listConstraint, ['maxItems' => -20]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInnerNegativeMinItems() : void
@@ -206,14 +207,14 @@ final class ValidateUsageTest extends TestCase
                         'arg',
                         Container::String()->list()->notNull(),
                     )->addDirective(
-                        TestSchema::getType('listConstraint'),
+                        TestSchema::$listConstraint,
                         ['innerList' => (object) ['minItems' => -20]],
                     ),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInnerNegativeMaxItems() : void
@@ -229,14 +230,14 @@ final class ValidateUsageTest extends TestCase
                         'arg',
                         Container::String()->list()->notNull(),
                     )->addDirective(
-                        TestSchema::getType('listConstraint'),
+                        TestSchema::$listConstraint,
                         ['innerList' => (object) ['maxItems' => -20]],
                     ),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInnerInvalidType() : void
@@ -252,14 +253,14 @@ final class ValidateUsageTest extends TestCase
                         'arg',
                         Container::String()->list(),
                     )->addDirective(
-                        TestSchema::getType('listConstraint'),
+                        TestSchema::$listConstraint,
                         ['innerList' => (object) ['maxItems' => 20]],
                     ),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testEmptyOneOfInt() : void
@@ -276,17 +277,17 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Int(),
-                    )->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => []]),
+                    )->addDirective(TestSchema::$intConstraint, ['oneOf' => []]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidOneOfInt() : void
     {
-        $this->expectException(\Graphpinator\Value\Exception\InvalidValue::class);
+        $this->expectException(InvalidValue::class);
 
         $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
@@ -297,12 +298,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Int(),
-                    )->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => ['string']]),
+                    )->addDirective(TestSchema::$intConstraint, ['oneOf' => ['string']]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testEmptyOneOfFloat() : void
@@ -319,12 +320,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Float(),
-                    )->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => []]),
+                    )->addDirective(TestSchema::$floatConstraint, ['oneOf' => []]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidOneOfFloat() : void
@@ -340,12 +341,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::Float(),
-                    )->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => ['string']]),
+                    )->addDirective(TestSchema::$floatConstraint, ['oneOf' => ['string']]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testEmptyOneOfString() : void
@@ -362,12 +363,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => []]),
+                    )->addDirective(TestSchema::$stringConstraint, ['oneOf' => []]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidOneOfString() : void
@@ -383,12 +384,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => [1]]),
+                    )->addDirective(TestSchema::$stringConstraint, ['oneOf' => [1]]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testUniqueConstraintList() : void
@@ -405,12 +406,12 @@ final class ValidateUsageTest extends TestCase
                     Argument::create(
                         'arg',
                         Container::String()->notNullList()->list()->notNull(),
-                    )->addDirective(TestSchema::getType('listConstraint'), ['unique' => true]),
+                    )->addDirective(TestSchema::$listConstraint, ['unique' => true]),
                 ]);
             }
         };
 
-        $type->getArguments();
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidAtLeastOneParameter() : void
@@ -418,7 +419,7 @@ final class ValidateUsageTest extends TestCase
         $this->expectException(MinItemsConstraintNotSatisfied::class);
         $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        new class extends InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -426,7 +427,7 @@ final class ValidateUsageTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['atLeastOne' => []],
                 );
             }
@@ -436,13 +437,15 @@ final class ValidateUsageTest extends TestCase
                 return new ArgumentSet();
             }
         };
+
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidAtLeastOneParameter2() : void
     {
         $this->expectException(InvalidValue::class);
 
-        new class extends InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -450,7 +453,7 @@ final class ValidateUsageTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['atLeastOne' => [1]],
                 );
             }
@@ -460,6 +463,8 @@ final class ValidateUsageTest extends TestCase
                 return new ArgumentSet();
             }
         };
+
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidExactlyOneParameter() : void
@@ -467,7 +472,7 @@ final class ValidateUsageTest extends TestCase
         $this->expectException(MinItemsConstraintNotSatisfied::class);
         $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
 
-        new class extends InputType {
+        $type = new class extends InputType {
             protected const NAME = 'ConstraintInput';
 
             public function __construct()
@@ -475,7 +480,7 @@ final class ValidateUsageTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['exactlyOne' => []],
                 );
             }
@@ -485,6 +490,8 @@ final class ValidateUsageTest extends TestCase
                 return new ArgumentSet();
             }
         };
+
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidConstraintTypeMissingFieldAtLeastOne() : void
@@ -492,13 +499,13 @@ final class ValidateUsageTest extends TestCase
         $this->expectException(DirectiveIncorrectType::class);
         $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        new class extends InputType {
+        $type = new class extends InputType {
             public function __construct()
             {
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['atLeastOne' => ['arg1', 'arg2']],
                 );
             }
@@ -517,6 +524,8 @@ final class ValidateUsageTest extends TestCase
                 ]);
             }
         };
+
+        $type->accept(new ValidateIntegrityVisitor());
     }
 
     public function testInvalidConstraintTypeMissingFieldExactlyOne() : void
@@ -524,13 +533,13 @@ final class ValidateUsageTest extends TestCase
         $this->expectException(DirectiveIncorrectType::class);
         $this->expectExceptionMessage(DirectiveIncorrectType::MESSAGE);
 
-        new class extends InputType {
+        $type = new class extends InputType {
             public function __construct()
             {
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['exactlyOne' => ['arg1', 'arg2']],
                 );
             }
@@ -549,5 +558,7 @@ final class ValidateUsageTest extends TestCase
                 ]);
             }
         };
+
+        $type->accept(new ValidateIntegrityVisitor());
     }
 }

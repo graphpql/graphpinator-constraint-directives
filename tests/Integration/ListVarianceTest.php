@@ -10,11 +10,19 @@ use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
 
 final class ListVarianceTest extends TestCase
 {
+    public static function setUpBeforeClass() : void
+    {
+        parent::setUpBeforeClass();
+
+        TestSchema::getSchema(); // init
+    }
+
     public static function covarianceDataProvider() : array
     {
         return [
@@ -69,7 +77,7 @@ final class ListVarianceTest extends TestCase
     {
         $interface = new class ($parent) extends InterfaceType {
             public function __construct(
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct();
@@ -85,14 +93,14 @@ final class ListVarianceTest extends TestCase
                     Field::create(
                         'listField',
                         Container::Int()->list(),
-                    )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$listConstraint, $this->directiveArgs),
                 ]);
             }
         };
         $type = new class ($interface, $child) extends InterfaceType {
             public function __construct(
                 InterfaceType $interface,
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct(new InterfaceSet([$interface]));
@@ -108,17 +116,19 @@ final class ListVarianceTest extends TestCase
                     Field::create(
                         'listField',
                         Container::Int()->list(),
-                    )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$listConstraint, $this->directiveArgs),
                 ]);
             }
         };
 
         if (\is_string($exception)) {
             $this->expectException($exception);
-            $type->getFields();
-        } else {
-            self::assertInstanceOf(FieldSet::class, $type->getFields());
+            $type->accept(new ValidateIntegrityVisitor());
+
+            return;
         }
+
+        $this->expectNotToPerformAssertions();
     }
 
     public static function covarianceDataProviderInner() : array
@@ -169,7 +179,7 @@ final class ListVarianceTest extends TestCase
     {
         $interface = new class ($parent) extends InterfaceType {
             public function __construct(
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct();
@@ -185,14 +195,14 @@ final class ListVarianceTest extends TestCase
                     Field::create(
                         'listField',
                         Container::Int()->list()->list(),
-                    )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$listConstraint, $this->directiveArgs),
                 ]);
             }
         };
         $type = new class ($interface, $child) extends InterfaceType {
             public function __construct(
                 InterfaceType $interface,
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct(new InterfaceSet([$interface]));
@@ -208,16 +218,18 @@ final class ListVarianceTest extends TestCase
                     Field::create(
                         'listField',
                         Container::Int()->list()->list(),
-                    )->addDirective(TestSchema::getType('listConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$listConstraint, $this->directiveArgs),
                 ]);
             }
         };
 
         if (\is_string($exception)) {
             $this->expectException($exception);
-            $type->getFields();
-        } else {
-            self::assertInstanceOf(FieldSet::class, $type->getFields());
+            $type->accept(new ValidateIntegrityVisitor());
+
+            return;
         }
+
+        $this->expectNotToPerformAssertions();
     }
 }

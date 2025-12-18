@@ -13,8 +13,8 @@ use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\InputType;
-use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use Graphpinator\Value\InputValue;
+use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
 final class ObjectConstraintTest extends TestCase
@@ -122,7 +122,7 @@ final class ObjectConstraintTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['atLeast' => (object) ['count' => 1, 'from' => ['arg1', 'arg2']]],
                 );
             }
@@ -153,7 +153,7 @@ final class ObjectConstraintTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['atMost' => (object) ['count' => 1, 'from' => ['arg1', 'arg2']]],
                 );
             }
@@ -184,7 +184,7 @@ final class ObjectConstraintTest extends TestCase
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['exactly' => (object) ['count' => 1, 'from' => ['arg1', 'arg2']]],
                 );
             }

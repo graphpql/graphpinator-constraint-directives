@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
+use Graphpinator\ConstraintDirectives\Exception\AtLeastConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\AtMostConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
@@ -152,31 +155,31 @@ final class ObjectConstraintDirective extends Directive implements
             [$currentCount, $notRequested] = self::countFieldsType($value, $atLeast);
 
             if ($currentCount + $notRequested < $count) {
-                throw new Exception\AtLeastConstraintNotSatisfied();
+                throw new AtLeastConstraintNotSatisfied();
             }
 
             return;
         }
 
         if (self::countFieldsInput($value, $atLeast) < $count) {
-            throw new Exception\AtLeastConstraintNotSatisfied();
+            throw new AtLeastConstraintNotSatisfied();
         }
     }
 
     private static function resolveAtMost(TypeValue|InputValue $value, array $atMost, int $count = 1) : void
     {
         if ($value instanceof TypeValue) {
-            [$currentCount, $notRequested] = self::countFieldsType($value, $atMost);
+            [$currentCount] = self::countFieldsType($value, $atMost);
 
             if ($currentCount > $count) {
-                throw new Exception\AtMostConstraintNotSatisfied();
+                throw new AtMostConstraintNotSatisfied();
             }
 
             return;
         }
 
         if (self::countFieldsInput($value, $atMost) > $count) {
-            throw new Exception\AtMostConstraintNotSatisfied();
+            throw new AtMostConstraintNotSatisfied();
         }
     }
 
@@ -186,14 +189,14 @@ final class ObjectConstraintDirective extends Directive implements
             [$currentCount, $notRequested] = self::countFieldsType($value, $exactly);
 
             if ($currentCount > $count || ($currentCount + $notRequested) < $count) {
-                throw new Exception\ExactlyConstraintNotSatisfied();
+                throw new ExactlyConstraintNotSatisfied();
             }
 
             return;
         }
 
         if (self::countFieldsInput($value, $exactly) !== $count) {
-            throw new Exception\ExactlyConstraintNotSatisfied();
+            throw new ExactlyConstraintNotSatisfied();
         }
     }
 

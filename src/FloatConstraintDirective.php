@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
+use Graphpinator\ConstraintDirectives\Exception\MaxConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\OneOfConstraintNotSatisfied;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
@@ -87,15 +90,15 @@ final class FloatConstraintDirective extends Directive implements
         $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
 
         if (\is_float($min) && $rawValue < $min) {
-            throw new Exception\MinConstraintNotSatisfied();
+            throw new MinConstraintNotSatisfied();
         }
 
         if (\is_float($max) && $rawValue > $max) {
-            throw new Exception\MaxConstraintNotSatisfied();
+            throw new MaxConstraintNotSatisfied();
         }
 
         if (\is_array($oneOf) && !\in_array($rawValue, $oneOf, true)) {
-            throw new Exception\OneOfConstraintNotSatisfied();
+            throw new OneOfConstraintNotSatisfied();
         }
     }
 

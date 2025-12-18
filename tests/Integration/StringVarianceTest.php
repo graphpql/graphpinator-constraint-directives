@@ -10,11 +10,19 @@ use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
 
 final class StringVarianceTest extends TestCase
 {
+    public static function setUpBeforeClass() : void
+    {
+        parent::setUpBeforeClass();
+
+        TestSchema::getSchema(); // init
+    }
+
     public static function covarianceDataProvider() : array
     {
         return [
@@ -92,14 +100,14 @@ final class StringVarianceTest extends TestCase
                     Field::create(
                         'stringField',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$stringConstraint, $this->directiveArgs),
                 ]);
             }
         };
         $type = new class ($interface, $child) extends InterfaceType {
             public function __construct(
                 InterfaceType $interface,
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct(new InterfaceSet([$interface]));
@@ -115,16 +123,18 @@ final class StringVarianceTest extends TestCase
                     Field::create(
                         'stringField',
                         Container::String(),
-                    )->addDirective(TestSchema::getType('stringConstraint'), $this->directiveArgs),
+                    )->addDirective(TestSchema::$stringConstraint, $this->directiveArgs),
                 ]);
             }
         };
 
         if (\is_string($exception)) {
             $this->expectException($exception);
-            $type->getFields();
-        } else {
-            self::assertInstanceOf(FieldSet::class, $type->getFields());
+            $type->accept(new ValidateIntegrityVisitor());
+
+            return;
         }
+
+        $this->expectNotToPerformAssertions();
     }
 }

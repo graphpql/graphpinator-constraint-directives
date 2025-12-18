@@ -15,7 +15,7 @@ final class VarianceTest extends TestCase
 {
     public function testMissingBiggerSet() : void
     {
-        $directive = TestSchema::getType('stringConstraint');
+        $directive = TestSchema::$stringConstraint;
         self::assertInstanceOf(StringConstraintDirective::class, $directive);
         \assert($directive instanceof StringConstraintDirective);
 
@@ -34,7 +34,7 @@ final class VarianceTest extends TestCase
     {
         $this->expectException(\Throwable::class);
 
-        $directive = TestSchema::getType('stringConstraint');
+        $directive = TestSchema::$stringConstraint;
         self::assertInstanceOf(StringConstraintDirective::class, $directive);
         \assert($directive instanceof StringConstraintDirective);
 
@@ -51,7 +51,7 @@ final class VarianceTest extends TestCase
 
     public function testMissingBiggerSetUpload() : void
     {
-        $directive = TestSchema::getType('uploadConstraint');
+        $directive = TestSchema::$uploadConstraint;
         self::assertInstanceOf(UploadConstraintDirective::class, $directive);
         \assert($directive instanceof UploadConstraintDirective);
 
@@ -70,7 +70,7 @@ final class VarianceTest extends TestCase
     {
         $this->expectException(\Throwable::class);
 
-        $directive = TestSchema::getType('uploadConstraint');
+        $directive = TestSchema::$uploadConstraint;
         self::assertInstanceOf(UploadConstraintDirective::class, $directive);
         \assert($directive instanceof UploadConstraintDirective);
 

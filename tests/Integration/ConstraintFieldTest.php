@@ -28,12 +28,14 @@ final class ConstraintFieldTest extends TestCase
 {
     public static function fieldDataProvider() : array
     {
+        TestSchema::getSchema(); // init
+
         return [
             [
                 [
                     'type' => Container::Int(),
                     'value' => -19,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['min' => -20],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => -19]]),
@@ -42,7 +44,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int(),
                     'value' => 19,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['max' => 20],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 19]]),
@@ -51,7 +53,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int(),
                     'value' => 2,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['oneOf' => [1, 2, 3]],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 2]]),
@@ -60,7 +62,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->notNullList(),
                     'value' => [1, 2],
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['min' => 1],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
@@ -69,7 +71,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2],
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['max' => 2],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
@@ -78,7 +80,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['unique' => true],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
@@ -87,7 +89,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [1, 2]]]),
@@ -96,7 +98,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list()->list(),
                     'value' => [[1, 2]],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['innerList' => (object) ['minItems' => 2, 'maxItems' => 3, 'unique' => true]],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [[1, 2]]]]),
@@ -105,7 +107,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 1.00,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['min' => 0.99],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 1.00]]),
@@ -114,7 +116,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 2.00,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['max' => 2.01],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 2.00]]),
@@ -123,7 +125,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 2.00,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['oneOf' => [1.05, 2.00, 2.05]],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 2.00]]),
@@ -132,7 +134,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'Shrek',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['minLength' => 4],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 'Shrek']]),
@@ -141,7 +143,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'abc',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['maxLength' => 4],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 'abc']]),
@@ -150,7 +152,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'beetlejuice',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['regex' => '/^(shrek)|(beetlejuice)$/'],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => 'beetlejuice']]),
@@ -159,7 +161,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String()->notNullList(),
                     'value' => ['valid', 'valid'],
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['maxLength' => 5],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => ['valid', 'valid']]]),
@@ -168,7 +170,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float()->notNullList(),
                     'value' => [1.00, 2.00, 3.00],
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['min' => 1.00, 'max' => 3.00],
                 ],
                 Json::fromNative((object) ['data' => ['field1' => [1.00, 2.00, 3.00]]]),
@@ -195,12 +197,14 @@ final class ConstraintFieldTest extends TestCase
 
     public static function fieldInvalidDataProvider() : array
     {
+        TestSchema::getSchema(); // init
+
         return [
             [
                 [
                     'type' => Container::Int(),
                     'value' => -25,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['min' => -20],
                 ],
                 MinConstraintNotSatisfied::class,
@@ -209,7 +213,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int(),
                     'value' => 25,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['max' => -20],
                 ],
                 MaxConstraintNotSatisfied::class,
@@ -218,7 +222,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int(),
                     'value' => 5,
-                    'directive' => TestSchema::getType('intConstraint'),
+                    'directive' => TestSchema::$intConstraint,
                     'constraint' => ['oneOf' => [1, 2, 3]],
                 ],
                 OneOfConstraintNotSatisfied::class,
@@ -227,7 +231,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['minItems' => 3],
                 ],
                 MinItemsConstraintNotSatisfied::class,
@@ -236,7 +240,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2, 3],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['maxItems' => 2],
                 ],
                 MaxItemsConstraintNotSatisfied::class,
@@ -245,7 +249,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2, 2, 3],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['unique' => true],
                 ],
                 UniqueConstraintNotSatisfied::class,
@@ -254,7 +258,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
                 MinItemsConstraintNotSatisfied::class,
@@ -263,7 +267,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2, 3, 4],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
                 MaxItemsConstraintNotSatisfied::class,
@@ -272,7 +276,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list(),
                     'value' => [1, 2, 2],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => ['minItems' => 2, 'maxItems' => 3, 'unique' => true],
                 ],
                 UniqueConstraintNotSatisfied::class,
@@ -281,7 +285,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list()->list(),
                     'value' => [[1]],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => [
                         'innerList' => (object) [
                             'minItems' => 2,
@@ -295,7 +299,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Int()->list()->list(),
                     'value' => [[1, 2, 3, 4]],
-                    'directive' => TestSchema::getType('listConstraint'),
+                    'directive' => TestSchema::$listConstraint,
                     'constraint' => [
                         'innerList' => (object) [
                             'minItems' => 2,
@@ -309,7 +313,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 0.10,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['min' => 0.99],
                 ],
                 MinConstraintNotSatisfied::class,
@@ -318,7 +322,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 2.01,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['max' => 2.00],
                 ],
                 MaxConstraintNotSatisfied::class,
@@ -327,7 +331,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::Float(),
                     'value' => 5.35,
-                    'directive' => TestSchema::getType('floatConstraint'),
+                    'directive' => TestSchema::$floatConstraint,
                     'constraint' => ['oneOf' => [1.05, 2.00, 2.05]],
                 ],
                 OneOfConstraintNotSatisfied::class,
@@ -336,7 +340,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'abc',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['minLength' => 4],
                 ],
                 MinLengthConstraintNotSatisfied::class,
@@ -345,7 +349,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'Shrek',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['maxLength' => 4],
                 ],
                 MaxLengthConstraintNotSatisfied::class,
@@ -354,7 +358,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String(),
                     'value' => 'invalid',
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['regex' => '/^(shrek)|(beetlejuice)$/'],
                 ],
                 RegexConstraintNotSatisfied::class,
@@ -363,7 +367,7 @@ final class ConstraintFieldTest extends TestCase
                 [
                     'type' => Container::String()->notNullList(),
                     'value' => ['valid', 'invalid'],
-                    'directive' => TestSchema::getType('stringConstraint'),
+                    'directive' => TestSchema::$stringConstraint,
                     'constraint' => ['maxLength' => 5],
                 ],
                 MaxLengthConstraintNotSatisfied::class,
@@ -395,7 +399,7 @@ final class ConstraintFieldTest extends TestCase
             protected const NAME = 'Query';
 
             public function __construct(
-                private array $settings,
+                private readonly array $settings,
             )
             {
                 parent::__construct();

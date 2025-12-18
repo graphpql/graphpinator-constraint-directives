@@ -4,6 +4,10 @@ declare(strict_types = 1);
 
 namespace Graphpinator\ConstraintDirectives;
 
+use Graphpinator\ConstraintDirectives\Exception\MaxItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\MinItemsConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintNotSatisfied;
+use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintOnlyScalar;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
@@ -105,7 +109,7 @@ final class ListConstraintDirective extends Directive implements
         $usedType = $usedType->getInnerType()->accept(new GetShapingTypeVisitor());
 
         if ($options->unique && !$usedType instanceof LeafType) {
-            throw new Exception\UniqueConstraintOnlyScalar();
+            throw new UniqueConstraintOnlyScalar();
         }
 
         if ($options->innerList instanceof \stdClass) {
@@ -118,11 +122,11 @@ final class ListConstraintDirective extends Directive implements
     private static function recursiveValidate(array $rawValue, \stdClass $options) : void
     {
         if (\is_int($options->minItems) && \count($rawValue) < $options->minItems) {
-            throw new Exception\MinItemsConstraintNotSatisfied();
+            throw new MinItemsConstraintNotSatisfied();
         }
 
         if (\is_int($options->maxItems) && \count($rawValue) > $options->maxItems) {
-            throw new Exception\MaxItemsConstraintNotSatisfied();
+            throw new MaxItemsConstraintNotSatisfied();
         }
 
         if ($options->unique) {
@@ -135,7 +139,7 @@ final class ListConstraintDirective extends Directive implements
                     continue;
                 }
 
-                throw new Exception\UniqueConstraintNotSatisfied();
+                throw new UniqueConstraintNotSatisfied();
             }
         }
 

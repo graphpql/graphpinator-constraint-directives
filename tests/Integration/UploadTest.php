@@ -249,7 +249,7 @@ final class UploadTest extends TestCase
                         Argument::create(
                             'file',
                             new UploadType(),
-                        )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
+                        )->addDirective(TestSchema::$uploadConstraint, $this->constraint),
                     ])),
                     ResolvableField::create(
                         'fieldMultiUpload',
@@ -261,7 +261,7 @@ final class UploadTest extends TestCase
                         Argument::create(
                             'files',
                             (new UploadType())->list(),
-                        )->addDirective(TestSchema::getType('uploadConstraint'), $this->constraint),
+                        )->addDirective(TestSchema::$uploadConstraint, $this->constraint),
                     ])),
                 ]);
             }

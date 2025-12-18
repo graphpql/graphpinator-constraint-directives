@@ -15,6 +15,7 @@ use Graphpinator\Typesystem\Field\ResolvableFieldSet;
 use Graphpinator\Typesystem\InterfaceSet;
 use Graphpinator\Typesystem\InterfaceType;
 use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\Visitor\ValidateIntegrityVisitor;
 use Graphpinator\Upload\UploadType;
 use Graphpinator\Value\TypeIntermediateValue;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,13 @@ use Psr\Http\Message\UploadedFileInterface;
 
 final class UploadVarianceTest extends TestCase
 {
+    public static function setUpBeforeClass() : void
+    {
+        parent::setUpBeforeClass();
+
+        TestSchema::getSchema(); // init
+    }
+
     public static function getUploadType() : Type
     {
         return new class extends Type
@@ -106,7 +114,7 @@ final class UploadVarianceTest extends TestCase
             protected const NAME = 'Interface';
 
             public function __construct(
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct();
@@ -126,7 +134,7 @@ final class UploadVarianceTest extends TestCase
                         Argument::create(
                             'file',
                             new UploadType(),
-                        )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
+                        )->addDirective(TestSchema::$uploadConstraint, $this->directiveArgs),
                     ])),
                 ]);
             }
@@ -136,7 +144,7 @@ final class UploadVarianceTest extends TestCase
 
             public function __construct(
                 InterfaceType $interface,
-                private array $directiveArgs,
+                private readonly array $directiveArgs,
             )
             {
                 parent::__construct(new InterfaceSet([$interface]));
@@ -156,7 +164,7 @@ final class UploadVarianceTest extends TestCase
                         Argument::create(
                             'file',
                             new UploadType(),
-                        )->addDirective(TestSchema::getType('uploadConstraint'), $this->directiveArgs),
+                        )->addDirective(TestSchema::$uploadConstraint, $this->directiveArgs),
                     ])),
                 ]);
             }
@@ -164,9 +172,9 @@ final class UploadVarianceTest extends TestCase
 
         if (\is_string($exception)) {
             $this->expectException($exception);
-            $type->getFields();
-        } else {
-            self::assertInstanceOf(FieldSet::class, $type->getFields());
+            $type->accept(new ValidateIntegrityVisitor());
         }
+
+        $this->expectNotToPerformAssertions();
     }
 }

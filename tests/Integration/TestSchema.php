@@ -25,205 +25,44 @@ use Graphpinator\Typesystem\Type;
 
 final class TestSchema
 {
-    private static array $types = [];
+    public static ?Type $query = null;
+    public static ?InputType $constraintInput = null;
+    public static ?InputType $exactlyOneInput = null;
+    public static ?Type $constraintType = null;
+    public static ?Type $aOrBType = null;
+    public static ?ListConstraintInput $listConstraintInput = null;
+    public static ?ObjectConstraintInput $objectConstraintInput = null;
+    public static ?StringConstraintDirective $stringConstraint = null;
+    public static ?IntConstraintDirective $intConstraint = null;
+    public static ?FloatConstraintDirective $floatConstraint = null;
+    public static ?ListConstraintDirective $listConstraint = null;
+    public static ?ObjectConstraintDirective $objectConstraint = null;
+    public static ?UploadConstraintDirective $uploadConstraint = null;
     private static ?ConstraintDirectiveAccessor $accessor = null;
     private static ?Container $container = null;
 
     public static function getSchema() : Schema
     {
+        self::$accessor ??= self::createAccessor();
+        self::$listConstraintInput ??= new ListConstraintInput(self::$accessor);
+        self::$objectConstraintInput ??= new ObjectConstraintInput(self::$accessor);
+        self::$stringConstraint ??= new StringConstraintDirective(self::$accessor);
+        self::$intConstraint ??= new IntConstraintDirective(self::$accessor);
+        self::$floatConstraint ??= new FloatConstraintDirective(self::$accessor);
+        self::$listConstraint ??= new ListConstraintDirective(self::$accessor);
+        self::$objectConstraint ??= new ObjectConstraintDirective(self::$accessor);
+        self::$uploadConstraint ??= new UploadConstraintDirective(self::$accessor);
+        self::$query ??= self::getQuery();
+        self::$constraintInput ??= self::getConstraintInput();
+        self::$exactlyOneInput ??= self::getExactlyOneInput();
+        self::$constraintType ??= self::getConstraintType();
+        self::$aOrBType ??= self::getAOrBType();
+        self::$container ??= self::createContainer();
+
         return new Schema(
-            self::getContainer(),
-            self::getQuery(),
+            self::$container,
+            self::$query,
         );
-    }
-
-    public static function getFullSchema() : Schema
-    {
-        return new Schema(
-            self::getContainer(),
-            self::getQuery(),
-            self::getQuery(),
-            self::getQuery(),
-        );
-    }
-
-    public static function getType(string $name) : object
-    {
-        if (\array_key_exists($name, self::$types)) {
-            return self::$types[$name];
-        }
-
-        self::$types[$name] = match ($name) {
-            'Query' => self::getQuery(),
-            'ConstraintInput' => self::getConstraintInput(),
-            'ExactlyOneInput' => self::getExactlyOneInput(),
-            'ConstraintType' => self::getConstraintType(),
-            'ListConstraintInput' => new ListConstraintInput(
-                self::getAccessor(),
-            ),
-            'ObjectConstraintInput' => new ObjectConstraintInput(
-                self::getAccessor(),
-            ),
-            'stringConstraint' => new StringConstraintDirective(
-                self::getAccessor(),
-            ),
-            'intConstraint' => new IntConstraintDirective(
-                self::getAccessor(),
-            ),
-            'floatConstraint' => new FloatConstraintDirective(
-                self::getAccessor(),
-            ),
-            'listConstraint' => new ListConstraintDirective(
-                self::getAccessor(),
-            ),
-            'objectConstraint' => new ObjectConstraintDirective(
-                self::getAccessor(),
-            ),
-            'uploadConstraint' => new UploadConstraintDirective(
-                self::getAccessor(),
-            )
-        };
-
-        return self::$types[$name];
-    }
-
-    public static function getAccessor() : ConstraintDirectiveAccessor
-    {
-        if (self::$accessor === null) {
-            self::$accessor = new class implements ConstraintDirectiveAccessor
-            {
-                public function getString() : StringConstraintDirective
-                {
-                    return TestSchema::getType('stringConstraint');
-                }
-
-                public function getInt() : IntConstraintDirective
-                {
-                    return TestSchema::getType('intConstraint');
-                }
-
-                public function getFloat() : FloatConstraintDirective
-                {
-                    return TestSchema::getType('floatConstraint');
-                }
-
-                public function getList() : ListConstraintDirective
-                {
-                    return TestSchema::getType('listConstraint');
-                }
-
-                public function getListInput() : ListConstraintInput
-                {
-                    return TestSchema::getType('ListConstraintInput');
-                }
-
-                public function getObject() : ObjectConstraintDirective
-                {
-                    return TestSchema::getType('objectConstraint');
-                }
-
-                public function getObjectInput() : ObjectConstraintInput
-                {
-                    return TestSchema::getType('ObjectConstraintInput');
-                }
-
-                public function getUpload() : UploadConstraintDirective
-                {
-                    return TestSchema::getType('uploadConstraint');
-                }
-            };
-        }
-
-        return self::$accessor;
-    }
-
-    public static function getContainer() : Container
-    {
-        if (self::$container !== null) {
-            return self::$container;
-        }
-
-        self::$container = new SimpleContainer([
-            'Query' => self::getType('Query'),
-            'ConstraintInput' => self::getType('ConstraintInput'),
-            'ExactlyOneInput' => self::getType('ExactlyOneInput'),
-            'ConstraintType' => self::getType('ConstraintType'),
-            'ListConstraintInput' => self::getType('ListConstraintInput'),
-        ], [
-            'stringConstraint' => self::getType('stringConstraint'),
-            'intConstraint' => self::getType('intConstraint'),
-            'floatConstraint' => self::getType('floatConstraint'),
-            'listConstraint' => self::getType('listConstraint'),
-            'objectConstraint' => self::getType('objectConstraint'),
-            'uploadConstraint' => self::getType('uploadConstraint'),
-        ]);
-
-        return self::$container;
-    }
-
-    public static function getQuery() : Type
-    {
-        return new class extends Type
-        {
-            protected const NAME = 'Query';
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
-            }
-
-            protected function getFieldDefinition() : ResolvableFieldSet
-            {
-                return new ResolvableFieldSet([
-                    ResolvableField::create(
-                        'fieldInput',
-                        Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
-                            return 1;
-                        },
-                    )->setArguments(new ArgumentSet([
-                        new Argument(
-                            'arg',
-                            TestSchema::getConstraintInput(),
-                        ),
-                    ])),
-                    ResolvableField::create(
-                        'fieldExactlyOne',
-                        Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
-                            return 1;
-                        },
-                    )->setArguments(new ArgumentSet([
-                        new Argument(
-                            'arg',
-                            TestSchema::getExactlyOneInput(),
-                        ),
-                    ])),
-                    ResolvableField::create(
-                        'fieldAOrB',
-                        TestSchema::getAOrBType()->notNull(),
-                        static function ($parent) : int {
-                            return 0;
-                        },
-                    ),
-                    ResolvableField::create(
-                        'fieldList',
-                        Container::Int()->list(),
-                        static function ($parent, array $arg) : array {
-                            return $arg;
-                        },
-                    )->addDirective(
-                        TestSchema::getType('listConstraint'),
-                        ['minItems' => 3, 'maxItems' => 5],
-                    )->setArguments(new ArgumentSet([
-                        new Argument(
-                            'arg',
-                            Container::Int()->list(),
-                        ),
-                    ])),
-                ]);
-            }
-        };
     }
 
     public static function getConstraintType() : Type
@@ -237,7 +76,7 @@ final class TestSchema
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     [
                         'atLeastOne' => [
                             'intMinField',
@@ -269,70 +108,70 @@ final class TestSchema
                         static function () : int {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
+                    ))->addDirective(TestSchema::$intConstraint, ['min' => -20]),
                     (new ResolvableField(
                         'intMaxField',
                         Container::Int(),
                         static function () : int {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
+                    ))->addDirective(TestSchema::$intConstraint, ['max' => 20]),
                     (new ResolvableField(
                         'intOneOfField',
                         Container::Int(),
                         static function () : int {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
+                    ))->addDirective(TestSchema::$intConstraint, ['oneOf' => [1, 2, 3]]),
                     (new ResolvableField(
                         'floatMinField',
                         Container::Float(),
                         static function () {
                             return 4.02;
                         },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['min' => 4.01]),
                     (new ResolvableField(
                         'floatMaxField',
                         Container::Float(),
                         static function () {
                             return 1.1;
                         },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['max' => 20.101]),
                     (new ResolvableField(
                         'floatOneOfField',
                         Container::Float(),
                         static function () {
                             return 1.01;
                         },
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['oneOf' => [1.01, 2.02, 3.0]]),
                     (new ResolvableField(
                         'stringMinField',
                         Container::String(),
                         static function () {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
+                    ))->addDirective(TestSchema::$stringConstraint, ['minLength' => 4]),
                     (new ResolvableField(
                         'stringMaxField',
                         Container::String(),
                         static function () {
                             return 1;
                         },
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
+                    ))->addDirective(TestSchema::$stringConstraint, ['maxLength' => 10]),
                     (new ResolvableField(
                         'listMinField',
                         Container::Int()->list(),
                         static function () : array {
                             return [1];
                         },
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
+                    ))->addDirective(TestSchema::$listConstraint, ['minItems' => 1]),
                     (new ResolvableField(
                         'listMaxField',
                         Container::Int()->list(),
                         static function () : array {
                             return [1, 2];
                         },
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => 3]),
+                    ))->addDirective(TestSchema::$listConstraint, ['maxItems' => 3]),
                 ]);
             }
         };
@@ -349,7 +188,7 @@ final class TestSchema
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     [
                         'atLeastOne' => [
                             'intMinArg',
@@ -378,67 +217,67 @@ final class TestSchema
                     (new Argument(
                         'intMinArg',
                         Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['min' => -20]),
+                    ))->addDirective(TestSchema::$intConstraint, ['min' => -20]),
                     (new Argument(
                         'intMaxArg',
                         Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['max' => 20]),
+                    ))->addDirective(TestSchema::$intConstraint, ['max' => 20]),
                     (new Argument(
                         'intOneOfArg',
                         Container::Int(),
-                    ))->addDirective(TestSchema::getType('intConstraint'), ['oneOf' => [1, 2, 3]]),
+                    ))->addDirective(TestSchema::$intConstraint, ['oneOf' => [1, 2, 3]]),
                     (new Argument(
                         'floatMinArg',
                         Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['min' => 4.01]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['min' => 4.01]),
                     (new Argument(
                         'floatMaxArg',
                         Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['max' => 20.101]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['max' => 20.101]),
                     (new Argument(
                         'floatOneOfArg',
                         Container::Float(),
-                    ))->addDirective(TestSchema::getType('floatConstraint'), ['oneOf' => [1.01, 2.02, 3.0]]),
+                    ))->addDirective(TestSchema::$floatConstraint, ['oneOf' => [1.01, 2.02, 3.0]]),
                     (new Argument(
                         'stringMinArg',
                         Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['minLength' => 4]),
+                    ))->addDirective(TestSchema::$stringConstraint, ['minLength' => 4]),
                     (new Argument(
                         'stringMaxArg',
                         Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['maxLength' => 10]),
+                    ))->addDirective(TestSchema::$stringConstraint, ['maxLength' => 10]),
                     (new Argument(
                         'stringRegexArg',
                         Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['regex' => '/^(abc)|(foo)$/']),
+                    ))->addDirective(TestSchema::$stringConstraint, ['regex' => '/^(abc)|(foo)$/']),
                     (new Argument(
                         'stringOneOfArg',
                         Container::String(),
-                    ))->addDirective(TestSchema::getType('stringConstraint'), ['oneOf' => ['abc', 'foo']]),
+                    ))->addDirective(TestSchema::$stringConstraint, ['oneOf' => ['abc', 'foo']]),
                     (new Argument(
                         'listMinArg',
                         Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 1]),
+                    ))->addDirective(TestSchema::$listConstraint, ['minItems' => 1]),
                     (new Argument(
                         'listMaxArg',
                         Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['maxItems' => 3]),
+                    ))->addDirective(TestSchema::$listConstraint, ['maxItems' => 3]),
                     (new Argument(
                         'listUniqueArg',
                         Container::Int()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), ['unique' => true]),
+                    ))->addDirective(TestSchema::$listConstraint, ['unique' => true]),
                     (new Argument(
                         'listInnerListArg',
                         Container::Int()->list()->list(),
-                    ))->addDirective(TestSchema::getType('listConstraint'), [
+                    ))->addDirective(TestSchema::$listConstraint, [
                         'innerList' => (object) [
                             'minItems' => 1,
                             'maxItems' => 3,
                         ],
                     ]),
                     Argument::create('listMinIntMinArg', Container::Int()->list())
-                        ->addDirective(TestSchema::getType('listConstraint'), ['minItems' => 3])
-                        ->addDirective(TestSchema::getType('intConstraint'), ['min' => 3]),
+                        ->addDirective(TestSchema::$listConstraint, ['minItems' => 3])
+                        ->addDirective(TestSchema::$intConstraint, ['min' => 3]),
                 ]);
             }
         };
@@ -455,7 +294,7 @@ final class TestSchema
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['exactlyOne' => ['int1', 'int2']],
                 );
             }
@@ -488,7 +327,7 @@ final class TestSchema
                 parent::__construct();
 
                 $this->addDirective(
-                    TestSchema::getType('objectConstraint'),
+                    TestSchema::$objectConstraint,
                     ['exactlyOne' => ['fieldA', 'fieldB']],
                 );
             }
@@ -519,6 +358,135 @@ final class TestSchema
                                 : null;
                         },
                     ),
+                ]);
+            }
+        };
+    }
+
+    private static function createAccessor() : ConstraintDirectiveAccessor
+    {
+        return new class implements ConstraintDirectiveAccessor
+        {
+            public function getString() : StringConstraintDirective
+            {
+                return TestSchema::$stringConstraint;
+            }
+
+            public function getInt() : IntConstraintDirective
+            {
+                return TestSchema::$intConstraint;
+            }
+
+            public function getFloat() : FloatConstraintDirective
+            {
+                return TestSchema::$floatConstraint;
+            }
+
+            public function getList() : ListConstraintDirective
+            {
+                return TestSchema::$listConstraint;
+            }
+
+            public function getListInput() : ListConstraintInput
+            {
+                return TestSchema::$listConstraintInput;
+            }
+
+            public function getObject() : ObjectConstraintDirective
+            {
+                return TestSchema::$objectConstraint;
+            }
+
+            public function getObjectInput() : ObjectConstraintInput
+            {
+                return TestSchema::$objectConstraintInput;
+            }
+
+            public function getUpload() : UploadConstraintDirective
+            {
+                return TestSchema::$uploadConstraint;
+            }
+        };
+    }
+
+    private static function createContainer() : Container
+    {
+        return new SimpleContainer([
+            'Query' => self::$query,
+            'ConstraintInput' => self::$constraintInput,
+            'ExactlyOneInput' => self::$exactlyOneInput,
+            'ConstraintType' => self::$constraintType,
+            'ListConstraintInput' => self::$listConstraintInput,
+        ], [
+            'stringConstraint' => self::$stringConstraint,
+            'intConstraint' => self::$intConstraint,
+            'floatConstraint' => self::$floatConstraint,
+            'listConstraint' => self::$listConstraint,
+            'objectConstraint' => self::$objectConstraint,
+            'uploadConstraint' => self::$uploadConstraint,
+        ]);
+    }
+
+    private static function getQuery() : Type
+    {
+        return new class extends Type
+        {
+            protected const NAME = 'Query';
+
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
+            protected function getFieldDefinition() : ResolvableFieldSet
+            {
+                return new ResolvableFieldSet([
+                    ResolvableField::create(
+                        'fieldInput',
+                        Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                    )->setArguments(new ArgumentSet([
+                        new Argument(
+                            'arg',
+                            TestSchema::$constraintInput,
+                        ),
+                    ])),
+                    ResolvableField::create(
+                        'fieldExactlyOne',
+                        Container::Int(),
+                        static function ($parent, \stdClass $arg) : int {
+                            return 1;
+                        },
+                    )->setArguments(new ArgumentSet([
+                        new Argument(
+                            'arg',
+                            TestSchema::$exactlyOneInput,
+                        ),
+                    ])),
+                    ResolvableField::create(
+                        'fieldAOrB',
+                        TestSchema::$aOrBType->notNull(),
+                        static function ($parent) : int {
+                            return 0;
+                        },
+                    ),
+                    ResolvableField::create(
+                        'fieldList',
+                        Container::Int()->list(),
+                        static function ($parent, array $arg) : array {
+                            return $arg;
+                        },
+                    )->addDirective(
+                        TestSchema::$listConstraint,
+                        ['minItems' => 3, 'maxItems' => 5],
+                    )->setArguments(new ArgumentSet([
+                        new Argument(
+                            'arg',
+                            Container::Int()->list(),
+                        ),
+                    ])),
                 ]);
             }
         };

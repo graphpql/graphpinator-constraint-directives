@@ -141,7 +141,7 @@ final class ConstraintArgumentTest extends TestCase
         $result = $graphpinator->run(new JsonRequestFactory($request));
 
         self::assertSame($expected->toString(), $result->toString());
-        self::assertNull($result->getErrors());
+        self::assertNull($result->errors);
     }
 
     public static function argumentInvalidDataProvider() : array
