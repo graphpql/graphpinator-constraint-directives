@@ -19,7 +19,7 @@
     "infinityloop-dev/graphpinator-common": "^2.0"
   },
   "require-dev": {
-    "infection/infection": "^0.29",
+    "infection/infection": "^0.29 || ^0.32",
     "infinityloop-dev/graphpinator-tokenizer": "^1.3",
     "infinityloop-dev/graphpinator-upload": "^2.0",
     "infinityloop-dev/utils": "^2.3",
