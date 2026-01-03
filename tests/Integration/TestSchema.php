@@ -105,35 +105,35 @@ final class TestSchema
                     (new ResolvableField(
                         'intMinField',
                         Container::Int(),
-                        static function () : int {
+                        static function () : ?int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::$intConstraint, ['min' => -20]),
                     (new ResolvableField(
                         'intMaxField',
                         Container::Int(),
-                        static function () : int {
+                        static function () : ?int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::$intConstraint, ['max' => 20]),
                     (new ResolvableField(
                         'intOneOfField',
                         Container::Int(),
-                        static function () : int {
+                        static function () : ?int {
                             return 1;
                         },
                     ))->addDirective(TestSchema::$intConstraint, ['oneOf' => [1, 2, 3]]),
                     (new ResolvableField(
                         'floatMinField',
                         Container::Float(),
-                        static function () {
+                        static function () : ?float {
                             return 4.02;
                         },
                     ))->addDirective(TestSchema::$floatConstraint, ['min' => 4.01]),
                     (new ResolvableField(
                         'floatMaxField',
                         Container::Float(),
-                        static function () {
+                        static function () : ?float {
                             return 1.1;
                         },
                     ))->addDirective(TestSchema::$floatConstraint, ['max' => 20.101]),
@@ -161,14 +161,14 @@ final class TestSchema
                     (new ResolvableField(
                         'listMinField',
                         Container::Int()->list(),
-                        static function () : array {
+                        static function () : ?array {
                             return [1];
                         },
                     ))->addDirective(TestSchema::$listConstraint, ['minItems' => 1]),
                     (new ResolvableField(
                         'listMaxField',
                         Container::Int()->list(),
-                        static function () : array {
+                        static function () : ?array {
                             return [1, 2];
                         },
                     ))->addDirective(TestSchema::$listConstraint, ['maxItems' => 3]),
@@ -444,7 +444,7 @@ final class TestSchema
                     ResolvableField::create(
                         'fieldInput',
                         Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
+                        static function ($parent, \stdClass $arg) : ?int {
                             return 1;
                         },
                     )->setArguments(new ArgumentSet([
@@ -456,7 +456,7 @@ final class TestSchema
                     ResolvableField::create(
                         'fieldExactlyOne',
                         Container::Int(),
-                        static function ($parent, \stdClass $arg) : int {
+                        static function ($parent, \stdClass $arg) : ?int {
                             return 1;
                         },
                     )->setArguments(new ArgumentSet([
@@ -475,7 +475,7 @@ final class TestSchema
                     ResolvableField::create(
                         'fieldList',
                         Container::Int()->list(),
-                        static function ($parent, array $arg) : array {
+                        static function ($parent, array $arg) : ?array {
                             return $arg;
                         },
                     )->addDirective(

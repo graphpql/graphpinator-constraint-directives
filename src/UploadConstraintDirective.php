@@ -9,6 +9,7 @@ use Graphpinator\ConstraintDirectives\Exception\MimeTypeConstraintNotSatisfied;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\Location\ArgumentDefinitionLocation;
@@ -16,8 +17,9 @@ use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
 use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use Graphpinator\Upload\UploadType;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\Value;
+use Graphpinator\Value\Contract\Value;
 
+#[Description('Graphpinator uploadConstraint directive.')]
 final class UploadConstraintDirective extends Directive implements
     ArgumentDefinitionLocation,
     VariableDefinitionLocation
@@ -25,24 +27,17 @@ final class UploadConstraintDirective extends Directive implements
     use TScalarConstraint;
 
     protected const NAME = 'uploadConstraint';
-    protected const DESCRIPTION = 'Graphpinator uploadConstraint directive.';
 
     #[\Override]
-    public function validateArgumentUsage(
-        Argument $argument,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return $argument->getType()->accept(new GetNamedTypeVisitor()) instanceof UploadType;
     }
 
     #[\Override]
-    public function validateVariableUsage(
-        Variable $variable,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateVariableUsage(Variable $variable, ArgumentValueSet $arguments) : bool
     {
-        return $variable->getType()->accept(new GetNamedTypeVisitor()) instanceof UploadType;
+        return $variable->type->accept(new GetNamedTypeVisitor()) instanceof UploadType;
     }
 
     #[\Override]
@@ -68,29 +63,24 @@ final class UploadConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void
+    protected function specificValidateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         $rawValue = $value->getRawValue();
-        $maxSize = $arguments->offsetGet('maxSize')->getValue()->getRawValue();
-        $mimeType = $arguments->offsetGet('mimeType')->getValue()->getRawValue();
+        $maxSize = $arguments->offsetGet('maxSize')->value->getRawValue();
+        $mimeType = $arguments->offsetGet('mimeType')->value->getRawValue();
 
         if (\is_int($maxSize) && $rawValue->getSize() > $maxSize) {
             throw new MaxSizeConstraintNotSatisfied();
         }
 
+        // @phpstan-ignore theCodingMachineSafe.function
         if (\is_array($mimeType) && !\in_array(\mime_content_type($rawValue->getStream()->getMetadata('uri')), $mimeType, true)) {
             throw new MimeTypeConstraintNotSatisfied();
         }
     }
 
     #[\Override]
-    protected function specificValidateVariance(
-        ArgumentValueSet $biggerSet,
-        ArgumentValueSet $smallerSet,
-    ) : void
+    protected function specificValidateVariance(ArgumentValueSet $biggerSet, ArgumentValueSet $smallerSet) : void
     {
         $lhs = (object) $biggerSet->getValuesForResolver();
         $rhs = (object) $smallerSet->getValuesForResolver();

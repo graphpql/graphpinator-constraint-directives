@@ -109,7 +109,7 @@ final class ConstraintVariableTest extends TestCase
                     ResolvableField::create(
                         'field1',
                         Container::Int(),
-                        static function() : int {
+                        static function() : ?int {
                             return 1;
                         },
                     ),

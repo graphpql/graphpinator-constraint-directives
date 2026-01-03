@@ -14,6 +14,7 @@ use Graphpinator\Typesystem\Argument\ArgumentSet;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\InputType;
 use Graphpinator\Value\InputValue;
+use Graphpinator\Value\Visitor\ApplyVariablesVisitor;
 use Graphpinator\Value\Visitor\ConvertRawValueVisitor;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +26,7 @@ final class ObjectConstraintTest extends TestCase
             new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -35,7 +36,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getAtLeastInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -47,7 +48,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getAtLeastInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
     }
 
     public function testAtMostValidExactly() : void
@@ -56,7 +57,7 @@ final class ObjectConstraintTest extends TestCase
             new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -66,7 +67,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getAtMostInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => null, 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -78,7 +79,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getAtMostInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
     }
 
     public function testExactlyValidEmpty() : void
@@ -87,7 +88,7 @@ final class ObjectConstraintTest extends TestCase
             new ConvertRawValueVisitor((object) ['arg1' => 'Value'], new Path()),
         );
         \assert($value instanceof InputValue);
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -97,7 +98,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getExactlyInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => null], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
 
         self::assertInstanceOf(InputValue::class, $value);
     }
@@ -109,7 +110,7 @@ final class ObjectConstraintTest extends TestCase
         $value = self::getExactlyInput()->accept(
             new ConvertRawValueVisitor((object) ['arg1' => 'Value', 'arg2' => 'Value'], new Path()),
         );
-        $value->applyVariables(new VariableValueSet([]));
+        $value->accept(new ApplyVariablesVisitor(new VariableValueSet([])));
     }
 
     private static function getAtLeastInput() : InputType

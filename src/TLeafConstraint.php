@@ -6,10 +6,8 @@ namespace Graphpinator\ConstraintDirectives;
 
 use Graphpinator\Value\ArgumentValue;
 use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\FieldValue;
-use Graphpinator\Value\InputedValue;
-use Graphpinator\Value\ResolvedValue;
-use Graphpinator\Value\Value;
 
 trait TLeafConstraint
 {
@@ -24,10 +22,7 @@ trait TLeafConstraint
         return true;
     }
 
-    final public function validateVariance(
-        ?ArgumentValueSet $biggerSet,
-        ?ArgumentValueSet $smallerSet,
-    ) : void
+    final public function validateVariance(?ArgumentValueSet $biggerSet, ?ArgumentValueSet $smallerSet) : void
     {
         if ($biggerSet === null) {
             return;
@@ -40,63 +35,37 @@ trait TLeafConstraint
         $this->specificValidateVariance($biggerSet, $smallerSet);
     }
 
-    final public function resolveFieldDefinitionStart(
-        ArgumentValueSet $arguments,
-        ResolvedValue $parentValue,
-    ) : void
+    final public function resolveFieldDefinitionStart(ArgumentValueSet $arguments, Value $parentValue) : void
     {
         // nothing here
     }
 
-    final public function resolveFieldDefinitionBefore(
-        ArgumentValueSet $arguments,
-        ResolvedValue $parentValue,
-        ArgumentValueSet $fieldArguments,
-    ) : void
+    final public function resolveFieldDefinitionBefore(ArgumentValueSet $arguments, Value $parentValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
-    final public function resolveFieldDefinitionAfter(
-        ArgumentValueSet $arguments,
-        ResolvedValue $resolvedValue,
-        ArgumentValueSet $fieldArguments,
-    ) : void
+    final public function resolveFieldDefinitionAfter(ArgumentValueSet $arguments, Value $resolvedValue, ArgumentValueSet $fieldArguments) : void
     {
         // nothing here
     }
 
-    final public function resolveFieldDefinitionValue(
-        ArgumentValueSet $arguments,
-        FieldValue $fieldValue,
-    ) : void
+    final public function resolveFieldDefinitionValue(ArgumentValueSet $arguments, FieldValue $fieldValue) : void
     {
-        $this->validateValue($fieldValue->getValue(), $arguments);
+        $this->validateValue($fieldValue->value, $arguments);
     }
 
-    final public function resolveArgumentDefinition(
-        ArgumentValueSet $arguments,
-        ArgumentValue $argumentValue,
-    ) : void
+    final public function resolveArgumentDefinition(ArgumentValueSet $arguments, ArgumentValue $argumentValue) : void
     {
-        $this->validateValue($argumentValue->getValue(), $arguments);
+        $this->validateValue($argumentValue->value, $arguments);
     }
 
-    final public function resolveVariableDefinition(
-        ArgumentValueSet $arguments,
-        InputedValue $variableValue,
-    ) : void
+    final public function resolveVariableDefinition(ArgumentValueSet $arguments, Value $variableValue) : void
     {
         $this->validateValue($variableValue, $arguments);
     }
 
-    abstract protected function validateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void;
+    abstract protected function validateValue(Value $value, ArgumentValueSet $arguments) : void;
 
-    abstract protected function specificValidateVariance(
-        ArgumentValueSet $biggerSet,
-        ArgumentValueSet $smallerSet,
-    ) : void;
+    abstract protected function specificValidateVariance(ArgumentValueSet $biggerSet, ArgumentValueSet $smallerSet) : void;
 }

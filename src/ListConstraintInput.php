@@ -14,7 +14,7 @@ final class ListConstraintInput extends InputType
     protected const NAME = 'ListConstraintInput';
 
     public function __construct(
-        private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+        private readonly ConstraintDirectiveAccessor $constraintDirectiveAccessor,
     )
     {
         parent::__construct();

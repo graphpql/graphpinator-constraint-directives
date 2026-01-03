@@ -20,7 +20,7 @@ use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
 use Graphpinator\Typesystem\Spec\FloatType;
 use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\Value;
+use Graphpinator\Value\Contract\Value;
 
 #[Description('Graphpinator floatConstraint directive.')]
 final class FloatConstraintDirective extends Directive implements
@@ -33,30 +33,21 @@ final class FloatConstraintDirective extends Directive implements
     protected const NAME = 'floatConstraint';
 
     #[\Override]
-    public function validateFieldUsage(
-        Field $field,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return $field->getType()->accept(new GetNamedTypeVisitor()) instanceof FloatType;
     }
 
     #[\Override]
-    public function validateArgumentUsage(
-        Argument $argument,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return $argument->getType()->accept(new GetNamedTypeVisitor()) instanceof FloatType;
     }
 
     #[\Override]
-    public function validateVariableUsage(
-        Variable $variable,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateVariableUsage(Variable $variable, ArgumentValueSet $arguments) : bool
     {
-        return $variable->getType()->accept(new GetNamedTypeVisitor()) instanceof FloatType;
+        return $variable->type->accept(new GetNamedTypeVisitor()) instanceof FloatType;
     }
 
     #[\Override]
@@ -79,15 +70,12 @@ final class FloatConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void
+    protected function specificValidateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         $rawValue = $value->getRawValue();
-        $min = $arguments->offsetGet('min')->getValue()->getRawValue();
-        $max = $arguments->offsetGet('max')->getValue()->getRawValue();
-        $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
+        $min = $arguments->offsetGet('min')->value->getRawValue();
+        $max = $arguments->offsetGet('max')->value->getRawValue();
+        $oneOf = $arguments->offsetGet('oneOf')->value->getRawValue();
 
         if (\is_float($min) && $rawValue < $min) {
             throw new MinConstraintNotSatisfied();
@@ -103,10 +91,7 @@ final class FloatConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateVariance(
-        ArgumentValueSet $biggerSet,
-        ArgumentValueSet $smallerSet,
-    ) : void
+    protected function specificValidateVariance(ArgumentValueSet $biggerSet, ArgumentValueSet $smallerSet) : void
     {
         $lhs = $biggerSet->getValuesForResolver();
         $rhs = $smallerSet->getValuesForResolver();

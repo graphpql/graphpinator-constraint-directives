@@ -416,7 +416,7 @@ final class ConstraintFieldTest extends TestCase
                     ResolvableField::create(
                         'field1',
                         $this->settings['type'],
-                        function() : mixed {
+                        function() {
                             return $this->settings['value'];
                         },
                     )->addDirective($this->settings['directive'], $this->settings['constraint']),

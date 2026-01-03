@@ -11,6 +11,7 @@ use Graphpinator\ConstraintDirectives\Exception\RegexConstraintNotSatisfied;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\Field\Field;
@@ -21,8 +22,9 @@ use Graphpinator\Typesystem\Spec\IdType;
 use Graphpinator\Typesystem\Spec\StringType;
 use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use Graphpinator\Value\ArgumentValueSet;
-use Graphpinator\Value\Value;
+use Graphpinator\Value\Contract\Value;
 
+#[Description('Graphpinator stringConstraint directive.')]
 final class StringConstraintDirective extends Directive implements
     FieldDefinitionLocation,
     ArgumentDefinitionLocation,
@@ -31,13 +33,9 @@ final class StringConstraintDirective extends Directive implements
     use TScalarConstraint;
 
     protected const NAME = 'stringConstraint';
-    protected const DESCRIPTION = 'Graphpinator stringConstraint directive.';
 
     #[\Override]
-    public function validateFieldUsage(
-        Field $field,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         $namedType = $field->getType()->accept(new GetNamedTypeVisitor());
 
@@ -46,10 +44,7 @@ final class StringConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    public function validateArgumentUsage(
-        Argument $argument,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         $namedType = $argument->getType()->accept(new GetNamedTypeVisitor());
 
@@ -58,12 +53,9 @@ final class StringConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    public function validateVariableUsage(
-        Variable $variable,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateVariableUsage(Variable $variable, ArgumentValueSet $arguments) : bool
     {
-        $namedType = $variable->getType()->accept(new GetNamedTypeVisitor());
+        $namedType = $variable->type->accept(new GetNamedTypeVisitor());
 
         return $namedType instanceof StringType
             || $namedType instanceof IdType;
@@ -98,16 +90,13 @@ final class StringConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void
+    protected function specificValidateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         $rawValue = $value->getRawValue();
-        $minLength = $arguments->offsetGet('minLength')->getValue()->getRawValue();
-        $maxLength = $arguments->offsetGet('maxLength')->getValue()->getRawValue();
-        $regex = $arguments->offsetGet('regex')->getValue()->getRawValue();
-        $oneOf = $arguments->offsetGet('oneOf')->getValue()->getRawValue();
+        $minLength = $arguments->offsetGet('minLength')->value->getRawValue();
+        $maxLength = $arguments->offsetGet('maxLength')->value->getRawValue();
+        $regex = $arguments->offsetGet('regex')->value->getRawValue();
+        $oneOf = $arguments->offsetGet('oneOf')->value->getRawValue();
 
         if (\is_int($minLength) && \mb_strlen($rawValue) < $minLength) {
             throw new MinLengthConstraintNotSatisfied();
@@ -117,6 +106,7 @@ final class StringConstraintDirective extends Directive implements
             throw new MaxLengthConstraintNotSatisfied();
         }
 
+        // @phpstan-ignore theCodingMachineSafe.function
         if (\is_string($regex) && \preg_match($regex, $rawValue) !== 1) {
             throw new RegexConstraintNotSatisfied();
         }
@@ -127,10 +117,7 @@ final class StringConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateVariance(
-        ArgumentValueSet $biggerSet,
-        ArgumentValueSet $smallerSet,
-    ) : void
+    protected function specificValidateVariance(ArgumentValueSet $biggerSet, ArgumentValueSet $smallerSet) : void
     {
         $lhs = $biggerSet->getValuesForResolver();
         $rhs = $smallerSet->getValuesForResolver();

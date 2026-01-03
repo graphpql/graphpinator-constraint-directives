@@ -9,6 +9,7 @@ use Graphpinator\ConstraintDirectives\Exception\AtMostConstraintNotSatisfied;
 use Graphpinator\ConstraintDirectives\Exception\ExactlyConstraintNotSatisfied;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\Field\FieldSet;
@@ -23,16 +24,16 @@ use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\TypeValue;
 
+#[Description('Graphpinator objectConstraint directive.')]
 final class ObjectConstraintDirective extends Directive implements
     ObjectLocation,
     InputObjectLocation
 {
     protected const NAME = 'objectConstraint';
-    protected const DESCRIPTION = 'Graphpinator objectConstraint directive.';
     protected const REPEATABLE = true;
 
     public function __construct(
-        private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+        private readonly ConstraintDirectiveAccessor $constraintDirectiveAccessor,
     )
     {
     }
@@ -88,12 +89,12 @@ final class ObjectConstraintDirective extends Directive implements
 
     private static function validateUsage(FieldSet|ArgumentSet $fields, ArgumentValueSet $arguments) : bool
     {
-        $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
-        $atMostOne = $arguments->offsetGet('atMostOne')->getValue();
-        $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue();
-        $atLeast = $arguments->offsetGet('atLeast')->getValue();
-        $atMost = $arguments->offsetGet('atMost')->getValue();
-        $exactly = $arguments->offsetGet('exactly')->getValue();
+        $atLeastOne = $arguments->offsetGet('atLeastOne')->value;
+        $atMostOne = $arguments->offsetGet('atMostOne')->value;
+        $exactlyOne = $arguments->offsetGet('exactlyOne')->value;
+        $atLeast = $arguments->offsetGet('atLeast')->value;
+        $atMost = $arguments->offsetGet('atMost')->value;
+        $exactly = $arguments->offsetGet('exactly')->value;
 
         return (!$atLeastOne instanceof ListValue || self::validateFieldsArePresent($fields, $atLeastOne))
             && (!$atMostOne instanceof ListValue || self::validateFieldsArePresent($fields, $atMostOne))
@@ -105,31 +106,19 @@ final class ObjectConstraintDirective extends Directive implements
 
     private static function resolve(ArgumentValueSet $arguments, TypeValue|InputValue $value) : void
     {
-        $atLeastOne = $arguments->offsetGet('atLeastOne')->getValue();
-        $atMostOne = $arguments->offsetGet('atMostOne')->getValue();
-        $exactlyOne = $arguments->offsetGet('exactlyOne')->getValue();
-        $atLeast = $arguments->offsetGet('atLeast')->getValue();
-        $atMost = $arguments->offsetGet('atMost')->getValue();
-        $exactly = $arguments->offsetGet('exactly')->getValue();
+        $atLeastOne = $arguments->offsetGet('atLeastOne')->value->getRawValue();
+        $atMostOne = $arguments->offsetGet('atMostOne')->value->getRawValue();
+        $exactlyOne = $arguments->offsetGet('exactlyOne')->value->getRawValue();
+        $atLeast = $arguments->offsetGet('atLeast')->value->getRawValue();
+        $atMost = $arguments->offsetGet('atMost')->value->getRawValue();
+        $exactly = $arguments->offsetGet('exactly')->value->getRawValue();
 
-        $atLeastOne instanceof ListValue && self::resolveAtLeast($value, $atLeastOne->getRawValue());
-        $atMostOne instanceof ListValue && self::resolveAtMost($value, $atMostOne->getRawValue());
-        $exactlyOne instanceof ListValue && self::resolveExactly($value, $exactlyOne->getRawValue());
-        $atLeast instanceof InputValue && self::resolveAtLeast(
-            $value,
-            $atLeast->from->getValue()->getRawValue(),
-            $atLeast->count->getValue()->getRawValue(),
-        );
-        $atMost instanceof InputValue && self::resolveAtMost(
-            $value,
-            $atMost->from->getValue()->getRawValue(),
-            $atMost->count->getValue()->getRawValue(),
-        );
-        $exactly instanceof InputValue && self::resolveExactly(
-            $value,
-            $exactly->from->getValue()->getRawValue(),
-            $exactly->count->getValue()->getRawValue(),
-        );
+        \is_array($atLeastOne) && self::resolveAtLeast($value, $atLeastOne);
+        \is_array($atMostOne) && self::resolveAtMost($value, $atMostOne);
+        \is_array($exactlyOne) && self::resolveExactly($value, $exactlyOne);
+        $atLeast instanceof \stdClass && self::resolveAtLeast($value, $atLeast->from, $atLeast->count);
+        $atMost instanceof \stdClass && self::resolveAtMost($value, $atMost->from, $atMost->count);
+        $exactly instanceof \stdClass && self::resolveExactly($value, $exactly->from, $exactly->count);
     }
 
     private static function validateFieldsArePresent(FieldSet|ArgumentSet $fields, ListValue $list) : bool
@@ -145,11 +134,14 @@ final class ObjectConstraintDirective extends Directive implements
 
     private static function validateObjectInput(FieldSet|ArgumentSet $fields, InputValue $object) : bool
     {
-        return $object->count->getValue()->getRawValue() <= \count($object->from->getValue())
-            && self::validateFieldsArePresent($fields, $object->from->getValue());
+        return $object->value->count->getValue()->getRawValue() <= \count($object->value->from->getValue())
+            && self::validateFieldsArePresent($fields, $object->value->from->getValue());
     }
 
-    private static function resolveAtLeast(TypeValue|InputValue $value, array $atLeast, int $count = 1) : void
+    /**
+     * @param list<string> $atLeast
+     */
+    private static function resolveAtLeast(TypeValue|InputValue $value, array $atLeast, int $count = 1) : bool
     {
         if ($value instanceof TypeValue) {
             [$currentCount, $notRequested] = self::countFieldsType($value, $atLeast);
@@ -158,15 +150,20 @@ final class ObjectConstraintDirective extends Directive implements
                 throw new AtLeastConstraintNotSatisfied();
             }
 
-            return;
+            return true;
         }
 
         if (self::countFieldsInput($value, $atLeast) < $count) {
             throw new AtLeastConstraintNotSatisfied();
         }
+
+        return true;
     }
 
-    private static function resolveAtMost(TypeValue|InputValue $value, array $atMost, int $count = 1) : void
+    /**
+     * @param list<string> $atMost
+     */
+    private static function resolveAtMost(TypeValue|InputValue $value, array $atMost, int $count = 1) : bool
     {
         if ($value instanceof TypeValue) {
             [$currentCount] = self::countFieldsType($value, $atMost);
@@ -175,15 +172,20 @@ final class ObjectConstraintDirective extends Directive implements
                 throw new AtMostConstraintNotSatisfied();
             }
 
-            return;
+            return true;
         }
 
         if (self::countFieldsInput($value, $atMost) > $count) {
             throw new AtMostConstraintNotSatisfied();
         }
+
+        return true;
     }
 
-    private static function resolveExactly(TypeValue|InputValue $value, array $exactly, int $count = 1) : void
+    /**
+     * @param list<string> $exactly
+     */
+    private static function resolveExactly(TypeValue|InputValue $value, array $exactly, int $count = 1) : bool
     {
         if ($value instanceof TypeValue) {
             [$currentCount, $notRequested] = self::countFieldsType($value, $exactly);
@@ -192,20 +194,25 @@ final class ObjectConstraintDirective extends Directive implements
                 throw new ExactlyConstraintNotSatisfied();
             }
 
-            return;
+            return true;
         }
 
         if (self::countFieldsInput($value, $exactly) !== $count) {
             throw new ExactlyConstraintNotSatisfied();
         }
+
+        return true;
     }
 
-    private static function countFieldsInput(InputValue $value, array $exactly) : int
+    /**
+     * @param list<string> $fields
+     */
+    private static function countFieldsInput(InputValue $value, array $fields) : int
     {
         $currentCount = 0;
 
-        foreach ($exactly as $fieldName) {
-            if (!isset($value->{$fieldName}) || $value->{$fieldName}->getValue() instanceof NullValue) {
+        foreach ($fields as $fieldName) {
+            if (!\property_exists($value->value, $fieldName) || $value->value->{$fieldName}->value instanceof NullValue) {
                 continue;
             }
 
@@ -215,20 +222,24 @@ final class ObjectConstraintDirective extends Directive implements
         return $currentCount;
     }
 
-    private static function countFieldsType(TypeValue $value, array $exactly) : array
+    /**
+     * @param list<string> $fields
+     * @return array{0: int, 1: int}
+     */
+    private static function countFieldsType(TypeValue $value, array $fields) : array
     {
         $currentCount = 0;
         $notRequested = 0;
 
-        foreach ($exactly as $fieldName) {
+        foreach ($fields as $fieldName) {
             // fields were not requested and are not included in final value
-            if (!isset($value->{$fieldName})) {
+            if (!\property_exists($value->value, $fieldName)) {
                 ++$notRequested;
 
                 continue;
             }
 
-            if ($value->{$fieldName}->getValue() instanceof NullValue) {
+            if ($value->value->{$fieldName}->value instanceof NullValue) {
                 continue;
             }
 

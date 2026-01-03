@@ -47,7 +47,7 @@ final class UploadVarianceTest extends TestCase
                     new ResolvableField(
                         'fileContent',
                         Container::String(),
-                        static function (?UploadedFileInterface $file) : string {
+                        static function (?UploadedFileInterface $file) : ?string {
                             return $file->getStream()->getContents();
                         },
                     ),

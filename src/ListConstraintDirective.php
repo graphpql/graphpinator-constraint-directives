@@ -11,6 +11,7 @@ use Graphpinator\ConstraintDirectives\Exception\UniqueConstraintOnlyScalar;
 use Graphpinator\Normalizer\Variable\Variable;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Contract\LeafType;
 use Graphpinator\Typesystem\Contract\Type;
 use Graphpinator\Typesystem\Directive;
@@ -21,10 +22,11 @@ use Graphpinator\Typesystem\Location\FieldDefinitionLocation;
 use Graphpinator\Typesystem\Location\VariableDefinitionLocation;
 use Graphpinator\Typesystem\Visitor\GetShapingTypeVisitor;
 use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
-use Graphpinator\Value\Value;
 
+#[Description('Graphpinator listConstraint directive.')]
 final class ListConstraintDirective extends Directive implements
     FieldDefinitionLocation,
     ArgumentDefinitionLocation,
@@ -33,33 +35,23 @@ final class ListConstraintDirective extends Directive implements
     use TLeafConstraint;
 
     protected const NAME = 'listConstraint';
-    protected const DESCRIPTION = 'Graphpinator listConstraint directive.';
 
     #[\Override]
-    public function validateFieldUsage(
-        Field $field,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateFieldUsage(Field $field, ArgumentValueSet $arguments) : bool
     {
         return self::recursiveValidateType($field->getType(), (object) $arguments->getValuesForResolver());
     }
 
     #[\Override]
-    public function validateArgumentUsage(
-        Argument $argument,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateArgumentUsage(Argument $argument, ArgumentValueSet $arguments) : bool
     {
         return self::recursiveValidateType($argument->getType(), (object) $arguments->getValuesForResolver());
     }
 
     #[\Override]
-    public function validateVariableUsage(
-        Variable $variable,
-        ArgumentValueSet $arguments,
-    ) : bool
+    public function validateVariableUsage(Variable $variable, ArgumentValueSet $arguments) : bool
     {
-        return self::recursiveValidateType($variable->getType(), (object) $arguments->getValuesForResolver());
+        return self::recursiveValidateType($variable->type, (object) $arguments->getValuesForResolver());
     }
 
     #[\Override]
@@ -69,10 +61,7 @@ final class ListConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function validateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void
+    protected function validateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         if ($value instanceof NullValue) {
             return;
@@ -84,10 +73,7 @@ final class ListConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function specificValidateVariance(
-        ArgumentValueSet $biggerSet,
-        ArgumentValueSet $smallerSet,
-    ) : void
+    protected function specificValidateVariance(ArgumentValueSet $biggerSet, ArgumentValueSet $smallerSet) : void
     {
         self::recursiveSpecificValidateVariance(
             (object) $biggerSet->getValuesForResolver(),
@@ -95,10 +81,7 @@ final class ListConstraintDirective extends Directive implements
         );
     }
 
-    private static function recursiveValidateType(
-        Type $type,
-        \stdClass $options,
-    ) : bool
+    private static function recursiveValidateType(Type $type, \stdClass $options) : bool
     {
         $usedType = $type->accept(new GetShapingTypeVisitor());
 
@@ -119,6 +102,9 @@ final class ListConstraintDirective extends Directive implements
         return true;
     }
 
+    /**
+     * @param list<mixed> $rawValue
+     */
     private static function recursiveValidate(array $rawValue, \stdClass $options) : void
     {
         if (\is_int($options->minItems) && \count($rawValue) < $options->minItems) {
@@ -156,10 +142,7 @@ final class ListConstraintDirective extends Directive implements
         }
     }
 
-    private static function recursiveSpecificValidateVariance(
-        \stdClass $greater,
-        \stdClass $smaller,
-    ) : void
+    private static function recursiveSpecificValidateVariance(\stdClass $greater, \stdClass $smaller) : void
     {
         if (\is_int($greater->minItems) && ($smaller->minItems === null || $smaller->minItems < $greater->minItems)) {
             throw new \Exception();

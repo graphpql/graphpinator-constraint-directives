@@ -14,7 +14,7 @@ final class ObjectConstraintInput extends InputType
     protected const NAME = 'ObjectConstraintInput';
 
     public function __construct(
-        private ConstraintDirectiveAccessor $constraintDirectiveAccessor,
+        private readonly ConstraintDirectiveAccessor $constraintDirectiveAccessor,
     )
     {
         parent::__construct();

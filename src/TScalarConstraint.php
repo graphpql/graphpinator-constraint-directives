@@ -5,20 +5,21 @@ declare(strict_types = 1);
 namespace Graphpinator\ConstraintDirectives;
 
 use Graphpinator\Value\ArgumentValueSet;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
-use Graphpinator\Value\Value;
 use Graphpinator\Value\VariableValue;
 
 trait TScalarConstraint
 {
     use TLeafConstraint;
 
-    abstract protected function specificValidateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void;
+    abstract protected function specificValidateValue(Value $value, ArgumentValueSet $arguments) : void;
 
+    /**
+     * @param list<string> $greater
+     * @param list<string> $smaller
+     */
     protected static function varianceValidateOneOf(array $greater, array $smaller) : bool
     {
         foreach ($smaller as $value) {
@@ -30,10 +31,7 @@ trait TScalarConstraint
         return true;
     }
 
-    final protected function validateValue(
-        Value $value,
-        ArgumentValueSet $arguments,
-    ) : void
+    final protected function validateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         if ($value instanceof NullValue) {
             return;
