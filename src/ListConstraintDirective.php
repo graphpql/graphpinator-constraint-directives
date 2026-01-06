@@ -119,13 +119,13 @@ final class ListConstraintDirective extends Directive implements
             $differentValues = [];
 
             foreach ($rawValue as $innerValue) {
-                if (!\array_key_exists($innerValue, $differentValues)) {
-                    $differentValues[$innerValue] = true;
-
-                    continue;
+                $innerValue = $innerValue instanceof \BackedEnum
+                    ? $innerValue->value
+                    : $innerValue;
+                
+                if (\array_key_exists($innerValue, $differentValues)) {
+                    throw new UniqueConstraintNotSatisfied();
                 }
-
-                throw new UniqueConstraintNotSatisfied();
             }
         }
 
