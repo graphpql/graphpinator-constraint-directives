@@ -126,6 +126,8 @@ final class ListConstraintDirective extends Directive implements
                 if (\array_key_exists($innerValue, $differentValues)) {
                     throw new UniqueConstraintNotSatisfied();
                 }
+
+                $differentValues[$innerValue] = true;
             }
         }
 
