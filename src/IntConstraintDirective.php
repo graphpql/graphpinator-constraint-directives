@@ -61,15 +61,6 @@ final class IntConstraintDirective extends Directive implements
     }
 
     #[\Override]
-    protected function afterGetFieldDefinition() : void
-    {
-        $this->arguments['oneOf']->addDirective(
-            $this->constraintDirectiveAccessor->getList(),
-            ['minItems' => 1],
-        );
-    }
-
-    #[\Override]
     protected function specificValidateValue(Value $value, ArgumentValueSet $arguments) : void
     {
         $rawValue = $value->getRawValue();

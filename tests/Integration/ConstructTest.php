@@ -191,7 +191,7 @@ final class ConstructTest extends TestCase
         );
         self::assertFalse(self::getString()->isRepeatable());
 
-        $count = [1, 1, 0, 1];
+        $count = [1, 1, 0, 0];
         $index = 0;
 
         foreach (self::getString()->getArguments() as $argument) {
@@ -199,7 +199,7 @@ final class ConstructTest extends TestCase
             $index++;
         }
 
-        $count = [0, 0, 1];
+        $count = [0, 0, 0];
         $index = 0;
 
         foreach (self::getInt()->getArguments() as $argument) {
@@ -207,7 +207,7 @@ final class ConstructTest extends TestCase
             $index++;
         }
 
-        $count = [0, 0, 1];
+        $count = [0, 0, 0];
         $index = 0;
 
         foreach (self::getFloat()->getArguments() as $argument) {

@@ -83,10 +83,6 @@ final class StringConstraintDirective extends Directive implements
             $this->constraintDirectiveAccessor->getInt(),
             ['min' => 0],
         );
-        $this->arguments['oneOf']->addDirective(
-            $this->constraintDirectiveAccessor->getList(),
-            ['minItems' => 1],
-        );
     }
 
     #[\Override]

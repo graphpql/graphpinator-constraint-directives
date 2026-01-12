@@ -263,28 +263,6 @@ final class ValidateUsageTest extends TestCase
         $type->accept(new ValidateIntegrityVisitor());
     }
 
-    public function testEmptyOneOfInt() : void
-    {
-        $this->expectException(MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
-
-        $type = new class extends InputType {
-            protected const NAME = 'ConstraintInput';
-
-            protected function getFieldDefinition() : ArgumentSet
-            {
-                return new ArgumentSet([
-                    Argument::create(
-                        'arg',
-                        Container::Int(),
-                    )->addDirective(TestSchema::$intConstraint, ['oneOf' => []]),
-                ]);
-            }
-        };
-
-        $type->accept(new ValidateIntegrityVisitor());
-    }
-
     public function testInvalidOneOfInt() : void
     {
         $this->expectException(InvalidValue::class);
@@ -306,28 +284,6 @@ final class ValidateUsageTest extends TestCase
         $type->accept(new ValidateIntegrityVisitor());
     }
 
-    public function testEmptyOneOfFloat() : void
-    {
-        $this->expectException(MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
-
-        $type = new class extends InputType {
-            protected const NAME = 'ConstraintInput';
-
-            protected function getFieldDefinition() : ArgumentSet
-            {
-                return new ArgumentSet([
-                    Argument::create(
-                        'arg',
-                        Container::Float(),
-                    )->addDirective(TestSchema::$floatConstraint, ['oneOf' => []]),
-                ]);
-            }
-        };
-
-        $type->accept(new ValidateIntegrityVisitor());
-    }
-
     public function testInvalidOneOfFloat() : void
     {
         $this->expectException(InvalidValue::class);
@@ -342,28 +298,6 @@ final class ValidateUsageTest extends TestCase
                         'arg',
                         Container::Float(),
                     )->addDirective(TestSchema::$floatConstraint, ['oneOf' => ['string']]),
-                ]);
-            }
-        };
-
-        $type->accept(new ValidateIntegrityVisitor());
-    }
-
-    public function testEmptyOneOfString() : void
-    {
-        $this->expectException(MinItemsConstraintNotSatisfied::class);
-        $this->expectExceptionMessage(MinItemsConstraintNotSatisfied::MESSAGE);
-
-        $type = new class extends InputType {
-            protected const NAME = 'ConstraintInput';
-
-            protected function getFieldDefinition() : ArgumentSet
-            {
-                return new ArgumentSet([
-                    Argument::create(
-                        'arg',
-                        Container::String(),
-                    )->addDirective(TestSchema::$stringConstraint, ['oneOf' => []]),
                 ]);
             }
         };
